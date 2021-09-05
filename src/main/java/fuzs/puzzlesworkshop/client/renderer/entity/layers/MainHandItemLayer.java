@@ -26,7 +26,6 @@ public class MainHandItemLayer<T extends LivingEntity, M extends EntityModel<T> 
       if (!itemstack.isEmpty()) {
          p_225628_1_.pushPose();
          if (this.getParentModel().young) {
-            float f = 0.5F;
             p_225628_1_.translate(0.0D, 0.75D, 0.0D);
             p_225628_1_.scale(0.5F, 0.5F, 0.5F);
          }

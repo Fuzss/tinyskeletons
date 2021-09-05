@@ -1,6 +1,5 @@
 package fuzs.puzzlesworkshop.entity.monster;
 
-import fuzs.puzzlesworkshop.PuzzlesWorkshop;
 import fuzs.puzzlesworkshop.entity.ai.goal.RangedBowEasyAttackGoal;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
@@ -11,8 +10,10 @@ import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.SwordItem;
 import net.minecraft.util.Hand;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -28,6 +29,7 @@ public class BabySkeletonEntity extends SkeletonEntity {
     public BabySkeletonEntity(EntityType<? extends SkeletonEntity> type, World world) {
 
         super(type, world);
+        this.xpReward *= 2.5F;
     }
 
     @Override
@@ -36,19 +38,8 @@ public class BabySkeletonEntity extends SkeletonEntity {
     }
 
     @Override
-    protected int getExperienceReward(PlayerEntity player) {
-        this.xpReward *= 2.5F;
-        return super.getExperienceReward(player);
-    }
-
-    @Override
     protected float getStandingEyeHeight(Pose pose, EntitySize size) {
         return 0.93F;
-    }
-
-    @Override
-    public float getScale() {
-        return 1.0F;
     }
 
     @Override
@@ -77,14 +68,14 @@ public class BabySkeletonEntity extends SkeletonEntity {
 
                 if (this.getTarget() != null && this.distanceTo(this.getTarget()) < 4.0) {
 
-                    if (this.getMainHandItem().getItem() == Items.BOW) {
+                    if (this.getMainHandItem().getItem() instanceof BowItem) {
 
                         this.setHandItems(this.getOffhandItem(), this.getMainHandItem());
                         this.switchWeaponCooldown = 60;
                     }
                 } else if (this.getTarget() == null || this.distanceTo(this.getTarget()) > 8.0) {
 
-                    if (this.getMainHandItem().getItem() == Items.WOODEN_SWORD) {
+                    if (this.getMainHandItem().getItem() instanceof SwordItem) {
 
                         this.setHandItems(this.getOffhandItem(), this.getMainHandItem());
                         this.switchWeaponCooldown = 60;
@@ -105,7 +96,7 @@ public class BabySkeletonEntity extends SkeletonEntity {
 
             this.goalSelector.removeGoal(this.meleeGoal);
             this.goalSelector.removeGoal(this.bowGoal);
-            if (this.getMainHandItem().getItem() == Items.BOW) {
+            if (this.getMainHandItem().getItem() instanceof BowItem) {
 
                 int i = 20;
                 if (this.level.getDifficulty() != Difficulty.HARD) {
