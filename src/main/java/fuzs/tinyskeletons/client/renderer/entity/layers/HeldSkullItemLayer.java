@@ -1,27 +1,28 @@
 package fuzs.tinyskeletons.client.renderer.entity.layers;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import fuzs.tinyskeletons.entity.ISkullCarryingMob;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.IEntityRenderer;
-import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.IHasArm;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.vector.Vector3f;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
+import fuzs.tinyskeletons.world.entity.monster.ISkullCarryingMob;
+import net.minecraft.client.model.ArmedModel;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.RenderProperties;
 
 @OnlyIn(Dist.CLIENT)
-public class HeldSkullItemLayer<T extends LivingEntity & ISkullCarryingMob, M extends EntityModel<T> & IHasArm> extends HeldItemLayer<T, M> {
-   public HeldSkullItemLayer(IEntityRenderer<T, M> p_i50934_1_) {
+public class HeldSkullItemLayer<T extends LivingEntity & ISkullCarryingMob, M extends EntityModel<T> & ArmedModel> extends ItemInHandLayer<T, M> {
+   public HeldSkullItemLayer(RenderLayerParent<T, M> p_i50934_1_) {
       super(p_i50934_1_);
    }
 
    @Override
-   public void render(MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int combinedLight, T entity, float p_225628_5_, float p_225628_6_, float p_225628_7_, float p_225628_8_, float p_225628_9_, float p_225628_10_) {
+   public void render(PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int combinedLight, T entity, float p_225628_5_, float p_225628_6_, float p_225628_7_, float p_225628_8_, float p_225628_9_, float p_225628_10_) {
       ItemStack itemstack = entity.getSkullItem();
       if (!itemstack.isEmpty()) {
          matrixStack.pushPose();
@@ -32,7 +33,7 @@ public class HeldSkullItemLayer<T extends LivingEntity & ISkullCarryingMob, M ex
       }
    }
 
-   private void renderHandSkullItem(ItemStack itemStack, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int combinedLight) {
+   private void renderHandSkullItem(ItemStack itemStack, PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int combinedLight) {
       // mostly copied from enderman held block layer renderer
       matrixStack.pushPose();
       matrixStack.translate(0.0D, 0.075, 0.375D);
@@ -42,7 +43,7 @@ public class HeldSkullItemLayer<T extends LivingEntity & ISkullCarryingMob, M ex
       matrixStack.translate(0.25D, 0.1875D, 0.25D);
       matrixStack.scale(-0.5F, -0.5F, 0.5F);
       matrixStack.mulPose(Vector3f.YP.rotationDegrees(90.0F));
-      itemStack.getItem().getItemStackTileEntityRenderer().renderByItem(itemStack, ItemCameraTransforms.TransformType.NONE, matrixStack, renderTypeBuffer, combinedLight, combinedLight);
+      RenderProperties.get(itemStack).getItemStackRenderer().renderByItem(itemStack, ItemTransforms.TransformType.NONE, matrixStack, renderTypeBuffer, combinedLight, combinedLight);
       matrixStack.popPose();
    }
 }

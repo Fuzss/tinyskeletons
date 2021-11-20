@@ -1,29 +1,29 @@
-package fuzs.tinyskeletons.entity.monster;
+package fuzs.tinyskeletons.world.entity.monster;
 
-import fuzs.tinyskeletons.entity.ai.goal.RangedBowEasyAttackGoal;
-import net.minecraft.entity.EntitySize;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.Pose;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.RangedBowAttackGoal;
-import net.minecraft.entity.monster.AbstractSkeletonEntity;
-import net.minecraft.entity.monster.SkeletonEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.BowItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.SwordItem;
-import net.minecraft.util.Hand;
+import fuzs.tinyskeletons.world.entity.ai.goal.RangedBowEasyAttackGoal;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RangedBowAttackGoal;
+import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.level.Level;
 
-public class BabySkeletonEntity extends SkeletonEntity {
-    private RangedBowAttackGoal<AbstractSkeletonEntity> bowGoal;
+public class BabySkeletonEntity extends Skeleton {
+    private RangedBowAttackGoal<AbstractSkeleton> bowGoal;
     private MeleeAttackGoal meleeGoal;
     private int switchWeaponCooldown;
 
-    public BabySkeletonEntity(EntityType<? extends SkeletonEntity> type, World world) {
+    public BabySkeletonEntity(EntityType<? extends Skeleton> type, Level world) {
         super(type, world);
         this.xpReward *= 2.5F;
     }
@@ -34,7 +34,7 @@ public class BabySkeletonEntity extends SkeletonEntity {
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose pose, EntitySize size) {
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
         return 0.93F;
     }
 
@@ -46,9 +46,9 @@ public class BabySkeletonEntity extends SkeletonEntity {
     @Override
     protected void populateDefaultEquipmentSlots(DifficultyInstance difficultyInstance) {
         super.populateDefaultEquipmentSlots(difficultyInstance);
-        this.setItemSlot(EquipmentSlotType.OFFHAND, new ItemStack(Items.WOODEN_SWORD));
+        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.WOODEN_SWORD));
         // back item shouldn't be dropped
-        this.setDropChance(EquipmentSlotType.OFFHAND, 0.0F);
+        this.setDropChance(EquipmentSlot.OFFHAND, 0.0F);
     }
 
     @Override
@@ -94,8 +94,8 @@ public class BabySkeletonEntity extends SkeletonEntity {
     }
 
     private void setHandItems(ItemStack mainHand, ItemStack offHand) {
-        this.setItemInHand(Hand.MAIN_HAND, mainHand);
-        this.setItemInHand(Hand.OFF_HAND, offHand);
+        this.setItemInHand(InteractionHand.MAIN_HAND, mainHand);
+        this.setItemInHand(InteractionHand.OFF_HAND, offHand);
     }
 
     private void createAttackGoals() {

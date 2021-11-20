@@ -1,15 +1,15 @@
-package fuzs.tinyskeletons.entity.ai.goal;
+package fuzs.tinyskeletons.world.entity.ai.goal;
 
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.RangedBowAttackGoal;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.projectile.ProjectileHelper;
-import net.minecraft.item.BowItem;
-import net.minecraft.item.Items;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.RangedBowAttackGoal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.Items;
 
-public class RangedBowEasyAttackGoal<T extends MonsterEntity & IRangedAttackMob> extends RangedBowAttackGoal<T> {
+public class RangedBowEasyAttackGoal<T extends Monster & RangedAttackMob> extends RangedBowAttackGoal<T> {
     private final T entity;
     private final double moveSpeedAmplifier;
     private int attackCooldown;
@@ -45,7 +45,7 @@ public class RangedBowEasyAttackGoal<T extends MonsterEntity & IRangedAttackMob>
         LivingEntity attackTarget = this.entity.getTarget();
         if (attackTarget != null) {
             double distanceToTarget = this.entity.distanceToSqr(attackTarget.getX(), attackTarget.getY(), attackTarget.getZ());
-            boolean canSeeTarget = this.entity.getSensing().canSee(attackTarget);
+            boolean canSeeTarget = this.entity.getSensing().hasLineOfSight(attackTarget);
             if (canSeeTarget != this.seeTime > 0) {
                 this.seeTime = 0;
             }
@@ -76,12 +76,12 @@ public class RangedBowEasyAttackGoal<T extends MonsterEntity & IRangedAttackMob>
                     if (useCount >= 20) {
                         this.entity.stopUsingItem();
                         double distanceVelocity = Math.sqrt(distanceToTarget) / Math.sqrt(this.maxAttackDistance);
-                        this.entity.performRangedAttack(attackTarget, MathHelper.clamp((float) distanceVelocity, 0.1F, 1.0F) * BowItem.getPowerForTime(useCount));
-                        this.attackTime = MathHelper.floor(distanceVelocity * (this.maxAttackTime - this.attackCooldown / 2.0F) + this.attackCooldown / 2.0F);
+                        this.entity.performRangedAttack(attackTarget, Mth.clamp((float) distanceVelocity, 0.1F, 1.0F) * BowItem.getPowerForTime(useCount));
+                        this.attackTime = Mth.floor(distanceVelocity * (this.maxAttackTime - this.attackCooldown / 2.0F) + this.attackCooldown / 2.0F);
                     }
                 }
             } else if (--this.attackTime <= 0 && this.seeTime >= -this.maxAttackTime) {
-                this.entity.startUsingItem(ProjectileHelper.getWeaponHoldingHand(this.entity, Items.BOW));
+                this.entity.startUsingItem(ProjectileUtil.getWeaponHoldingHand(this.entity, Items.BOW));
             }
         }
     }

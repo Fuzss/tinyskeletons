@@ -1,10 +1,10 @@
-package fuzs.tinyskeletons.entity;
+package fuzs.tinyskeletons.world.entity.monster;
 
-import net.minecraft.block.AbstractSkullBlock;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.AbstractSkullBlock;
 
 public interface ISkullCarryingMob {
     default boolean renderCarryingSkull() {
@@ -13,8 +13,8 @@ public interface ISkullCarryingMob {
 
     ItemStack getSkullItem();
 
-    default boolean isOnlyCarryingSkull(LivingEntity entity, Hand hand) {
-        final Hand otherHand = hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND;
+    default boolean isOnlyCarryingSkull(LivingEntity entity, InteractionHand hand) {
+        final InteractionHand otherHand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
         return this.isSkullItem(entity.getItemInHand(hand)) && entity.getItemInHand(otherHand).isEmpty();
     }
 
