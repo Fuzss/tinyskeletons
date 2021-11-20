@@ -31,7 +31,12 @@ public class BabyStrayEntity extends StrayEntity {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new SnowballAttackGoal<>(this, 1.0, 30, 15.0F));
+        this.goalSelector.addGoal(1, new RangedAttackGoal(this, 1.0, 30, 15.0F) {
+            @Override
+            public boolean canUse() {
+                return super.canUse() && BabyStrayEntity.this.getMainHandItem().getItem() == Items.SNOWBALL;
+            }
+        });
         super.registerGoals();
     }
 
@@ -68,7 +73,7 @@ public class BabyStrayEntity extends StrayEntity {
             @Override
             protected void onHitEntity(EntityRayTraceResult p_213868_1_) {
                 Entity entity = p_213868_1_.getEntity();
-                entity.hurt(DamageSource.thrown(this, this.getOwner()), BabyStrayEntity.this.getRandom().nextFloat() < 0.3333F ? 1.0F : 0.0F);
+                entity.hurt(DamageSource.thrown(this, this.getOwner()), 1.0F);
             }
         };
         double d0 = p_82196_1_.getEyeY() - (double)1.1F;
@@ -80,30 +85,5 @@ public class BabyStrayEntity extends StrayEntity {
         this.playSound(SoundEvents.SNOW_GOLEM_SHOOT, 1.0F, 0.4F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
         this.level.addFreshEntity(snowballentity);
         this.swing(Hand.MAIN_HAND);
-    }
-
-    private static class SnowballAttackGoal<T extends MobEntity & IRangedAttackMob> extends RangedAttackGoal {
-        private final T entity;
-
-        public SnowballAttackGoal(T p_i48907_1_, double p_i48907_2_, int p_i48907_4_, float p_i48907_5_) {
-            super(p_i48907_1_, p_i48907_2_, p_i48907_4_, p_i48907_5_);
-            this.entity = p_i48907_1_;
-        }
-
-        public boolean canUse() {
-            return super.canUse() && this.entity.getMainHandItem().getItem() == Items.SNOWBALL;
-        }
-
-//        public void start() {
-//            super.start();
-//            this.entity.setAggressive(true);
-//            this.entity.startUsingItem(Hand.MAIN_HAND);
-//        }
-//
-//        public void stop() {
-//            super.stop();
-//            this.entity.stopUsingItem();
-//            this.entity.setAggressive(false);
-//        }
     }
 }

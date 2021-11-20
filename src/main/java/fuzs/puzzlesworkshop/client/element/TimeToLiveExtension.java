@@ -71,7 +71,6 @@ public class TimeToLiveExtension extends ElementExtension<TimeToLiveElement> imp
     }
 
     private int getDangerColor2(int life, int maxLife, float partialTicks) {
-
         // use sin(x**2)
         float explosionProgress = Math.min(1.0F, (life + partialTicks) / (float) maxLife);
         explosionProgress = 0.5F + (float) Math.sin(20.0 * Math.pow(explosionProgress, 2.0)) * 0.5F;
@@ -93,13 +92,11 @@ public class TimeToLiveExtension extends ElementExtension<TimeToLiveElement> imp
         }
 //        float off = (0.67F + (float) Math.sin((life + partialTicks) * Math.pow(2.0F - explosionProgress, 1.2))) * 0.5F;
 //        g = MathHelper.clamp(explosionProgress + (explosionProgress < 0.8F ? off : 0.0F), 0.0F, 1.0F);
-
         PuzzlesWorkshop.LOGGER.info("Red {}, Green {}, Blue {}", r, g, b);
         return (int) (b * 255.0F) | (int) (g * 255.0F) << 8 | (int) (r * 255.0F) << 16 | 255 << 24;
     }
 
     private int getDangerColor4(int life, int maxLife, float partialTicks) {
-
         // use sin(x**2)
         float explosionProgress = Math.min(1.0F, (life + partialTicks) / (float) maxLife);
         float r = 1.0F;
@@ -115,13 +112,11 @@ public class TimeToLiveExtension extends ElementExtension<TimeToLiveElement> imp
         if (explosionProgress < 0.2F && life % 4 < 2) {
             g = 1.0F - g;
         }
-
         PuzzlesWorkshop.LOGGER.info("Red {}, Green {}, Blue {}", r, g, b);
         return (int) (b * 255.0F) | (int) (g * 255.0F) << 8 | (int) (r * 255.0F) << 16 | 255 << 24;
     }
 
     private int getDangerColor3(int life, int maxLife, float partialTicks) {
-
         // use sin(x**2)
         final double offset = 1.0;
         float explosionProgress = 1.0F + (float) Math.sin(-100.0 * offset * Math.pow(life + partialTicks + offset, -0.5));
@@ -151,9 +146,7 @@ public class TimeToLiveExtension extends ElementExtension<TimeToLiveElement> imp
 //        }
 //        float off = (0.67F + (float) Math.sin((life + partialTicks) * Math.pow(2.0F - explosionProgress, 1.2))) * 0.5F;
 //        g = MathHelper.clamp(explosionProgress + (explosionProgress < 0.8F ? off : 0.0F), 0.0F, 1.0F);
-
         PuzzlesWorkshop.LOGGER.info("Red {}, Green {}, Blue {}", r, g, b);
         return (int) (b * 255.0F) | (int) (g * 255.0F) << 8 | (int) (r * 255.0F) << 16 | 255 << 24;
     }
-
 }

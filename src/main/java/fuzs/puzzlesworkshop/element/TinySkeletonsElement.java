@@ -36,7 +36,7 @@ public class TinySkeletonsElement extends ClientExtensibleElement<TinySkeletonsE
     @ObjectHolder(PuzzlesWorkshop.MODID + ":" + "baby_stray")
     public static final EntityType<BabyStrayEntity> BABY_STRAY_ENTITY = null;
 
-    private final Map<EntityType<? extends MobEntity>, EntityType<? extends MobEntity>> babyMobConversions = Maps.newHashMap();
+    private static final Map<EntityType<? extends MobEntity>, EntityType<? extends MobEntity>> BABY_MOB_CONVERSIONS = Maps.newHashMap();
 
     public TinySkeletonsElement() {
         super(element -> new TinySkeletonsExtension((TinySkeletonsElement) element));
@@ -59,9 +59,9 @@ public class TinySkeletonsElement extends ClientExtensibleElement<TinySkeletonsE
 
     @Override
     public void setupCommon2() {
-        this.babyMobConversions.put(EntityType.SKELETON, BABY_SKELETON_ENTITY);
-        this.babyMobConversions.put(EntityType.WITHER_SKELETON, BABY_WITHER_SKELETON_ENTITY);
-        this.babyMobConversions.put(EntityType.STRAY, BABY_STRAY_ENTITY);
+        BABY_MOB_CONVERSIONS.put(EntityType.SKELETON, BABY_SKELETON_ENTITY);
+        BABY_MOB_CONVERSIONS.put(EntityType.WITHER_SKELETON, BABY_WITHER_SKELETON_ENTITY);
+        BABY_MOB_CONVERSIONS.put(EntityType.STRAY, BABY_STRAY_ENTITY);
         EntitySpawnPlacementRegistry.register(BABY_SKELETON_ENTITY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
         EntitySpawnPlacementRegistry.register(BABY_WITHER_SKELETON_ENTITY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
         EntitySpawnPlacementRegistry.register(BABY_STRAY_ENTITY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BabyStrayEntity::checkBabyStraySpawnRules);
@@ -75,9 +75,9 @@ public class TinySkeletonsElement extends ClientExtensibleElement<TinySkeletonsE
 
     private void onSpecialSpawn(final LivingSpawnEvent.SpecialSpawn evt) {
         if (evt.getWorld() instanceof ServerWorld && ZombieEntity.getSpawnAsBabyOdds(evt.getWorld().getRandom())) {
-            EntityType<? extends MobEntity> babyType = this.babyMobConversions.get(evt.getEntity().getType());
+            EntityType<? extends MobEntity> babyType = BABY_MOB_CONVERSIONS.get(evt.getEntity().getType());
             if (babyType != null) {
-                this.createBabyMob((ServerWorld) evt.getWorld(), babyType, evt.getEntity(), evt.getSpawnReason())
+                makeBabyMob((ServerWorld) evt.getWorld(), babyType, evt.getEntity(), evt.getSpawnReason())
                         .ifPresent(mobentity -> evt.setCanceled(true));
             }
         }
@@ -88,20 +88,20 @@ public class TinySkeletonsElement extends ClientExtensibleElement<TinySkeletonsE
             if (evt.getWorld() instanceof ServerWorld) {
                 ItemStack itemstack = evt.getItemStack();
                 EntityType<?> eggType = ((SpawnEggItem) itemstack.getItem()).getType(itemstack.getTag());
-                EntityType<? extends MobEntity> babyType = this.babyMobConversions.get(eggType);
+                EntityType<? extends MobEntity> babyType = BABY_MOB_CONVERSIONS.get(eggType);
                 if (babyType != null) {
-                    Optional<MobEntity> babyMob = this.createBabyMob((ServerWorld) evt.getWorld(), babyType, evt.getTarget(), SpawnReason.SPAWN_EGG);
-                    babyMob.ifPresent(mobentity -> {
-                        mobentity.playAmbientSound();
-                        if (itemstack.hasCustomHoverName()) {
-                            mobentity.setCustomName(itemstack.getHoverName());
-                        }
-                        if (!evt.getPlayer().abilities.instabuild) {
-                            itemstack.shrink(1);
-                        }
-                        evt.getPlayer().awardStat(Stats.ITEM_USED.get(itemstack.getItem()));
-                        evt.setCancellationResult(ActionResultType.SUCCESS);
-                    });
+                    makeBabyMob((ServerWorld) evt.getWorld(), babyType, evt.getTarget(), SpawnReason.SPAWN_EGG)
+                            .ifPresent(mobentity -> {
+                                mobentity.playAmbientSound();
+                                if (itemstack.hasCustomHoverName()) {
+                                    mobentity.setCustomName(itemstack.getHoverName());
+                                }
+                                if (!evt.getPlayer().abilities.instabuild) {
+                                    itemstack.shrink(1);
+                                }
+                                evt.getPlayer().awardStat(Stats.ITEM_USED.get(itemstack.getItem()));
+                                evt.setCancellationResult(ActionResultType.SUCCESS);
+                            });
                 }
             } else {
                 evt.setCancellationResult(ActionResultType.CONSUME);
@@ -109,7 +109,7 @@ public class TinySkeletonsElement extends ClientExtensibleElement<TinySkeletonsE
         }
     }
 
-    private Optional<MobEntity> createBabyMob(ServerWorld world, EntityType<? extends MobEntity> type, Entity parent, SpawnReason spawnReason) {
+    private static Optional<MobEntity> makeBabyMob(ServerWorld world, EntityType<? extends MobEntity> type, Entity parent, SpawnReason spawnReason) {
         MobEntity mobentity = type.create(world);
         if (mobentity != null) {
             mobentity.moveTo(parent.getX(), parent.getY(), parent.getZ(), MathHelper.wrapDegrees(world.random.nextFloat() * 360.0F), 0.0F);

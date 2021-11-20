@@ -2,7 +2,6 @@ package fuzs.puzzlesworkshop.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import fuzs.puzzlesworkshop.client.renderer.entity.layers.HeldSkullItemLayer;
-import fuzs.puzzlesworkshop.client.renderer.entity.layers.MainHandItemLayer;
 import fuzs.puzzlesworkshop.client.renderer.entity.model.SkullCarryingSkeletonModel;
 import fuzs.puzzlesworkshop.entity.monster.BabyWitherSkeletonEntity;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
