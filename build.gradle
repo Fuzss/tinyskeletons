@@ -47,11 +47,11 @@ minecraft {
         client {
 
             workingDirectory project.file('run')
-            jvmArgs '-ea'
-            arg "-mixin.config=META-INF/${project.id}.mixins.json".toString()
-            properties 'mixin.env.remapRefMap': 'true'
-            property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
-            property 'forge.logging.console.level', 'debug'
+            jvmArgs '-ea', '-Xms1G', '-Xmx4G', '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5010', '-XXaltjvm=dcevm', '-XX:+UnlockExperimentalVMOptions', "-javaagent:${hotswapAgent}"
+            property 'fml.earlyprogresswindow', 'false'
+            // mixin properties
+            args '--mixin.config', "META-INF/${project.id}.mixins.json".toString()
+            properties 'mixin.env.remapRefMap': 'true', 'mixin.env.refMapRemappingFile': "${project.projectDir}/build/createSrgToMcp/output.srg".toString()
         }
 
         server {

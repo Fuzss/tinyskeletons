@@ -1,5 +1,6 @@
 package fuzs.puzzlesworkshop.entity.monster;
 
+import fuzs.puzzlesworkshop.entity.ISkullCarryingMob;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Pose;
@@ -10,20 +11,18 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.Hand;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
-public class BabyWitherSkeletonEntity extends WitherSkeletonEntity {
-
+public class BabyWitherSkeletonEntity extends WitherSkeletonEntity implements ISkullCarryingMob {
     public BabyWitherSkeletonEntity(EntityType<? extends WitherSkeletonEntity> type, World level) {
-
         super(type, level);
         this.xpReward *= 2.5F;
     }
 
     @Override
     protected void registerGoals() {
-
         this.goalSelector.addGoal(2, new RestrictSunGoal(this));
         this.goalSelector.addGoal(3, new FleeSunGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, WolfEntity.class, 6.0F, 1.0D, 1.2D));
@@ -60,4 +59,14 @@ public class BabyWitherSkeletonEntity extends WitherSkeletonEntity {
         this.setGuaranteedDrop(EquipmentSlotType.MAINHAND);
     }
 
+    @Override
+    public boolean isAggressive() {
+        // for arm rendering
+        return true;
+    }
+
+    @Override
+    public boolean renderCarryingSkull() {
+        return this.isOnlyCarryingSkull(this, Hand.MAIN_HAND) || this.isOnlyCarryingSkull(this, Hand.OFF_HAND);
+    }
 }

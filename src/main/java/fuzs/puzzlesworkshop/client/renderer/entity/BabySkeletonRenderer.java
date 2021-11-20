@@ -15,11 +15,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class BabySkeletonRenderer extends MobRenderer<AbstractSkeletonEntity, SkeletonModel<AbstractSkeletonEntity>> {
-
    private static final ResourceLocation SKELETON_LOCATION = new ResourceLocation("textures/entity/skeleton/skeleton.png");
 
    public BabySkeletonRenderer(EntityRendererManager entityRendererManager) {
-
       super(entityRendererManager, new SkeletonModel<>(), 0.5F);
       this.addLayer(new HeadLayer<>(this));
       this.addLayer(new ElytraLayer<>(this));
@@ -30,8 +28,6 @@ public class BabySkeletonRenderer extends MobRenderer<AbstractSkeletonEntity, Sk
 
    @Override
    public ResourceLocation getTextureLocation(AbstractSkeletonEntity entity) {
-
       return SKELETON_LOCATION;
    }
-
 }

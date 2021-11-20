@@ -19,22 +19,17 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.RenderNameplateEvent;
 
 public class TimeToLiveExtension extends ElementExtension<TimeToLiveElement> implements IClientElement {
-
     public TimeToLiveExtension(TimeToLiveElement parent) {
-
         super(parent);
     }
 
     @Override
     public void constructClient() {
-
         this.addListener(this::onRenderNameplate);
     }
 
     private void onRenderNameplate(final RenderNameplateEvent evt) {
-
         if (evt.getEntity() instanceof TNTEntity) {
-
             int remainingLife = ((TNTEntity) evt.getEntity()).getLife();
             String time = String.format("%.2f", remainingLife / 20.0F);
             StringTextComponent nameText = new StringTextComponent(time + " s");
@@ -44,10 +39,8 @@ public class TimeToLiveExtension extends ElementExtension<TimeToLiveElement> imp
     }
 
     private void renderNameTag(EntityRenderer<?> renderer, int damageColor, Entity entity, ITextComponent nameText, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int packedLight) {
-
         double distance = renderer.getDispatcher().distanceToSqr(entity);
         if (ForgeHooksClient.isNameplateInRenderDistance(entity, distance)) {
-
             boolean visible = !entity.isDiscrete();
             float f = entity.getBbHeight() + 0.5F;
             matrixStack.pushPose();
@@ -61,22 +54,18 @@ public class TimeToLiveExtension extends ElementExtension<TimeToLiveElement> imp
             float textWidth = (float)(-fontrenderer.width(nameText) / 2);
             fontrenderer.drawInBatch(nameText, textWidth, 0, 553648127, false, matrix4f, renderTypeBuffer, visible, backgroundOpacityInt, packedLight);
             if (visible) {
-
                 fontrenderer.drawInBatch(nameText, textWidth, 0, damageColor, false, matrix4f, renderTypeBuffer, false, 0, packedLight);
             }
-
             matrixStack.popPose();
         }
     }
 
     private int getDangerColor(int life, int maxLife, float partialTicks) {
-
         float explosionProgress = Math.min(1.0F, (life + partialTicks) / (float) maxLife);
         float off = (0.67F + (float) Math.sin((life + partialTicks) * Math.pow(2.0F - explosionProgress, 1.2))) * 0.5F;
         float r = 1.0F;
         float g = MathHelper.clamp(explosionProgress + (explosionProgress < 0.8F ? off : 0.0F), 0.0F, 1.0F);
         float b = Math.max(0.0F, 1.0F - (1.0F - explosionProgress) * 4.0F);
-
         PuzzlesWorkshop.LOGGER.info("Red {}, Green {}, Blue {}", r, g, b);
         return (int) (b * 255.0F) | (int) (g * 255.0F) << 8 | (int) (r * 255.0F) << 16 | 255 << 24;
     }

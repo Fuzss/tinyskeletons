@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 
 @Mod(PuzzlesWorkshop.MODID)
 public class PuzzlesWorkshop {
-
     public static final String MODID = "puzzlesworkshop";
     public static final String NAME = "Puzzles Workshop";
     public static final Logger LOGGER = LogManager.getLogger(NAME);
@@ -19,8 +18,6 @@ public class PuzzlesWorkshop {
     public static final AbstractElement TIME_TO_LIVE = PuzzlesLib.create(MODID).register("time_to_live", TimeToLiveElement::new);
 
     public PuzzlesWorkshop() {
-
         PuzzlesLib.setup(true);
     }
-
 }

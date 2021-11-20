@@ -14,17 +14,14 @@ import net.minecraft.item.*;
 import net.minecraft.util.math.vector.Vector3f;
 
 public class BackItemLayer<T extends LivingEntity, M extends BipedModel<T>> extends LayerRenderer<T, M> {
-
     public BackItemLayer(IEntityRenderer<T, M> featureRendererContext) {
         super(featureRendererContext);
     }
 
     @Override
     public void render(MatrixStack matrixStack, IRenderTypeBuffer vertexConsumerProvider, int i, T livingEntity, float f, float g, float h, float j, float k, float l) {
-
         ItemStack itemstack = livingEntity.getOffhandItem();
         if (!itemstack.isEmpty()) {
-
             matrixStack.pushPose();
             ModelRenderer modelPart = this.getParentModel().body;
             modelPart.translateAndRotate(matrixStack);
@@ -36,15 +33,12 @@ public class BackItemLayer<T extends LivingEntity, M extends BipedModel<T>> exte
                 backOffset *= 0.5F;
             }
             if (!(itemstack.getItem() instanceof TridentItem)) {
-
                 matrixStack.translate(0.0D, 0.0D, backOffset);
                 matrixStack.scale(scale, scale, scale);
                 if (itemstack.getItem() instanceof FishingRodItem || itemstack.getItem() instanceof OnAStickItem) {
-
                     matrixStack.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
                     matrixStack.translate(0.0D, -0.3D, 0.0D);
                 }
-
                 Minecraft.getInstance().getItemInHandRenderer().renderItem(livingEntity, itemstack, ItemCameraTransforms.TransformType.GROUND, false, matrixStack, vertexConsumerProvider, i);
             } else {
 
@@ -59,5 +53,4 @@ public class BackItemLayer<T extends LivingEntity, M extends BipedModel<T>> exte
             matrixStack.popPose();
         }
     }
-
 }
