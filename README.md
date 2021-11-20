@@ -1,5 +1,5 @@
-# Puzzles Workshop
+# Tiny Skeletons
 
 A Minecraft mod. Downloads can be found on CurseForge.
 
-![](https://i.imgur.com/4htIK3r.png)
+![](https://i.imgur.com/GCYM7Zl.png)
