@@ -7,7 +7,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 
 public interface ISkullCarryingMob {
-    boolean renderCarryingSkull();
+    default boolean renderCarryingSkull() {
+        return !this.getSkullItem().isEmpty();
+    }
+
+    ItemStack getSkullItem();
 
     default boolean isOnlyCarryingSkull(LivingEntity entity, Hand hand) {
         final Hand otherHand = hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND;

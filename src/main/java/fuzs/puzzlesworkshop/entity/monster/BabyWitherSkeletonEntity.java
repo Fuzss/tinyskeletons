@@ -60,13 +60,13 @@ public class BabyWitherSkeletonEntity extends WitherSkeletonEntity implements IS
     }
 
     @Override
-    public boolean isAggressive() {
-        // for arm rendering
-        return true;
-    }
-
-    @Override
-    public boolean renderCarryingSkull() {
-        return this.isOnlyCarryingSkull(this, Hand.MAIN_HAND) || this.isOnlyCarryingSkull(this, Hand.OFF_HAND);
+    public ItemStack getSkullItem() {
+        if (this.isOnlyCarryingSkull(this, Hand.MAIN_HAND)) {
+            return this.getMainHandItem();
+        }
+        if (this.isOnlyCarryingSkull(this, Hand.OFF_HAND)) {
+            return this.getOffhandItem();
+        }
+        return ItemStack.EMPTY;
     }
 }

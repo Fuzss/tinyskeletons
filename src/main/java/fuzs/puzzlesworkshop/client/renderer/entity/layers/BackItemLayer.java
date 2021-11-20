@@ -41,7 +41,6 @@ public class BackItemLayer<T extends LivingEntity, M extends BipedModel<T>> exte
                 }
                 Minecraft.getInstance().getItemInHandRenderer().renderItem(livingEntity, itemstack, ItemCameraTransforms.TransformType.GROUND, false, matrixStack, vertexConsumerProvider, i);
             } else {
-
                 scale *= 0.5F;
                 matrixStack.mulPose(Vector3f.YP.rotationDegrees(52.0F));
                 matrixStack.mulPose(Vector3f.XP.rotationDegrees(40.0F));

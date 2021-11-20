@@ -26,8 +26,6 @@ public class BabySkeletonEntity extends SkeletonEntity {
     public BabySkeletonEntity(EntityType<? extends SkeletonEntity> type, World world) {
         super(type, world);
         this.xpReward *= 2.5F;
-        // back item shouldn't be dropped
-        this.setDropChance(EquipmentSlotType.OFFHAND, 0.0F);
     }
 
     @Override
@@ -49,6 +47,8 @@ public class BabySkeletonEntity extends SkeletonEntity {
     protected void populateDefaultEquipmentSlots(DifficultyInstance difficultyInstance) {
         super.populateDefaultEquipmentSlots(difficultyInstance);
         this.setItemSlot(EquipmentSlotType.OFFHAND, new ItemStack(Items.WOODEN_SWORD));
+        // back item shouldn't be dropped
+        this.setDropChance(EquipmentSlotType.OFFHAND, 0.0F);
     }
 
     @Override

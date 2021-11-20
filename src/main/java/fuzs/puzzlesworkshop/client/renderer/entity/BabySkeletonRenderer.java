@@ -22,8 +22,8 @@ public class BabySkeletonRenderer extends MobRenderer<AbstractSkeletonEntity, Sk
       this.addLayer(new HeadLayer<>(this));
       this.addLayer(new ElytraLayer<>(this));
       this.addLayer(new MainHandItemLayer<>(this));
-      this.addLayer(new BipedArmorLayer<>(this, new SkeletonModel(0.5F, true), new SkeletonModel(1.0F, true)));
       this.addLayer(new BackItemLayer<>(this));
+      this.addLayer(new BipedArmorLayer<>(this, new SkeletonModel<>(0.5F, true), new SkeletonModel<>(1.0F, true)));
    }
 
    @Override
