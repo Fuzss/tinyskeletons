@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog].
 
+## [v1.0.1-1.16.5] - 2021-11-21
+### Fixed
+- Fixed an issue where adult skeletons weren't removed from the world when a baby was spawned instead
+
 ## [v1.0.0-1.16.5] - 2021-11-20
 - Initial release
 

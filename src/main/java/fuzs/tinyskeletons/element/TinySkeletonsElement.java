@@ -12,6 +12,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.stats.Stats;
@@ -20,6 +21,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.living.LivingPackSizeEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -50,6 +52,7 @@ public class TinySkeletonsElement extends ClientExtensibleElement<TinySkeletonsE
     @Override
     public void constructCommon() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onEntityAttributeCreation);
+        this.addListener(this::onLivingPackSize);
         this.addListener(this::onSpecialSpawn);
         this.addListener(this::onEntityInteract);
         PuzzlesLib.getRegistryManagerV2().registerRawEntityType("baby_skeleton", () -> EntityType.Builder.of(BabySkeletonEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.99F).clientTrackingRange(8));
@@ -73,52 +76,85 @@ public class TinySkeletonsElement extends ClientExtensibleElement<TinySkeletonsE
         evt.put(BABY_STRAY_ENTITY, MonsterEntity.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.375).build());
     }
 
-    private void onSpecialSpawn(final LivingSpawnEvent.SpecialSpawn evt) {
-        if (evt.getWorld() instanceof ServerWorld && ZombieEntity.getSpawnAsBabyOdds(evt.getWorld().getRandom())) {
+    public void onLivingPackSize(final LivingPackSizeEvent evt) {
+        // we hijack this event for replacing naturally spawned adult mobs
+        // there are two other events fired before this, but only this one works as the entity is already added to the world here
+        // removing the entity when not added to a world yet will log a warning every time, might also have worse side effects
+        if (evt.getEntity().level instanceof ServerWorld && ZombieEntity.getSpawnAsBabyOdds(evt.getEntity().level.getRandom())) {
             EntityType<? extends MobEntity> babyType = BABY_MOB_CONVERSIONS.get(evt.getEntity().getType());
             if (babyType != null) {
-                makeBabyMob((ServerWorld) evt.getWorld(), babyType, evt.getEntity(), evt.getSpawnReason())
-                        .ifPresent(mobentity -> evt.setCanceled(true));
+                makeBabyMob((ServerWorld) evt.getEntity().level, babyType, evt.getEntity(), SpawnReason.NATURAL).ifPresent(mobentity -> evt.getEntity().remove());
             }
         }
     }
 
-    private void onEntityInteract(final PlayerInteractEvent.EntityInteract evt) {
-        if (evt.getTarget().isAlive() && evt.getItemStack().getItem() instanceof SpawnEggItem) {
-            if (evt.getWorld() instanceof ServerWorld) {
-                ItemStack itemstack = evt.getItemStack();
-                EntityType<?> eggType = ((SpawnEggItem) itemstack.getItem()).getType(itemstack.getTag());
-                EntityType<? extends MobEntity> babyType = BABY_MOB_CONVERSIONS.get(eggType);
+    public void onSpecialSpawn(final LivingSpawnEvent.SpecialSpawn evt) {
+        // only respond to event firing from EntityType::spawn
+        // the event is fired at two more places, but those are bugged and don't prevent the entity from spawning when canceled
+        // they only prevent any equipment from being added for some reason
+        final SpawnReason spawnReason = evt.getSpawnReason();
+        if (spawnReason != SpawnReason.NATURAL && spawnReason != SpawnReason.SPAWNER && spawnReason != SpawnReason.COMMAND) {
+            if (evt.getWorld() instanceof ServerWorld && ZombieEntity.getSpawnAsBabyOdds(evt.getWorld().getRandom())) {
+                EntityType<? extends MobEntity> babyType = BABY_MOB_CONVERSIONS.get(evt.getEntity().getType());
                 if (babyType != null) {
-                    makeBabyMob((ServerWorld) evt.getWorld(), babyType, evt.getTarget(), SpawnReason.SPAWN_EGG)
-                            .ifPresent(mobentity -> {
-                                mobentity.playAmbientSound();
-                                if (itemstack.hasCustomHoverName()) {
-                                    mobentity.setCustomName(itemstack.getHoverName());
-                                }
-                                if (!evt.getPlayer().abilities.instabuild) {
-                                    itemstack.shrink(1);
-                                }
-                                evt.getPlayer().awardStat(Stats.ITEM_USED.get(itemstack.getItem()));
-                                evt.setCancellationResult(ActionResultType.SUCCESS);
-                            });
+                    makeBabyMob((ServerWorld) evt.getWorld(), babyType, evt.getEntity(), spawnReason).ifPresent(mobentity -> evt.setCanceled(true));
                 }
-            } else {
-                evt.setCancellationResult(ActionResultType.CONSUME);
             }
         }
     }
 
-    private static Optional<MobEntity> makeBabyMob(ServerWorld world, EntityType<? extends MobEntity> type, Entity parent, SpawnReason spawnReason) {
-        MobEntity mobentity = type.create(world);
-        if (mobentity != null) {
-            mobentity.moveTo(parent.getX(), parent.getY(), parent.getZ(), MathHelper.wrapDegrees(world.random.nextFloat() * 360.0F), 0.0F);
-            world.addFreshEntityWithPassengers(mobentity);
-            mobentity.yHeadRot = mobentity.yRot;
-            mobentity.yBodyRot = mobentity.yRot;
-            mobentity.finalizeSpawn(world, world.getCurrentDifficultyAt(mobentity.blockPosition()), spawnReason, null, null);
-            return Optional.of(mobentity);
+    public void onEntityInteract(final PlayerInteractEvent.EntityInteract evt) {
+        final Entity target = evt.getTarget();
+        if (target.isAlive() && evt.getItemStack().getItem() instanceof SpawnEggItem) {
+            ItemStack itemstack = evt.getItemStack();
+            EntityType<?> eggType = ((SpawnEggItem) itemstack.getItem()).getType(itemstack.getTag());
+            EntityType<? extends MobEntity> babyType = BABY_MOB_CONVERSIONS.get(eggType);
+            if (babyType != null && (target.getType() == babyType || target.getType() == eggType)) {
+                evt.setCanceled(true);
+                if (evt.getWorld() instanceof ServerWorld) {
+                    final Optional<MobEntity> mob = makeBabyMob((ServerWorld) evt.getWorld(), babyType, target, SpawnReason.SPAWN_EGG);
+                    if (mob.isPresent()) {
+                        this.finalizeSpawnEggMob(mob.get(), itemstack, evt.getPlayer());
+                        evt.setCancellationResult(ActionResultType.SUCCESS);
+                        return;
+                    }
+                    evt.setCancellationResult(ActionResultType.PASS);
+                } else {
+                    evt.setCancellationResult(ActionResultType.CONSUME);
+                }
+            }
         }
-        return Optional.empty();
+    }
+
+    private void finalizeSpawnEggMob(MobEntity mobentity, ItemStack itemstack, PlayerEntity player) {
+        mobentity.playAmbientSound();
+        if (itemstack.hasCustomHoverName()) {
+            mobentity.setCustomName(itemstack.getHoverName());
+        }
+        if (!player.abilities.instabuild) {
+            itemstack.shrink(1);
+        }
+        player.awardStat(Stats.ITEM_USED.get(itemstack.getItem()));
+    }
+
+    private static Optional<MobEntity> makeBabyMob(ServerWorld level, EntityType<? extends MobEntity> entityType, Entity parent, SpawnReason spawnReason) {
+        MobEntity mobentity;
+        if (parent instanceof AgeableEntity) {
+            mobentity = ((AgeableEntity) parent).getBreedOffspring(level, (AgeableEntity) parent);
+        } else {
+            mobentity = entityType.create(level);
+        }
+        if (mobentity == null) {
+            return Optional.empty();
+        }
+        if (!mobentity.isBaby()) {
+            throw new RuntimeException("baby mob must be a baby by default");
+        }
+        mobentity.moveTo(parent.getX(), parent.getY(), parent.getZ(), MathHelper.wrapDegrees(level.random.nextFloat() * 360.0F), 0.0F);
+        mobentity.yHeadRot = mobentity.yRot;
+        mobentity.yBodyRot = mobentity.yRot;
+        mobentity.finalizeSpawn(level, level.getCurrentDifficultyAt(mobentity.blockPosition()), spawnReason, null, null);
+        level.addFreshEntityWithPassengers(mobentity);
+        return Optional.of(mobentity);
     }
 }
