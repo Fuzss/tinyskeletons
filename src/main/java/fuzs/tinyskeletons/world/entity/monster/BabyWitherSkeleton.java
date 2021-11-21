@@ -7,7 +7,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.monster.WitherSkeleton;
@@ -16,8 +15,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
-public class BabyWitherSkeletonEntity extends WitherSkeleton implements ISkullCarryingMob {
-    public BabyWitherSkeletonEntity(EntityType<? extends WitherSkeleton> type, Level level) {
+public class BabyWitherSkeleton extends WitherSkeleton implements SkullCarryingMob {
+    public BabyWitherSkeleton(EntityType<? extends WitherSkeleton> type, Level level) {
         super(type, level);
         this.xpReward *= 2.5F;
     }

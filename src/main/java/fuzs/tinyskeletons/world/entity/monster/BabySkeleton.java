@@ -18,12 +18,12 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.Level;
 
-public class BabySkeletonEntity extends Skeleton {
+public class BabySkeleton extends Skeleton {
     private RangedBowAttackGoal<AbstractSkeleton> bowGoal;
     private MeleeAttackGoal meleeGoal;
     private int switchWeaponCooldown;
 
-    public BabySkeletonEntity(EntityType<? extends Skeleton> type, Level world) {
+    public BabySkeleton(EntityType<? extends Skeleton> type, Level world) {
         super(type, world);
         this.xpReward *= 2.5F;
     }
@@ -104,13 +104,13 @@ public class BabySkeletonEntity extends Skeleton {
             @Override
             public void stop() {
                 super.stop();
-                BabySkeletonEntity.this.setAggressive(false);
+                BabySkeleton.this.setAggressive(false);
             }
 
             @Override
             public void start() {
                 super.start();
-                BabySkeletonEntity.this.setAggressive(true);
+                BabySkeleton.this.setAggressive(true);
             }
         };
     }

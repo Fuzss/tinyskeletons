@@ -10,6 +10,7 @@ import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraftforge.event.entity.living.LivingPackSizeEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
@@ -23,11 +24,29 @@ public class BabyConversionHandler {
         BABY_MOB_CONVERSIONS.put(targetMob, convertsTo);
     }
 
-    public void onSpecialSpawn(final LivingSpawnEvent.SpecialSpawn evt) {
-        if (evt.getWorld() instanceof ServerLevel level && Zombie.getSpawnAsBabyOdds(evt.getWorld().getRandom())) {
+    public void onLivingPackSize(final LivingPackSizeEvent evt) {
+        // we hijack this event for replacing naturally spawned adult mobs
+        // there are two other events fired before this, but only this one works as the entity is already added to the world here
+        // removing the entity when not added to a world yet will log a warning every time, might also have worse side effects
+        if (evt.getEntity().level instanceof ServerLevel level && Zombie.getSpawnAsBabyOdds(level.getRandom())) {
             EntityType<? extends Mob> babyType = BABY_MOB_CONVERSIONS.get(evt.getEntity().getType());
             if (babyType != null) {
-                makeBabyMob(level, babyType, evt.getEntity(), evt.getSpawnReason()).ifPresent(mobentity -> evt.setCanceled(true));
+                makeBabyMob(level, babyType, evt.getEntity(), MobSpawnType.NATURAL).ifPresent(mobentity -> evt.getEntity().discard());
+            }
+        }
+    }
+
+    public void onSpecialSpawn(final LivingSpawnEvent.SpecialSpawn evt) {
+        // only respond to event firing from EntityType::spawn
+        // the event is fired at two more places, but those are bugged and don't prevent the entity from spawning when canceled
+        // they only prevent any equipment from being added for some reason
+        final MobSpawnType spawnReason = evt.getSpawnReason();
+        if (spawnReason != MobSpawnType.NATURAL && spawnReason != MobSpawnType.SPAWNER && spawnReason != MobSpawnType.COMMAND) {
+            if (evt.getWorld() instanceof ServerLevel level && Zombie.getSpawnAsBabyOdds(level.getRandom())) {
+                EntityType<? extends Mob> babyType = BABY_MOB_CONVERSIONS.get(evt.getEntity().getType());
+                if (babyType != null) {
+                    makeBabyMob(level, babyType, evt.getEntity(), spawnReason).ifPresent(mobentity -> evt.setCanceled(true));
+                }
             }
         }
     }
@@ -80,10 +99,10 @@ public class BabyConversionHandler {
             throw new RuntimeException("baby mob must be a baby by default");
         }
         mobentity.moveTo(parent.getX(), parent.getY(), parent.getZ(), Mth.wrapDegrees(level.random.nextFloat() * 360.0F), 0.0F);
-        level.addFreshEntityWithPassengers(mobentity);
         mobentity.yHeadRot = mobentity.getYRot();
         mobentity.yBodyRot = mobentity.getYRot();
         mobentity.finalizeSpawn(level, level.getCurrentDifficultyAt(mobentity.blockPosition()), spawnReason, null, null);
+        level.addFreshEntityWithPassengers(mobentity);
         return Optional.of(mobentity);
     }
 }

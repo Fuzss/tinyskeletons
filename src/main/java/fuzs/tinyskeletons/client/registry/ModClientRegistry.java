@@ -1,5 +1,6 @@
 package fuzs.tinyskeletons.client.registry;
 
+import fuzs.puzzleslib.client.model.geom.ModelLayerRegistry;
 import fuzs.tinyskeletons.TinySkeletons;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 

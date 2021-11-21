@@ -17,13 +17,13 @@ import net.minecraft.world.phys.EntityHitResult;
 
 import java.util.Random;
 
-public class BabyStrayEntity extends Stray {
-    public BabyStrayEntity(EntityType<? extends Stray> p_i50191_1_, Level p_i50191_2_) {
+public class BabyStray extends Stray {
+    public BabyStray(EntityType<? extends Stray> p_i50191_1_, Level p_i50191_2_) {
         super(p_i50191_1_, p_i50191_2_);
         this.xpReward *= 2.5F;
     }
 
-    public static boolean checkBabyStraySpawnRules(EntityType<BabyStrayEntity> p_223327_0_, ServerLevelAccessor p_223327_1_, MobSpawnType p_223327_2_, BlockPos p_223327_3_, Random p_223327_4_) {
+    public static boolean checkBabyStraySpawnRules(EntityType<BabyStray> p_223327_0_, ServerLevelAccessor p_223327_1_, MobSpawnType p_223327_2_, BlockPos p_223327_3_, Random p_223327_4_) {
         return checkMonsterSpawnRules(p_223327_0_, p_223327_1_, p_223327_2_, p_223327_3_, p_223327_4_) && (p_223327_2_ == MobSpawnType.SPAWNER || p_223327_1_.canSeeSky(p_223327_3_));
     }
 
@@ -32,7 +32,7 @@ public class BabyStrayEntity extends Stray {
         this.goalSelector.addGoal(1, new RangedAttackGoal(this, 1.0, 30, 15.0F) {
             @Override
             public boolean canUse() {
-                return super.canUse() && BabyStrayEntity.this.getMainHandItem().getItem() == Items.SNOWBALL;
+                return super.canUse() && BabyStray.this.getMainHandItem().getItem() == Items.SNOWBALL;
             }
         });
         super.registerGoals();

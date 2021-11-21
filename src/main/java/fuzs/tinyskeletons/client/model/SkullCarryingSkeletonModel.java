@@ -1,13 +1,13 @@
 package fuzs.tinyskeletons.client.model;
 
-import fuzs.tinyskeletons.world.entity.monster.ISkullCarryingMob;
+import fuzs.tinyskeletons.world.entity.monster.SkullCarryingMob;
 import net.minecraft.client.model.SkeletonModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 
-public class SkullCarryingSkeletonModel<T extends Mob & RangedAttackMob & ISkullCarryingMob> extends SkeletonModel<T> {
+public class SkullCarryingSkeletonModel<T extends Mob & RangedAttackMob & SkullCarryingMob> extends SkeletonModel<T> {
     public SkullCarryingSkeletonModel(ModelPart p_170941_) {
         super(p_170941_);
     }

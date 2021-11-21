@@ -1,6 +1,6 @@
 package fuzs.tinyskeletons;
 
-import fuzs.tinyskeletons.world.entity.monster.BabyStrayEntity;
+import fuzs.tinyskeletons.world.entity.monster.BabyStray;
 import fuzs.tinyskeletons.handler.BabyConversionHandler;
 import fuzs.tinyskeletons.registry.ModRegistry;
 import net.minecraft.world.entity.EntityType;
@@ -27,6 +27,7 @@ public class TinySkeletons {
     @SubscribeEvent
     public static void onConstructMod(final FMLConstructModEvent evt) {
         final BabyConversionHandler handler = new BabyConversionHandler();
+        MinecraftForge.EVENT_BUS.addListener(handler::onLivingPackSize);
         MinecraftForge.EVENT_BUS.addListener(handler::onSpecialSpawn);
         MinecraftForge.EVENT_BUS.addListener(handler::onEntityInteract);
         ModRegistry.touch();
@@ -36,7 +37,7 @@ public class TinySkeletons {
     public static void onCommonSetup(final FMLCommonSetupEvent evt) {
         SpawnPlacements.register(ModRegistry.BABY_SKELETON_ENTITY_TYPE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
         SpawnPlacements.register(ModRegistry.BABY_WITHER_SKELETON_ENTITY_TYPE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-        SpawnPlacements.register(ModRegistry.BABY_STRAY_ENTITY_TYPE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BabyStrayEntity::checkBabyStraySpawnRules);
+        SpawnPlacements.register(ModRegistry.BABY_STRAY_ENTITY_TYPE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BabyStray::checkBabyStraySpawnRules);
         BabyConversionHandler.registerConversion(EntityType.SKELETON, ModRegistry.BABY_SKELETON_ENTITY_TYPE.get());
         BabyConversionHandler.registerConversion(EntityType.WITHER_SKELETON, ModRegistry.BABY_WITHER_SKELETON_ENTITY_TYPE.get());
         BabyConversionHandler.registerConversion(EntityType.STRAY, ModRegistry.BABY_STRAY_ENTITY_TYPE.get());

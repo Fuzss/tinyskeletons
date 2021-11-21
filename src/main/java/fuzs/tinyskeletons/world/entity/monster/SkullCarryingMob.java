@@ -6,7 +6,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.AbstractSkullBlock;
 
-public interface ISkullCarryingMob {
+public interface SkullCarryingMob {
     default boolean renderCarryingSkull() {
         return !this.getSkullItem().isEmpty();
     }
