@@ -40,6 +40,7 @@ public class BabyConversionHandler {
         // only respond to event firing from EntityType::spawn
         // the event is fired at two more places, but those are bugged and don't prevent the entity from spawning when canceled
         // they only prevent any equipment from being added for some reason
+        // also exclude summoned by command as this would break forcefully spawning an adult skeleton since there is no baby flag as with zombies which could force that otherwise
         final MobSpawnType spawnReason = evt.getSpawnReason();
         if (spawnReason != MobSpawnType.NATURAL && spawnReason != MobSpawnType.SPAWNER && spawnReason != MobSpawnType.COMMAND) {
             if (evt.getWorld() instanceof ServerLevel level && Zombie.getSpawnAsBabyOdds(level.getRandom())) {
