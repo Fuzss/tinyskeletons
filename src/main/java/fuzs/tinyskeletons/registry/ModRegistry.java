@@ -7,7 +7,7 @@ import fuzs.tinyskeletons.world.entity.monster.BabyStray;
 import fuzs.tinyskeletons.world.entity.monster.BabyWitherSkeleton;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 
 public class ModRegistry {
     private static final RegistryManager REGISTRY = RegistryManager.of(TinySkeletons.MOD_ID);
