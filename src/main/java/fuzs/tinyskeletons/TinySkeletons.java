@@ -1,8 +1,8 @@
 package fuzs.tinyskeletons;
 
-import fuzs.tinyskeletons.world.entity.monster.BabyStray;
 import fuzs.tinyskeletons.handler.BabyConversionHandler;
 import fuzs.tinyskeletons.registry.ModRegistry;
+import fuzs.tinyskeletons.world.entity.monster.BabyStray;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -14,15 +14,15 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Mod(TinySkeletons.MOD_ID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TinySkeletons {
     public static final String MOD_ID = "tinyskeletons";
     public static final String MOD_NAME = "Tiny Skeletons";
-    public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
 
     @SubscribeEvent
     public static void onConstructMod(final FMLConstructModEvent evt) {
