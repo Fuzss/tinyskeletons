@@ -1,5 +1,7 @@
 package fuzs.tinyskeletons.world.entity.monster;
 
+import fuzs.tinyskeletons.mixin.accessor.LivingEntityAccessor;
+import fuzs.tinyskeletons.registry.ModRegistry;
 import fuzs.tinyskeletons.world.entity.ai.goal.RangedBowEasyAttackGoal;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -29,6 +31,12 @@ public class BabySkeleton extends Skeleton {
     }
 
     @Override
+    public float getPickRadius() {
+        // width has same pick radius as adult like this, only height remains shorter
+        return 0.3F;
+    }
+
+    @Override
     public boolean isBaby() {
         return true;
     }
@@ -49,6 +57,24 @@ public class BabySkeleton extends Skeleton {
         this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.WOODEN_SWORD));
         // back item shouldn't be dropped
         this.setDropChance(EquipmentSlot.OFFHAND, 0.0F);
+    }
+
+    @Override
+    protected void doFreezeConversion() {
+        BabyStray stray = this.convertTo(ModRegistry.BABY_STRAY_ENTITY_TYPE.get(), true);
+        // cheap hack so we don't have to implement proper fighting behavior for strays, just give them their default snowball and remove everything else
+        if (stray != null) {
+            // need this call as otherwise overriding with empty items will not send an update to clients as empty is default value and all this is happening within the same tick
+            // (LivingEntity::detectEquipmentUpdates is called in the tick method)
+            ((LivingEntityAccessor) stray).callDetectEquipmentUpdates();
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                stray.setItemSlot(slot, ItemStack.EMPTY);
+            }
+            stray.populateDefaultEquipmentSlots(stray.level.getCurrentDifficultyAt(stray.blockPosition()));
+        }
+        if (!this.isSilent()) {
+            this.level.levelEvent(null, 1048, this.blockPosition(), 0);
+        }
     }
 
     @Override

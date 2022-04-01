@@ -13,6 +13,7 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraftforge.event.entity.living.LivingPackSizeEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.Map;
 import java.util.Optional;
@@ -24,6 +25,7 @@ public class BabyConversionHandler {
         BABY_MOB_CONVERSIONS.put(targetMob, convertsTo);
     }
 
+    @SubscribeEvent
     public void onLivingPackSize(final LivingPackSizeEvent evt) {
         // we hijack this event for replacing naturally spawned adult mobs
         // there are two other events fired before this, but only this one works as the entity is already added to the world here
@@ -36,6 +38,7 @@ public class BabyConversionHandler {
         }
     }
 
+    @SubscribeEvent
     public void onSpecialSpawn(final LivingSpawnEvent.SpecialSpawn evt) {
         // only respond to event firing from EntityType::spawn
         // the event is fired at two more places, but those are bugged and don't prevent the entity from spawning when canceled
@@ -52,6 +55,7 @@ public class BabyConversionHandler {
         }
     }
 
+    @SubscribeEvent
     public void onEntityInteract(final PlayerInteractEvent.EntityInteract evt) {
         final Entity target = evt.getTarget();
         if (target.isAlive() && evt.getItemStack().getItem() instanceof SpawnEggItem) {

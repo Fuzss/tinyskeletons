@@ -39,6 +39,12 @@ public class BabyStray extends Stray {
     }
 
     @Override
+    public float getPickRadius() {
+        // width has same pick radius as adult like this, only height remains shorter
+        return 0.3F;
+    }
+
+    @Override
     public boolean isBaby() {
         return true;
     }
@@ -71,7 +77,7 @@ public class BabyStray extends Stray {
             @Override
             protected void onHitEntity(EntityHitResult p_213868_1_) {
                 Entity entity = p_213868_1_.getEntity();
-                entity.hurt(DamageSource.thrown(this, this.getOwner()), 1.0F);
+                entity.hurt(DamageSource.thrown(this, this.getOwner()), 0.5F);
             }
         };
         double d0 = p_82196_1_.getEyeY() - (double)1.1F;

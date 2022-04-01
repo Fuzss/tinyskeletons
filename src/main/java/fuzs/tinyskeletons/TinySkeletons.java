@@ -26,11 +26,15 @@ public class TinySkeletons {
 
     @SubscribeEvent
     public static void onConstructMod(final FMLConstructModEvent evt) {
+        ModRegistry.touch();
+        registerHandlers();
+    }
+
+    private static void registerHandlers() {
         final BabyConversionHandler handler = new BabyConversionHandler();
         MinecraftForge.EVENT_BUS.addListener(handler::onLivingPackSize);
         MinecraftForge.EVENT_BUS.addListener(handler::onSpecialSpawn);
         MinecraftForge.EVENT_BUS.addListener(handler::onEntityInteract);
-        ModRegistry.touch();
     }
 
     @SubscribeEvent
@@ -45,8 +49,8 @@ public class TinySkeletons {
 
     @SubscribeEvent
     public static void onEntityAttributeCreation(final EntityAttributeCreationEvent evt) {
-        evt.put(ModRegistry.BABY_SKELETON_ENTITY_TYPE.get(), Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.375).build());
-        evt.put(ModRegistry.BABY_WITHER_SKELETON_ENTITY_TYPE.get(), Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.375).build());
-        evt.put(ModRegistry.BABY_STRAY_ENTITY_TYPE.get(), Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.375).build());
+        evt.put(ModRegistry.BABY_SKELETON_ENTITY_TYPE.get(), Monster.createMonsterAttributes().add(Attributes.ATTACK_DAMAGE, 1.0).add(Attributes.MOVEMENT_SPEED, 0.3).build());
+        evt.put(ModRegistry.BABY_WITHER_SKELETON_ENTITY_TYPE.get(), Monster.createMonsterAttributes().add(Attributes.ATTACK_DAMAGE, 1.0).add(Attributes.MOVEMENT_SPEED, 0.3).build());
+        evt.put(ModRegistry.BABY_STRAY_ENTITY_TYPE.get(), Monster.createMonsterAttributes().add(Attributes.ATTACK_DAMAGE, 1.0).add(Attributes.MOVEMENT_SPEED, 0.3).build());
     }
 }

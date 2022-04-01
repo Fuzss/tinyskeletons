@@ -36,4 +36,9 @@ public class BabySkeletonRenderer extends MobRenderer<AbstractSkeleton, Skeleton
    public ResourceLocation getTextureLocation(AbstractSkeleton entity) {
       return SKELETON_LOCATION;
    }
+
+   @Override
+   protected boolean isShaking(AbstractSkeleton abstractSkeleton) {
+      return abstractSkeleton.isShaking();
+   }
 }
