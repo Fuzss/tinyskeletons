@@ -12,6 +12,6 @@ public class TinySkeletonsForgeClient {
 
     @SubscribeEvent
     public static void onConstructMod(final FMLConstructModEvent evt) {
-        ClientCoreServices.FACTORIES.clientModConstructor().accept(TinySkeletonsClient.INSTANCE);
+        ClientCoreServices.FACTORIES.clientModConstructor(TinySkeletons.MOD_ID).accept(new TinySkeletonsClient());
     }
 }

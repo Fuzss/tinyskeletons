@@ -18,7 +18,7 @@ public class TinySkeletonsForge {
 
     @SubscribeEvent
     public static void onConstructMod(final FMLConstructModEvent evt) {
-        CoreServices.FACTORIES.modConstructor().accept(TinySkeletons.INSTANCE);
+        CoreServices.FACTORIES.modConstructor(TinySkeletons.MOD_ID).accept(new TinySkeletons());
         registerHandlers();
     }
 

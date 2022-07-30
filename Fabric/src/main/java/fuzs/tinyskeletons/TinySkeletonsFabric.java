@@ -10,7 +10,7 @@ public class TinySkeletonsFabric implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        CoreServices.FACTORIES.modConstructor().accept(TinySkeletons.INSTANCE);
+        CoreServices.FACTORIES.modConstructor(TinySkeletons.MOD_ID).accept(new TinySkeletons());
         registerHandlers();
     }
 

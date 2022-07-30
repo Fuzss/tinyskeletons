@@ -1,8 +1,8 @@
 package fuzs.tinyskeletons.init;
 
 import fuzs.puzzleslib.core.CoreServices;
-import fuzs.puzzleslib.registry.RegistryManager;
-import fuzs.puzzleslib.registry.RegistryReference;
+import fuzs.puzzleslib.init.RegistryManager;
+import fuzs.puzzleslib.init.RegistryReference;
 import fuzs.tinyskeletons.TinySkeletons;
 import fuzs.tinyskeletons.world.entity.monster.BabySkeleton;
 import fuzs.tinyskeletons.world.entity.monster.BabyStray;

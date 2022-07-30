@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TinySkeletons implements ModConstructor {
-    static final ModConstructor INSTANCE = new TinySkeletons();
     public static final String MOD_ID = "tinyskeletons";
     public static final String MOD_NAME = "Tiny Skeletons";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);

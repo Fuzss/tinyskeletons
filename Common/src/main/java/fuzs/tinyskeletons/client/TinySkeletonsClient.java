@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.entity.StrayRenderer;
 import java.util.function.Supplier;
 
 public class TinySkeletonsClient implements ClientModConstructor {
-    static final ClientModConstructor INSTANCE = new TinySkeletonsClient();
 
     @Override
     public void onRegisterEntityRenderers(EntityRenderersContext context) {
