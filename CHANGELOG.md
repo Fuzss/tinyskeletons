@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog].
 
+## [v4.2.1-1.19.2] - 2022-09-12
+### Added
+- Give baby wither skeletons a wither rose to collect their skull without killing them
+
 ## [v4.2.0-1.19.2] - 2022-08-21
 - Compiled for Minecraft 1.19.2
 - Updated to Puzzles Lib v4.2.0

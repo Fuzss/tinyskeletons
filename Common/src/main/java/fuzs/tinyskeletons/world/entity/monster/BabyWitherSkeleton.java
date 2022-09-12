@@ -3,6 +3,7 @@ package fuzs.tinyskeletons.world.entity.monster;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -17,6 +18,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
 public class BabyWitherSkeleton extends WitherSkeleton implements SkullCarryingMob {
+    private final AvoidEntityGoal<Player> fleePlayerGoal = new AvoidEntityGoal<>(this, Player.class, 6.0F, 1.0D, 1.2D);
+    private int dancingTicks;
+
     public BabyWitherSkeleton(EntityType<? extends WitherSkeleton> type, Level level) {
         super(type, level);
         this.xpReward *= 2.5F;
@@ -27,7 +31,6 @@ public class BabyWitherSkeleton extends WitherSkeleton implements SkullCarryingM
         this.goalSelector.addGoal(2, new RestrictSunGoal(this));
         this.goalSelector.addGoal(3, new FleeSunGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Wolf.class, 6.0F, 1.0D, 1.2D));
-        this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Player.class, 6.0F, 1.0D, 1.2D));
         this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, IronGolem.class, 6.0F, 1.0D, 1.2D));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
@@ -41,8 +44,51 @@ public class BabyWitherSkeleton extends WitherSkeleton implements SkullCarryingM
     }
 
     @Override
-    public void reassessWeaponGoal() {
+    public void aiStep() {
+        super.aiStep();
+        if (this.dancingTicks > 0) {
+            this.dancingTicks--;
+        }
+    }
 
+    @Override
+    public void reassessWeaponGoal() {
+        if (this.level != null && !this.level.isClientSide) {
+            this.goalSelector.removeGoal(this.fleePlayerGoal);
+            if (!this.getSkullItem().isEmpty()) {
+                this.goalSelector.addGoal(3, this.fleePlayerGoal);
+            }
+        }
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+        ItemStack itemstack = pPlayer.getItemInHand(pHand);
+        if (itemstack.is(Items.WITHER_ROSE)) {
+            ItemStack skullItem = this.getSkullItem();
+            if (!skullItem.isEmpty()) {
+                if (!this.level.isClientSide) {
+                    if (!pPlayer.getAbilities().instabuild) {
+                        itemstack.shrink(1);
+                    }
+                    this.spawnAtLocation(skullItem);
+                    this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+                }
+                this.setDancing();
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            }
+        }
+
+        return super.mobInteract(pPlayer, pHand);
+    }
+
+    private void setDancing() {
+        this.dancingTicks = 300;
+    }
+
+    @Override
+    public boolean isDancing() {
+        return this.dancingTicks > 0;
     }
 
     @Override
