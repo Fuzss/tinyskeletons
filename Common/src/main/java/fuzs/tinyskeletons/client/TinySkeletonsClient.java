@@ -4,9 +4,9 @@ import fuzs.puzzleslib.api.client.core.v1.ClientModConstructor;
 import fuzs.puzzleslib.api.client.core.v1.context.EntityRenderersContext;
 import fuzs.puzzleslib.api.client.core.v1.context.LayerDefinitionsContext;
 import fuzs.puzzleslib.api.core.v1.context.PackRepositorySourcesContext;
+import fuzs.puzzleslib.api.resources.v1.PackResourcesHelper;
 import fuzs.tinyskeletons.TinySkeletons;
 import fuzs.tinyskeletons.client.init.ModClientRegistry;
-import fuzs.tinyskeletons.client.packs.AbstractModPackResources;
 import fuzs.tinyskeletons.client.packs.BabySkeletonPackResources;
 import fuzs.tinyskeletons.client.renderer.entity.BabySkeletonRenderer;
 import fuzs.tinyskeletons.client.renderer.entity.BabyWitherSkeletonRenderer;
@@ -50,6 +50,6 @@ public class TinySkeletonsClient implements ClientModConstructor {
 
     @Override
     public void onAddResourcePackFinders(PackRepositorySourcesContext context) {
-        context.addRepositorySources(AbstractModPackResources.clientPack(BabySkeletonPackResources::new, TinySkeletons.MOD_ID, Component.literal(TinySkeletons.MOD_NAME), Component.literal("Teeny, tiny skeletons, send shivers down your spine..."), true, false));
+        context.addRepositorySources(PackResourcesHelper.buildClientPack(BabySkeletonPackResources::new, TinySkeletons.MOD_ID, Component.literal(TinySkeletons.MOD_NAME), Component.literal("Teeny, tiny skeletons, send shivers down your spine..."), true, false));
     }
 }
