@@ -7,8 +7,7 @@
   "plugin": "fuzs.tinyskeletons.mixin.ModMixinConfigPlugin",
   "mixins": [
     "EntityTypeFabricMixin",
-    "NaturalSpawnerFabricMixin",
-    "PlayerFabricMixin"
+    "NaturalSpawnerFabricMixin"
   ],
   "client": [
     "client.accessor.BlockRenderDispatcherAccessor"

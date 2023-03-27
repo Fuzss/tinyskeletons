@@ -4,6 +4,7 @@ import fuzs.puzzleslib.api.core.v1.ModConstructor;
 import fuzs.puzzleslib.api.core.v1.context.EntityAttributesCreateContext;
 import fuzs.puzzleslib.api.core.v1.context.ModLifecycleContext;
 import fuzs.puzzleslib.api.core.v1.context.SpawnPlacementsContext;
+import fuzs.puzzleslib.api.event.v1.entity.player.PlayerInteractEvents;
 import fuzs.tinyskeletons.handler.BabyConversionHandler;
 import fuzs.tinyskeletons.init.ModRegistry;
 import fuzs.tinyskeletons.world.entity.monster.BabyStray;
@@ -24,6 +25,11 @@ public class TinySkeletons implements ModConstructor {
     @Override
     public void onConstructMod() {
         ModRegistry.touch();
+        registerHandlers();
+    }
+
+    private static void registerHandlers() {
+        PlayerInteractEvents.USE_ENTITY.register(BabyConversionHandler::onEntityInteract);
     }
 
     @Override

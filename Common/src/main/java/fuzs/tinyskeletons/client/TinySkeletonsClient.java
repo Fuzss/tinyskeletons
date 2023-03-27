@@ -3,7 +3,11 @@ package fuzs.tinyskeletons.client;
 import fuzs.puzzleslib.api.client.core.v1.ClientModConstructor;
 import fuzs.puzzleslib.api.client.core.v1.context.EntityRenderersContext;
 import fuzs.puzzleslib.api.client.core.v1.context.LayerDefinitionsContext;
+import fuzs.puzzleslib.api.core.v1.context.PackRepositorySourcesContext;
+import fuzs.tinyskeletons.TinySkeletons;
 import fuzs.tinyskeletons.client.init.ModClientRegistry;
+import fuzs.tinyskeletons.client.packs.AbstractModPackResources;
+import fuzs.tinyskeletons.client.packs.BabySkeletonPackResources;
 import fuzs.tinyskeletons.client.renderer.entity.BabySkeletonRenderer;
 import fuzs.tinyskeletons.client.renderer.entity.BabyWitherSkeletonRenderer;
 import fuzs.tinyskeletons.init.ModRegistry;
@@ -13,6 +17,7 @@ import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.entity.StrayRenderer;
+import net.minecraft.network.chat.Component;
 
 import java.util.function.Supplier;
 
@@ -41,5 +46,10 @@ public class TinySkeletonsClient implements ClientModConstructor {
         context.registerLayerDefinition(ModClientRegistry.BABY_WITHER_SKELETON, skeletonLayer);
         context.registerLayerDefinition(ModClientRegistry.BABY_WITHER_SKELETON_INNER_ARMOR, innerArmorLayer);
         context.registerLayerDefinition(ModClientRegistry.BABY_WITHER_SKELETON_OUTER_ARMOR, outerArmorLayer);
+    }
+
+    @Override
+    public void onAddResourcePackFinders(PackRepositorySourcesContext context) {
+        context.addRepositorySources(AbstractModPackResources.clientPack(BabySkeletonPackResources::new, TinySkeletons.MOD_ID, Component.literal(TinySkeletons.MOD_NAME), Component.literal("Teeny, tiny skeletons, send shivers down your spine..."), true, false));
     }
 }

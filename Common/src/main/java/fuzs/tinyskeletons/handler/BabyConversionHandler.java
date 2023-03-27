@@ -1,6 +1,7 @@
 package fuzs.tinyskeletons.handler;
 
 import com.google.common.collect.Maps;
+import fuzs.puzzleslib.api.event.v1.core.EventResultHolder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
@@ -38,7 +39,7 @@ public class BabyConversionHandler {
         return false;
     }
 
-    public static InteractionResult onEntityInteract(Player player, Level level, InteractionHand hand, Entity target) {
+    public static EventResultHolder<InteractionResult> onEntityInteract(Player player, Level level, InteractionHand hand, Entity target) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (target.isAlive() && itemstack.getItem() instanceof SpawnEggItem) {
             EntityType<?> eggType = ((SpawnEggItem) itemstack.getItem()).getType(itemstack.getTag());
@@ -48,15 +49,15 @@ public class BabyConversionHandler {
                     final Optional<Mob> mob = makeBabyMob((ServerLevel) level, babyType, target, MobSpawnType.SPAWN_EGG);
                     if (mob.isPresent()) {
                         finalizeSpawnEggMob(mob.get(), itemstack, player);
-                        return InteractionResult.CONSUME;
+                        return EventResultHolder.interrupt(InteractionResult.CONSUME);
                     }
-                    return InteractionResult.PASS;
+                    return EventResultHolder.interrupt(InteractionResult.PASS);
                 } else {
-                    return InteractionResult.SUCCESS;
+                    return EventResultHolder.interrupt(InteractionResult.SUCCESS);
                 }
             }
         }
-        return null;
+        return EventResultHolder.pass();
     }
 
     private static void finalizeSpawnEggMob(Mob mob, ItemStack itemstack, Player player) {

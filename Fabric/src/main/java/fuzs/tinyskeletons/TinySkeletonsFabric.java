@@ -4,8 +4,6 @@ import fuzs.puzzleslib.api.core.v1.ModConstructor;
 import fuzs.tinyskeletons.api.event.player.MobCreateCallback;
 import fuzs.tinyskeletons.handler.BabyConversionHandler;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.minecraft.world.InteractionResult;
 
 public class TinySkeletonsFabric implements ModInitializer {
 
@@ -16,10 +14,7 @@ public class TinySkeletonsFabric implements ModInitializer {
     }
 
     private static void registerHandlers() {
+        // TODO migrate to common event in Puzzles Lib for 1.19.4 with Forge's new spawning event
         MobCreateCallback.EVENT.register(BabyConversionHandler::onMobCreate);
-        UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-            InteractionResult interactionResult = BabyConversionHandler.onEntityInteract(player, world, hand, entity);
-            return interactionResult == null ? InteractionResult.PASS : interactionResult;
-        });
     }
 }
