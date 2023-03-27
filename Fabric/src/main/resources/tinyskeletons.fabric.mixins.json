@@ -4,10 +4,11 @@
   "compatibilityLevel": "JAVA_17",
   "package": "fuzs.tinyskeletons.mixin",
   "refmap": "tinyskeletons.refmap.json",
+  "plugin": "fuzs.tinyskeletons.mixin.ModMixinConfigPlugin",
   "mixins": [
-    "EntityTypeMixin",
-    "NaturalSpawnerMixin",
-    "PlayerMixin"
+    "EntityTypeFabricMixin",
+    "NaturalSpawnerFabricMixin",
+    "PlayerFabricMixin"
   ],
   "client": [
     "client.accessor.BlockRenderDispatcherAccessor"

@@ -1,5 +1,6 @@
 package fuzs.tinyskeletons.client.renderer.entity;
 
+import fuzs.tinyskeletons.TinySkeletons;
 import fuzs.tinyskeletons.client.init.ModClientRegistry;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.SkeletonRenderer;
@@ -8,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 
 public class BabyStrayRenderer extends SkeletonRenderer {
-   private static final ResourceLocation STRAY_SKELETON_LOCATION = new ResourceLocation("textures/entity/skeleton/stray.png");
+   public static final ResourceLocation BABY_STRAY_SKELETON_LOCATION = TinySkeletons.id("textures/entity/skeleton/baby_stray.png");
 
    public BabyStrayRenderer(EntityRendererProvider.Context p_174409_) {
       super(p_174409_, ModClientRegistry.BABY_STRAY, ModClientRegistry.BABY_STRAY_INNER_ARMOR, ModClientRegistry.BABY_STRAY_OUTER_ARMOR);
@@ -17,6 +18,6 @@ public class BabyStrayRenderer extends SkeletonRenderer {
 
    @Override
    public ResourceLocation getTextureLocation(AbstractSkeleton pEntity) {
-      return STRAY_SKELETON_LOCATION;
+      return BABY_STRAY_SKELETON_LOCATION;
    }
 }

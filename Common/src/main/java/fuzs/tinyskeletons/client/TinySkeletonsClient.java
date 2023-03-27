@@ -1,12 +1,15 @@
 package fuzs.tinyskeletons.client;
 
-import fuzs.puzzleslib.client.core.ClientModConstructor;
+import fuzs.puzzleslib.api.client.core.v1.ClientModConstructor;
+import fuzs.puzzleslib.api.client.core.v1.context.EntityRenderersContext;
+import fuzs.puzzleslib.api.client.core.v1.context.LayerDefinitionsContext;
 import fuzs.tinyskeletons.client.init.ModClientRegistry;
 import fuzs.tinyskeletons.client.renderer.entity.BabySkeletonRenderer;
 import fuzs.tinyskeletons.client.renderer.entity.BabyWitherSkeletonRenderer;
 import fuzs.tinyskeletons.init.ModRegistry;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.SkeletonModel;
+import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.entity.StrayRenderer;
@@ -25,8 +28,8 @@ public class TinySkeletonsClient implements ClientModConstructor {
     @Override
     public void onRegisterLayerDefinitions(LayerDefinitionsContext context) {
         Supplier<LayerDefinition> skeletonLayer = SkeletonModel::createBodyLayer;
-        Supplier<LayerDefinition> innerArmorLayer = () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.5f), 0.0F), 64, 32);
-        Supplier<LayerDefinition> outerArmorLayer = () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(1.0f), 0.0F), 64, 32);
+        Supplier<LayerDefinition> innerArmorLayer = () -> LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.INNER_ARMOR_DEFORMATION, 0.0F), 64, 32);
+        Supplier<LayerDefinition> outerArmorLayer = () -> LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.0F), 64, 32);
         Supplier<LayerDefinition> strayOuterLayer = () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.25F), 0.0F), 64, 32);
         context.registerLayerDefinition(ModClientRegistry.BABY_SKELETON, skeletonLayer);
         context.registerLayerDefinition(ModClientRegistry.BABY_SKELETON_INNER_ARMOR, innerArmorLayer);

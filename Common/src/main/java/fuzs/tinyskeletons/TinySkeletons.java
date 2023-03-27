@@ -1,9 +1,13 @@
 package fuzs.tinyskeletons;
 
-import fuzs.puzzleslib.core.ModConstructor;
+import fuzs.puzzleslib.api.core.v1.ModConstructor;
+import fuzs.puzzleslib.api.core.v1.context.EntityAttributesCreateContext;
+import fuzs.puzzleslib.api.core.v1.context.ModLifecycleContext;
+import fuzs.puzzleslib.api.core.v1.context.SpawnPlacementsContext;
 import fuzs.tinyskeletons.handler.BabyConversionHandler;
 import fuzs.tinyskeletons.init.ModRegistry;
 import fuzs.tinyskeletons.world.entity.monster.BabyStray;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -23,7 +27,7 @@ public class TinySkeletons implements ModConstructor {
     }
 
     @Override
-    public void onCommonSetup() {
+    public void onCommonSetup(ModLifecycleContext context) {
         BabyConversionHandler.registerConversion(EntityType.SKELETON, ModRegistry.BABY_SKELETON_ENTITY_TYPE.get());
         BabyConversionHandler.registerConversion(EntityType.WITHER_SKELETON, ModRegistry.BABY_WITHER_SKELETON_ENTITY_TYPE.get());
         BabyConversionHandler.registerConversion(EntityType.STRAY, ModRegistry.BABY_STRAY_ENTITY_TYPE.get());
@@ -41,5 +45,9 @@ public class TinySkeletons implements ModConstructor {
         context.registerEntityAttributes(ModRegistry.BABY_SKELETON_ENTITY_TYPE.get(), Monster.createMonsterAttributes().add(Attributes.ATTACK_DAMAGE, 1.0).add(Attributes.MOVEMENT_SPEED, 0.3));
         context.registerEntityAttributes(ModRegistry.BABY_WITHER_SKELETON_ENTITY_TYPE.get(), Monster.createMonsterAttributes().add(Attributes.ATTACK_DAMAGE, 1.0).add(Attributes.MOVEMENT_SPEED, 0.3));
         context.registerEntityAttributes(ModRegistry.BABY_STRAY_ENTITY_TYPE.get(), Monster.createMonsterAttributes().add(Attributes.ATTACK_DAMAGE, 1.0).add(Attributes.MOVEMENT_SPEED, 0.3));
+    }
+
+    public static ResourceLocation id(String path) {
+        return new ResourceLocation(MOD_ID, path);
     }
 }

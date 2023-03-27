@@ -1,6 +1,6 @@
 package fuzs.tinyskeletons.client;
 
-import fuzs.puzzleslib.client.core.ClientCoreServices;
+import fuzs.puzzleslib.api.client.core.v1.ClientModConstructor;
 import fuzs.tinyskeletons.TinySkeletons;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -12,6 +12,6 @@ public class TinySkeletonsForgeClient {
 
     @SubscribeEvent
     public static void onConstructMod(final FMLConstructModEvent evt) {
-        ClientCoreServices.FACTORIES.clientModConstructor(TinySkeletons.MOD_ID).accept(new TinySkeletonsClient());
+        ClientModConstructor.construct(TinySkeletons.MOD_ID, TinySkeletonsClient::new);
     }
 }

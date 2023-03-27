@@ -1,8 +1,8 @@
 package fuzs.tinyskeletons.client.renderer.entity.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
-import fuzs.tinyskeletons.client.core.ModClientCoreServices;
+import com.mojang.math.Axis;
+import fuzs.tinyskeletons.client.core.ClientAbstractions;
 import fuzs.tinyskeletons.world.entity.monster.SkullCarryingMob;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
@@ -37,12 +37,12 @@ public class HeldSkullItemLayer<T extends LivingEntity & SkullCarryingMob, M ext
       matrixStack.pushPose();
       matrixStack.translate(0.0D, 0.075, 0.375D);
       matrixStack.translate(0.0D, 0.6875D, -0.75D);
-      matrixStack.mulPose(Vector3f.XP.rotationDegrees(20.0F));
-      matrixStack.mulPose(Vector3f.YP.rotationDegrees(-90.0F));
+      matrixStack.mulPose(Axis.XP.rotationDegrees(20.0F));
+      matrixStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
       matrixStack.translate(0.25D, 0.1875D, 0.25D);
       matrixStack.scale(-0.5F, -0.5F, 0.5F);
-      matrixStack.mulPose(Vector3f.YP.rotationDegrees(90.0F));
-      ModClientCoreServices.ABSTRACTIONS.renderByItem(itemStack, ItemTransforms.TransformType.NONE, matrixStack, renderTypeBuffer, combinedLight, combinedLight);
+      matrixStack.mulPose(Axis.YP.rotationDegrees(90.0F));
+      ClientAbstractions.INSTANCE.renderByItem(itemStack, ItemTransforms.TransformType.NONE, matrixStack, renderTypeBuffer, combinedLight, combinedLight);
       matrixStack.popPose();
    }
 }

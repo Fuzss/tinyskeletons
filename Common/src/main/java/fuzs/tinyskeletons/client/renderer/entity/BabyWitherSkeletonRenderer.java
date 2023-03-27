@@ -1,6 +1,7 @@
 package fuzs.tinyskeletons.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import fuzs.tinyskeletons.TinySkeletons;
 import fuzs.tinyskeletons.client.init.ModClientRegistry;
 import fuzs.tinyskeletons.client.model.SkullCarryingSkeletonModel;
 import fuzs.tinyskeletons.client.renderer.entity.layers.HeldSkullItemLayer;
@@ -14,7 +15,7 @@ import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.ResourceLocation;
 
 public class BabyWitherSkeletonRenderer extends MobRenderer<BabyWitherSkeleton, SkullCarryingSkeletonModel<BabyWitherSkeleton>> {
-   private static final ResourceLocation WITHER_SKELETON_LOCATION = new ResourceLocation("textures/entity/skeleton/wither_skeleton.png");
+   public static final ResourceLocation BABY_WITHER_SKELETON_LOCATION = TinySkeletons.id("textures/entity/skeleton/baby_wither_skeleton.png");
 
    public BabyWitherSkeletonRenderer(EntityRendererProvider.Context entityRendererManager) {
       this(entityRendererManager, ModClientRegistry.BABY_WITHER_SKELETON, ModClientRegistry.BABY_WITHER_SKELETON_INNER_ARMOR, ModClientRegistry.BABY_WITHER_SKELETON_OUTER_ARMOR);
@@ -30,7 +31,7 @@ public class BabyWitherSkeletonRenderer extends MobRenderer<BabyWitherSkeleton, 
 
    @Override
    public ResourceLocation getTextureLocation(BabyWitherSkeleton p_110775_1_) {
-      return WITHER_SKELETON_LOCATION;
+      return BABY_WITHER_SKELETON_LOCATION;
    }
 
    @Override

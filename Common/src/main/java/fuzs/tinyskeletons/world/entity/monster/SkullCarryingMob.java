@@ -21,9 +21,8 @@ public interface SkullCarryingMob {
 
     default boolean isSkullItem(ItemStack itemStack) {
         if (!itemStack.isEmpty()) {
-            if (itemStack.getItem() instanceof BlockItem) {
-                BlockItem blockItem = (BlockItem) itemStack.getItem();
-                return blockItem.getBlock() instanceof AbstractSkullBlock;
+            if (itemStack.getItem() instanceof BlockItem item) {
+                return item.getBlock() instanceof AbstractSkullBlock;
             }
         }
         return false;

@@ -25,7 +25,7 @@ public class BabyConversionHandler {
         BABY_MOB_CONVERSIONS.put(targetMob, convertsTo);
     }
 
-    public boolean onMobCreate(LevelAccessor level, Entity entity, @Nullable MobSpawnType spawnReason) {
+    public static boolean onMobCreate(LevelAccessor level, Entity entity, @Nullable MobSpawnType spawnReason) {
         // spawner type shouldn't end up here anyway, but just to make sure
         // would break balancing for baby wither skeletons
         // also exclude summoned by command as this would break forcefully spawning an adult skeleton since there is no baby flag as with zombies which could force that otherwise
@@ -38,28 +38,28 @@ public class BabyConversionHandler {
         return false;
     }
 
-    public InteractionResult onEntityInteract(Player player, Level level, InteractionHand hand, Entity target) {
+    public static InteractionResult onEntityInteract(Player player, Level level, InteractionHand hand, Entity target) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (target.isAlive() && itemstack.getItem() instanceof SpawnEggItem) {
             EntityType<?> eggType = ((SpawnEggItem) itemstack.getItem()).getType(itemstack.getTag());
             EntityType<? extends Mob> babyType = BABY_MOB_CONVERSIONS.get(eggType);
             if (babyType != null && (target.getType() == babyType || target.getType() == eggType)) {
-                if (level instanceof ServerLevel serverLevel) {
-                    final Optional<Mob> mob = makeBabyMob(serverLevel, babyType, target, MobSpawnType.SPAWN_EGG);
+                if (!level.isClientSide) {
+                    final Optional<Mob> mob = makeBabyMob((ServerLevel) level, babyType, target, MobSpawnType.SPAWN_EGG);
                     if (mob.isPresent()) {
-                        this.finalizeSpawnEggMob(mob.get(), itemstack, player);
-                        return InteractionResult.SUCCESS;
+                        finalizeSpawnEggMob(mob.get(), itemstack, player);
+                        return InteractionResult.CONSUME;
                     }
                     return InteractionResult.PASS;
                 } else {
-                    return InteractionResult.CONSUME;
+                    return InteractionResult.SUCCESS;
                 }
             }
         }
         return null;
     }
 
-    private void finalizeSpawnEggMob(Mob mob, ItemStack itemstack, Player player) {
+    private static void finalizeSpawnEggMob(Mob mob, ItemStack itemstack, Player player) {
         mob.playAmbientSound();
         if (itemstack.hasCustomHoverName()) {
             mob.setCustomName(itemstack.getHoverName());

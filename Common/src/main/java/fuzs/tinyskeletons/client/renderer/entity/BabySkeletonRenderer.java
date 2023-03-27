@@ -1,5 +1,6 @@
 package fuzs.tinyskeletons.client.renderer.entity;
 
+import fuzs.tinyskeletons.TinySkeletons;
 import fuzs.tinyskeletons.client.init.ModClientRegistry;
 import fuzs.tinyskeletons.client.renderer.entity.layers.BackItemLayer;
 import fuzs.tinyskeletons.client.renderer.entity.layers.MainHandItemLayer;
@@ -14,7 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 
 public class BabySkeletonRenderer extends MobRenderer<AbstractSkeleton, SkeletonModel<AbstractSkeleton>> {
-   private static final ResourceLocation SKELETON_LOCATION = new ResourceLocation("textures/entity/skeleton/skeleton.png");
+   public static final ResourceLocation BABY_SKELETON_LOCATION = TinySkeletons.id("textures/entity/skeleton/baby_skeleton.png");
 
    public BabySkeletonRenderer(EntityRendererProvider.Context entityRendererManager) {
       this(entityRendererManager, ModClientRegistry.BABY_SKELETON, ModClientRegistry.BABY_SKELETON_INNER_ARMOR, ModClientRegistry.BABY_SKELETON_OUTER_ARMOR);
@@ -31,7 +32,7 @@ public class BabySkeletonRenderer extends MobRenderer<AbstractSkeleton, Skeleton
 
    @Override
    public ResourceLocation getTextureLocation(AbstractSkeleton entity) {
-      return SKELETON_LOCATION;
+      return BABY_SKELETON_LOCATION;
    }
 
    @Override

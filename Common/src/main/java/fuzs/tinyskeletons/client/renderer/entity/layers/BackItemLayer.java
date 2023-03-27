@@ -1,7 +1,7 @@
 package fuzs.tinyskeletons.client.renderer.entity.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.ItemInHandRenderer;
@@ -42,15 +42,15 @@ public class BackItemLayer<T extends LivingEntity, M extends HumanoidModel<T>> e
                 matrixStack.translate(0.0D, 0.0D, backOffset);
                 matrixStack.scale(scale, scale, scale);
                 if (itemstack.getItem() instanceof FishingRodItem || itemstack.getItem() instanceof FoodOnAStickItem) {
-                    matrixStack.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
+                    matrixStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
                     matrixStack.translate(0.0D, -0.3D, 0.0D);
                 }
                 this.itemInHandRenderer.renderItem(livingEntity, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStack, vertexConsumerProvider, i);
             } else {
                 scale *= 0.5F;
-                matrixStack.mulPose(Vector3f.YP.rotationDegrees(52.0F));
-                matrixStack.mulPose(Vector3f.XP.rotationDegrees(40.0F));
-                matrixStack.mulPose(Vector3f.ZP.rotationDegrees(-25.F));
+                matrixStack.mulPose(Axis.YP.rotationDegrees(52.0F));
+                matrixStack.mulPose(Axis.XP.rotationDegrees(40.0F));
+                matrixStack.mulPose(Axis.ZP.rotationDegrees(-25.F));
                 matrixStack.scale(scale, -scale, -scale);
                 matrixStack.translate(-backOffset, 0.0D, 0.0D);
                 this.itemInHandRenderer.renderItem(livingEntity, itemstack, ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, false, matrixStack, vertexConsumerProvider, i);
