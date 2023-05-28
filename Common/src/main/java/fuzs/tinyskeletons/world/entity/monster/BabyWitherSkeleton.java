@@ -24,6 +24,7 @@ public class BabyWitherSkeleton extends WitherSkeleton implements SkullCarryingM
     public BabyWitherSkeleton(EntityType<? extends WitherSkeleton> type, Level level) {
         super(type, level);
         this.xpReward *= 2.5F;
+        this.refreshDimensions();
     }
 
     @Override

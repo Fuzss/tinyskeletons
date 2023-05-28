@@ -6,8 +6,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(BlockRenderDispatcher.class)
-public interface BlockRenderDispatcherAccessor {
+public interface BlockRenderDispatcherFabricAccessor {
 
-    @Accessor
-    BlockEntityWithoutLevelRenderer getBlockEntityRenderer();
+    @Accessor("blockEntityRenderer")
+    BlockEntityWithoutLevelRenderer tinyskeletons$getBlockEntityRenderer();
 }

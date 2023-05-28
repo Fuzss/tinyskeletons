@@ -6,11 +6,9 @@
   "refmap": "tinyskeletons.refmap.json",
   "plugin": "fuzs.tinyskeletons.mixin.ModMixinConfigPlugin",
   "mixins": [
-    "EntityTypeFabricMixin",
-    "NaturalSpawnerFabricMixin"
   ],
   "client": [
-    "client.accessor.BlockRenderDispatcherAccessor"
+    "client.accessor.BlockRenderDispatcherFabricAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

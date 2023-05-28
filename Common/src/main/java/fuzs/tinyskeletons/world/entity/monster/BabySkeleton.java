@@ -29,6 +29,7 @@ public class BabySkeleton extends Skeleton {
     public BabySkeleton(EntityType<? extends Skeleton> type, Level world) {
         super(type, world);
         this.xpReward *= 2.5F;
+        this.refreshDimensions();
     }
 
     @Override
@@ -67,7 +68,7 @@ public class BabySkeleton extends Skeleton {
         if (stray != null) {
             // need this call as otherwise overriding with empty items will not send an update to clients as empty is default value and all this is happening within the same tick
             // (LivingEntity::detectEquipmentUpdates is called in the tick method)
-            ((LivingEntityAccessor) stray).callDetectEquipmentUpdates();
+            ((LivingEntityAccessor) stray).tinyskeletons$callDetectEquipmentUpdates();
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 stray.setItemSlot(slot, ItemStack.EMPTY);
             }

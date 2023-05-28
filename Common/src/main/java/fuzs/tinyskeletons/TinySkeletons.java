@@ -4,6 +4,7 @@ import fuzs.puzzleslib.api.core.v1.ModConstructor;
 import fuzs.puzzleslib.api.core.v1.context.EntityAttributesCreateContext;
 import fuzs.puzzleslib.api.core.v1.context.ModLifecycleContext;
 import fuzs.puzzleslib.api.core.v1.context.SpawnPlacementsContext;
+import fuzs.puzzleslib.api.event.v1.entity.ServerEntityLevelEvents;
 import fuzs.puzzleslib.api.event.v1.entity.player.PlayerInteractEvents;
 import fuzs.tinyskeletons.handler.BabyConversionHandler;
 import fuzs.tinyskeletons.init.ModRegistry;
@@ -29,7 +30,9 @@ public class TinySkeletons implements ModConstructor {
     }
 
     private static void registerHandlers() {
-        PlayerInteractEvents.USE_ENTITY.register(BabyConversionHandler::onEntityInteract);
+        // I guess we're using this event now, the other one wouldn't show the hand swing on Fabric
+        PlayerInteractEvents.USE_ENTITY_AT.register(BabyConversionHandler::onEntityInteract);
+        ServerEntityLevelEvents.LOAD.register(BabyConversionHandler::onEntityLoad);
     }
 
     @Override

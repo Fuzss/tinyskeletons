@@ -50,6 +50,6 @@ public class TinySkeletonsClient implements ClientModConstructor {
 
     @Override
     public void onAddResourcePackFinders(PackRepositorySourcesContext context) {
-        context.addRepositorySources(PackResourcesHelper.buildClientPack(BabySkeletonPackResources::new, TinySkeletons.MOD_ID, Component.literal(TinySkeletons.MOD_NAME), Component.literal("Teeny, tiny skeletons, send shivers down your spine..."), true, false));
+        context.addRepositorySource(PackResourcesHelper.buildClientPack(BabySkeletonPackResources::new, TinySkeletons.MOD_ID, Component.literal(TinySkeletons.MOD_NAME), Component.literal("Teeny, tiny skeletons, send shivers down your spine..."), true, false));
     }
 }

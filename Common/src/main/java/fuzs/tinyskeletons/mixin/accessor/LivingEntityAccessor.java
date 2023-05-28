@@ -7,6 +7,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(LivingEntity.class)
 public interface LivingEntityAccessor {
 
-    @Invoker
-    void callDetectEquipmentUpdates();
+    @Invoker("detectEquipmentUpdates")
+    void tinyskeletons$callDetectEquipmentUpdates();
 }

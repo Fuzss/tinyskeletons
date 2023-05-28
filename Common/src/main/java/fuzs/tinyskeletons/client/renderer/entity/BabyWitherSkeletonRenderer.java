@@ -17,16 +17,16 @@ import net.minecraft.resources.ResourceLocation;
 public class BabyWitherSkeletonRenderer extends MobRenderer<BabyWitherSkeleton, SkullCarryingSkeletonModel<BabyWitherSkeleton>> {
    public static final ResourceLocation BABY_WITHER_SKELETON_LOCATION = TinySkeletons.id("textures/entity/skeleton/baby_wither_skeleton.png");
 
-   public BabyWitherSkeletonRenderer(EntityRendererProvider.Context entityRendererManager) {
-      this(entityRendererManager, ModClientRegistry.BABY_WITHER_SKELETON, ModClientRegistry.BABY_WITHER_SKELETON_INNER_ARMOR, ModClientRegistry.BABY_WITHER_SKELETON_OUTER_ARMOR);
+   public BabyWitherSkeletonRenderer(EntityRendererProvider.Context context) {
+      this(context, ModClientRegistry.BABY_WITHER_SKELETON, ModClientRegistry.BABY_WITHER_SKELETON_INNER_ARMOR, ModClientRegistry.BABY_WITHER_SKELETON_OUTER_ARMOR);
    }
 
-   public BabyWitherSkeletonRenderer(EntityRendererProvider.Context entityRendererManager, ModelLayerLocation entityLocation, ModelLayerLocation innerArmorLocation, ModelLayerLocation outerArmorLocation) {
-      super(entityRendererManager, new SkullCarryingSkeletonModel<>(entityRendererManager.bakeLayer(entityLocation)), 0.5F);
-      this.addLayer(new CustomHeadLayer<>(this, entityRendererManager.getModelSet(), entityRendererManager.getItemInHandRenderer()));
-      this.addLayer(new ElytraLayer<>(this, entityRendererManager.getModelSet()));
-      this.addLayer(new HeldSkullItemLayer<>(this, entityRendererManager.getItemInHandRenderer()));
-      this.addLayer(new HumanoidArmorLayer<>(this, new SkullCarryingSkeletonModel<>(entityRendererManager.bakeLayer(innerArmorLocation)), new SkullCarryingSkeletonModel<>(entityRendererManager.bakeLayer(outerArmorLocation))));
+   public BabyWitherSkeletonRenderer(EntityRendererProvider.Context context, ModelLayerLocation entityLocation, ModelLayerLocation innerArmorLocation, ModelLayerLocation outerArmorLocation) {
+      super(context, new SkullCarryingSkeletonModel<>(context.bakeLayer(entityLocation)), 0.5F);
+      this.addLayer(new CustomHeadLayer<>(this, context.getModelSet(), context.getItemInHandRenderer()));
+      this.addLayer(new ElytraLayer<>(this, context.getModelSet()));
+      this.addLayer(new HeldSkullItemLayer<>(this, context.getItemInHandRenderer()));
+      this.addLayer(new HumanoidArmorLayer<>(this, new SkullCarryingSkeletonModel<>(context.bakeLayer(innerArmorLocation)), new SkullCarryingSkeletonModel<>(context.bakeLayer(outerArmorLocation)), context.getModelManager()));
    }
 
    @Override

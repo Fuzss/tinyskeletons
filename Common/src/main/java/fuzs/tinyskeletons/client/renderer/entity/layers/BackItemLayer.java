@@ -6,15 +6,11 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.FishingRodItem;
-import net.minecraft.world.item.FoodOnAStickItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TridentItem;
+import net.minecraft.world.item.*;
 
 public class BackItemLayer<T extends LivingEntity, M extends HumanoidModel<T>> extends RenderLayer<T, M> {
     private final ItemInHandRenderer itemInHandRenderer;
@@ -45,7 +41,7 @@ public class BackItemLayer<T extends LivingEntity, M extends HumanoidModel<T>> e
                     matrixStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
                     matrixStack.translate(0.0D, -0.3D, 0.0D);
                 }
-                this.itemInHandRenderer.renderItem(livingEntity, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStack, vertexConsumerProvider, i);
+                this.itemInHandRenderer.renderItem(livingEntity, itemstack, ItemDisplayContext.GROUND, false, matrixStack, vertexConsumerProvider, i);
             } else {
                 scale *= 0.5F;
                 matrixStack.mulPose(Axis.YP.rotationDegrees(52.0F));
@@ -53,7 +49,7 @@ public class BackItemLayer<T extends LivingEntity, M extends HumanoidModel<T>> e
                 matrixStack.mulPose(Axis.ZP.rotationDegrees(-25.F));
                 matrixStack.scale(scale, -scale, -scale);
                 matrixStack.translate(-backOffset, 0.0D, 0.0D);
-                this.itemInHandRenderer.renderItem(livingEntity, itemstack, ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, false, matrixStack, vertexConsumerProvider, i);
+                this.itemInHandRenderer.renderItem(livingEntity, itemstack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, false, matrixStack, vertexConsumerProvider, i);
             }
             matrixStack.popPose();
         }

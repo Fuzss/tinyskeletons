@@ -21,13 +21,13 @@ public class BabySkeletonRenderer extends MobRenderer<AbstractSkeleton, Skeleton
       this(entityRendererManager, ModClientRegistry.BABY_SKELETON, ModClientRegistry.BABY_SKELETON_INNER_ARMOR, ModClientRegistry.BABY_SKELETON_OUTER_ARMOR);
    }
 
-   public BabySkeletonRenderer(EntityRendererProvider.Context entityRendererManager, ModelLayerLocation entityLocation, ModelLayerLocation innerArmorLocation, ModelLayerLocation outerArmorLocation) {
-      super(entityRendererManager, new SkeletonModel<>(entityRendererManager.bakeLayer(entityLocation)), 0.5F);
-      this.addLayer(new CustomHeadLayer<>(this, entityRendererManager.getModelSet(), entityRendererManager.getItemInHandRenderer()));
-      this.addLayer(new ElytraLayer<>(this, entityRendererManager.getModelSet()));
-      this.addLayer(new MainHandItemLayer<>(this, entityRendererManager.getItemInHandRenderer()));
-      this.addLayer(new BackItemLayer<>(this, entityRendererManager.getItemInHandRenderer()));
-      this.addLayer(new HumanoidArmorLayer<>(this, new SkeletonModel<>(entityRendererManager.bakeLayer(innerArmorLocation)), new SkeletonModel<>(entityRendererManager.bakeLayer(outerArmorLocation))));
+   public BabySkeletonRenderer(EntityRendererProvider.Context context, ModelLayerLocation entityLocation, ModelLayerLocation innerArmorLocation, ModelLayerLocation outerArmorLocation) {
+      super(context, new SkeletonModel<>(context.bakeLayer(entityLocation)), 0.5F);
+      this.addLayer(new CustomHeadLayer<>(this, context.getModelSet(), context.getItemInHandRenderer()));
+      this.addLayer(new ElytraLayer<>(this, context.getModelSet()));
+      this.addLayer(new MainHandItemLayer<>(this, context.getItemInHandRenderer()));
+      this.addLayer(new BackItemLayer<>(this, context.getItemInHandRenderer()));
+      this.addLayer(new HumanoidArmorLayer<>(this, new SkeletonModel<>(context.bakeLayer(innerArmorLocation)), new SkeletonModel<>(context.bakeLayer(outerArmorLocation)), context.getModelManager()));
    }
 
    @Override

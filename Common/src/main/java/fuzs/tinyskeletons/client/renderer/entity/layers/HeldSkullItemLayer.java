@@ -8,10 +8,10 @@ import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class HeldSkullItemLayer<T extends LivingEntity & SkullCarryingMob, M extends EntityModel<T> & ArmedModel> extends ItemInHandLayer<T, M> {
@@ -42,7 +42,7 @@ public class HeldSkullItemLayer<T extends LivingEntity & SkullCarryingMob, M ext
       matrixStack.translate(0.25D, 0.1875D, 0.25D);
       matrixStack.scale(-0.5F, -0.5F, 0.5F);
       matrixStack.mulPose(Axis.YP.rotationDegrees(90.0F));
-      ClientAbstractions.INSTANCE.renderByItem(itemStack, ItemTransforms.TransformType.NONE, matrixStack, renderTypeBuffer, combinedLight, combinedLight);
+      ClientAbstractions.INSTANCE.renderByItem(itemStack, ItemDisplayContext.NONE, matrixStack, renderTypeBuffer, combinedLight, combinedLight);
       matrixStack.popPose();
    }
 }
