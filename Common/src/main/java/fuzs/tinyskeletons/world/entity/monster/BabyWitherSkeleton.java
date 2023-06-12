@@ -54,7 +54,7 @@ public class BabyWitherSkeleton extends WitherSkeleton implements SkullCarryingM
 
     @Override
     public void reassessWeaponGoal() {
-        if (this.level != null && !this.level.isClientSide) {
+        if (this.level() != null && !this.level().isClientSide) {
             this.goalSelector.removeGoal(this.fleePlayerGoal);
             if (!this.getSkullItem().isEmpty()) {
                 this.goalSelector.addGoal(3, this.fleePlayerGoal);
@@ -68,7 +68,7 @@ public class BabyWitherSkeleton extends WitherSkeleton implements SkullCarryingM
         if (itemstack.is(Items.WITHER_ROSE)) {
             ItemStack skullItem = this.getSkullItem();
             if (!skullItem.isEmpty()) {
-                if (!this.level.isClientSide) {
+                if (!this.level().isClientSide) {
                     if (!pPlayer.getAbilities().instabuild) {
                         itemstack.shrink(1);
                     }
@@ -76,7 +76,7 @@ public class BabyWitherSkeleton extends WitherSkeleton implements SkullCarryingM
                     this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
                 }
                 this.setDancing();
-                return InteractionResult.sidedSuccess(this.level.isClientSide);
+                return InteractionResult.sidedSuccess(this.level().isClientSide);
             }
         }
 

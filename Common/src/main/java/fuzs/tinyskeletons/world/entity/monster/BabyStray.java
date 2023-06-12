@@ -72,12 +72,12 @@ public class BabyStray extends Stray {
 
     @Override
     public void performRangedAttack(LivingEntity entity, float p_82196_2_) {
-        Snowball snowball = new Snowball(this.level, this) {
+        Snowball snowball = new Snowball(this.level(), this) {
 
             @Override
             protected void onHitEntity(EntityHitResult hitResult) {
                 Entity entity = hitResult.getEntity();
-                entity.hurt(this.level.damageSources().thrown(this, this.getOwner()), 0.5F);
+                entity.hurt(this.level().damageSources().thrown(this, this.getOwner()), 0.5F);
             }
         };
         double d0 = entity.getEyeY() - (double) 1.1F;
@@ -85,9 +85,9 @@ public class BabyStray extends Stray {
         double d2 = d0 - snowball.getY();
         double d3 = entity.getZ() - this.getZ();
         double f = Math.sqrt(d1 * d1 + d3 * d3) * 0.2;
-        snowball.shoot(d1, d2 + f, d3, 1.6F, 14.0F - this.level.getDifficulty().getId() * 2.0F);
+        snowball.shoot(d1, d2 + f, d3, 1.6F, 14.0F - this.level().getDifficulty().getId() * 2.0F);
         this.playSound(SoundEvents.SNOW_GOLEM_SHOOT, 1.0F, 0.4F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-        this.level.addFreshEntity(snowball);
+        this.level().addFreshEntity(snowball);
         this.swing(InteractionHand.MAIN_HAND);
     }
 }

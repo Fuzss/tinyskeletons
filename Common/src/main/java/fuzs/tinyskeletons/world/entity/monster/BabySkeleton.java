@@ -72,17 +72,17 @@ public class BabySkeleton extends Skeleton {
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 stray.setItemSlot(slot, ItemStack.EMPTY);
             }
-            stray.populateDefaultEquipmentSlots(this.random, stray.level.getCurrentDifficultyAt(stray.blockPosition()));
+            stray.populateDefaultEquipmentSlots(this.random, stray.level().getCurrentDifficultyAt(stray.blockPosition()));
         }
         if (!this.isSilent()) {
-            this.level.levelEvent(null, 1048, this.blockPosition(), 0);
+            this.level().levelEvent(null, 1048, this.blockPosition(), 0);
         }
     }
 
     @Override
     public void aiStep() {
         super.aiStep();
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (this.switchWeaponCooldown > 0) this.switchWeaponCooldown--;
             if (this.switchWeaponCooldown == 0) {
                 if (this.getTarget() != null && this.distanceTo(this.getTarget()) < 4.0) {
@@ -102,7 +102,7 @@ public class BabySkeleton extends Skeleton {
 
     @Override
     public void reassessWeaponGoal() {
-        if (this.level != null && !this.level.isClientSide) {
+        if (this.level() != null && !this.level().isClientSide) {
             if (this.bowGoal == null || this.meleeGoal == null) {
                 this.createAttackGoals();
             }
@@ -110,7 +110,7 @@ public class BabySkeleton extends Skeleton {
             this.goalSelector.removeGoal(this.bowGoal);
             if (this.getMainHandItem().getItem() instanceof BowItem) {
                 int minAttackInterval = 20;
-                if (this.level.getDifficulty() != Difficulty.HARD) {
+                if (this.level().getDifficulty() != Difficulty.HARD) {
                     minAttackInterval = 40;
                 }
                 this.bowGoal.setMinAttackInterval(minAttackInterval);
