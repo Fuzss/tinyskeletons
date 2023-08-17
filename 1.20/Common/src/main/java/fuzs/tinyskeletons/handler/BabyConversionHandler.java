@@ -7,6 +7,7 @@ import fuzs.puzzleslib.api.event.v1.core.EventResultHolder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
@@ -78,7 +79,10 @@ public class BabyConversionHandler {
         mob.moveTo(parent.getX(), parent.getY(), parent.getZ(), Mth.wrapDegrees(level.random.nextFloat() * 360.0F), 0.0F);
         mob.yHeadRot = mob.getYRot();
         mob.yBodyRot = mob.getYRot();
-        mob.finalizeSpawn(level, level.getCurrentDifficultyAt(mob.blockPosition()), spawnReason, null, null);
+        // this should normally be level.getCurrentDifficultyAt(mob.blockPosition()), which for some reason causes a world gen deadlock when generating nether fortresses for some setups (cannot reproduce in vanilla)
+        // the deadlock comes from Level::getChunkAt, so we omit that part all call everything else as usual since the chunk otherwise is not queried
+        DifficultyInstance difficulty = new DifficultyInstance(level.getDifficulty(), level.getDayTime(), 0L, level.getMoonBrightness());
+        mob.finalizeSpawn(level, difficulty, spawnReason, null, null);
         level.addFreshEntityWithPassengers(mob);
         return mob;
     }
