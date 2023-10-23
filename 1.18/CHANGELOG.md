@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog].
 
+## [v3.3.1-1.18.2] - 2023-10-23
+### Fixed
+- Attempt to fix world gen deadlock caused from replacing adult skeletons with the baby counterpart during spawning
+
 ## [v3.3.0-1.18.2] - 2023-08-12
 - Ported to Minecraft 1.18.2
 
