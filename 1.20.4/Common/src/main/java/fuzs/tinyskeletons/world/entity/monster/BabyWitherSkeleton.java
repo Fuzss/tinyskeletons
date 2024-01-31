@@ -21,9 +21,9 @@ public class BabyWitherSkeleton extends WitherSkeleton implements SkullCarryingM
     private final AvoidEntityGoal<Player> fleePlayerGoal = new AvoidEntityGoal<>(this, Player.class, 6.0F, 1.0D, 1.2D);
     private int dancingTicks;
 
-    public BabyWitherSkeleton(EntityType<? extends WitherSkeleton> type, Level level) {
-        super(type, level);
-        this.xpReward *= 2.5F;
+    public BabyWitherSkeleton(EntityType<? extends WitherSkeleton> entityType, Level level) {
+        super(entityType, level);
+        this.xpReward = (int) (this.xpReward * 2.5F);
         this.refreshDimensions();
     }
 
@@ -40,7 +40,6 @@ public class BabyWitherSkeleton extends WitherSkeleton implements SkullCarryingM
 
     @Override
     public float getPickRadius() {
-        // width has same pick radius as adult like this, only height remains shorter
         return 0.35F;
     }
 
@@ -63,13 +62,13 @@ public class BabyWitherSkeleton extends WitherSkeleton implements SkullCarryingM
     }
 
     @Override
-    public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
-        ItemStack itemstack = pPlayer.getItemInHand(pHand);
+    public InteractionResult mobInteract(Player player, InteractionHand interactionHand) {
+        ItemStack itemstack = player.getItemInHand(interactionHand);
         if (itemstack.is(Items.WITHER_ROSE)) {
             ItemStack skullItem = this.getSkullItem();
             if (!skullItem.isEmpty()) {
                 if (!this.level().isClientSide) {
-                    if (!pPlayer.getAbilities().instabuild) {
+                    if (!player.getAbilities().instabuild) {
                         itemstack.shrink(1);
                     }
                     this.spawnAtLocation(skullItem);
@@ -80,7 +79,7 @@ public class BabyWitherSkeleton extends WitherSkeleton implements SkullCarryingM
             }
         }
 
-        return super.mobInteract(pPlayer, pHand);
+        return super.mobInteract(player, interactionHand);
     }
 
     private void setDancing() {
@@ -98,17 +97,12 @@ public class BabyWitherSkeleton extends WitherSkeleton implements SkullCarryingM
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
-        return 1.1224137931F;
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return super.getStandingEyeHeight(pose, dimensions) * 0.534F;
     }
 
     @Override
-    public double getMyRidingOffset() {
-        return 0.0;
-    }
-
-    @Override
-    protected void populateDefaultEquipmentSlots(RandomSource randomSource, DifficultyInstance difficultyInstance) {
+    protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.WITHER_SKELETON_SKULL));
         this.setGuaranteedDrop(EquipmentSlot.MAINHAND);
     }

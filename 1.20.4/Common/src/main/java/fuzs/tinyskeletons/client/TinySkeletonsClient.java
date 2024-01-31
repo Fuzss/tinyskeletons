@@ -17,7 +17,6 @@ import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.entity.StrayRenderer;
-import net.minecraft.network.chat.Component;
 
 import java.util.function.Supplier;
 
@@ -25,9 +24,9 @@ public class TinySkeletonsClient implements ClientModConstructor {
 
     @Override
     public void onRegisterEntityRenderers(EntityRenderersContext context) {
-        context.registerEntityRenderer(ModRegistry.BABY_SKELETON_ENTITY_TYPE.get(), BabySkeletonRenderer::new);
-        context.registerEntityRenderer(ModRegistry.BABY_WITHER_SKELETON_ENTITY_TYPE.get(), BabyWitherSkeletonRenderer::new);
-        context.registerEntityRenderer(ModRegistry.BABY_STRAY_ENTITY_TYPE.get(), StrayRenderer::new);
+        context.registerEntityRenderer(ModRegistry.BABY_SKELETON_ENTITY_TYPE.value(), BabySkeletonRenderer::new);
+        context.registerEntityRenderer(ModRegistry.BABY_WITHER_SKELETON_ENTITY_TYPE.value(), BabyWitherSkeletonRenderer::new);
+        context.registerEntityRenderer(ModRegistry.BABY_STRAY_ENTITY_TYPE.value(), StrayRenderer::new);
     }
 
     @Override
@@ -50,6 +49,6 @@ public class TinySkeletonsClient implements ClientModConstructor {
 
     @Override
     public void onAddResourcePackFinders(PackRepositorySourcesContext context) {
-        context.addRepositorySource(PackResourcesHelper.buildClientPack(BabySkeletonPackResources::new, TinySkeletons.MOD_ID, Component.literal(TinySkeletons.MOD_NAME), Component.literal("Teeny, tiny skeletons, send shivers down your spine..."), true, false));
+        context.addRepositorySource(PackResourcesHelper.buildClientPack(TinySkeletons.id("dynamically_copied_skeleton_textures"), BabySkeletonPackResources::new, false));
     }
 }

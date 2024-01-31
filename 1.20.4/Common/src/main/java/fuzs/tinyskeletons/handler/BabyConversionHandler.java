@@ -28,7 +28,7 @@ public class BabyConversionHandler {
         BABY_MOB_CONVERSIONS.put(targetMob, convertsTo);
     }
 
-    public static EventResult onEntityLoad(Entity entity, ServerLevel level, @Nullable MobSpawnType spawnType) {
+    public static EventResult onEntitySpawn(Entity entity, ServerLevel level, @Nullable MobSpawnType spawnType) {
         // exclude summoned by command as this would break forcefully spawning an adult skeleton since there is no baby flag as with zombies which could force that otherwise
         if (spawnType != null && spawnType != MobSpawnType.COMMAND && Zombie.getSpawnAsBabyOdds(level.getRandom())) {
             EntityType<? extends Mob> entityType = BABY_MOB_CONVERSIONS.get(entity.getType());

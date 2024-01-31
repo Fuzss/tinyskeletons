@@ -16,14 +16,14 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.EntityHitResult;
 
 public class BabyStray extends Stray {
-    public BabyStray(EntityType<? extends Stray> p_i50191_1_, Level p_i50191_2_) {
-        super(p_i50191_1_, p_i50191_2_);
-        this.xpReward *= 2.5F;
+    public BabyStray(EntityType<? extends Stray> entityType, Level level) {
+        super(entityType, level);
+        this.xpReward = (int) (this.xpReward * 2.5F);
         this.refreshDimensions();
     }
 
-    public static boolean checkBabyStraySpawnRules(EntityType<BabyStray> p_223327_0_, ServerLevelAccessor p_223327_1_, MobSpawnType p_223327_2_, BlockPos p_223327_3_, RandomSource p_223327_4_) {
-        return checkMonsterSpawnRules(p_223327_0_, p_223327_1_, p_223327_2_, p_223327_3_, p_223327_4_) && (p_223327_2_ == MobSpawnType.SPAWNER || p_223327_1_.canSeeSky(p_223327_3_));
+    public static boolean checkBabyStraySpawnRules(EntityType<BabyStray> entityType, ServerLevelAccessor serverLevelAccessor, MobSpawnType mobSpawnType, BlockPos blockPos, RandomSource randomSource) {
+        return checkMonsterSpawnRules(entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) && (mobSpawnType == MobSpawnType.SPAWNER || serverLevelAccessor.canSeeSky(blockPos));
     }
 
     @Override
@@ -39,7 +39,6 @@ public class BabyStray extends Stray {
 
     @Override
     public float getPickRadius() {
-        // width has same pick radius as adult like this, only height remains shorter
         return 0.3F;
     }
 
@@ -49,19 +48,14 @@ public class BabyStray extends Stray {
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
-        return 0.93F;
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return super.getStandingEyeHeight(pose, dimensions) * 0.534F;
     }
 
     @Override
-    public double getMyRidingOffset() {
-        return 0.0;
-    }
-
-    @Override
-    protected void populateDefaultEquipmentSlots(RandomSource randomSource, DifficultyInstance difficultyInstance) {
+    protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
         // super call for armor
-        super.populateDefaultEquipmentSlots(randomSource, difficultyInstance);
+        super.populateDefaultEquipmentSlots(random, difficulty);
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.SNOWBALL));
     }
 
@@ -71,7 +65,7 @@ public class BabyStray extends Stray {
     }
 
     @Override
-    public void performRangedAttack(LivingEntity entity, float p_82196_2_) {
+    public void performRangedAttack(LivingEntity target, float velocity) {
         Snowball snowball = new Snowball(this.level(), this) {
 
             @Override
@@ -80,10 +74,10 @@ public class BabyStray extends Stray {
                 entity.hurt(this.level().damageSources().thrown(this, this.getOwner()), 0.5F);
             }
         };
-        double d0 = entity.getEyeY() - (double) 1.1F;
-        double d1 = entity.getX() - this.getX();
+        double d0 = target.getEyeY() - (double) 1.1F;
+        double d1 = target.getX() - this.getX();
         double d2 = d0 - snowball.getY();
-        double d3 = entity.getZ() - this.getZ();
+        double d3 = target.getZ() - this.getZ();
         double f = Math.sqrt(d1 * d1 + d3 * d3) * 0.2;
         snowball.shoot(d1, d2 + f, d3, 1.6F, 14.0F - this.level().getDifficulty().getId() * 2.0F);
         this.playSound(SoundEvents.SNOW_GOLEM_SHOOT, 1.0F, 0.4F / (this.getRandom().nextFloat() * 0.4F + 0.8F));

@@ -26,15 +26,14 @@ public class BabySkeleton extends Skeleton {
     private MeleeAttackGoal meleeGoal;
     private int switchWeaponCooldown;
 
-    public BabySkeleton(EntityType<? extends Skeleton> type, Level world) {
-        super(type, world);
-        this.xpReward *= 2.5F;
+    public BabySkeleton(EntityType<? extends Skeleton> entityType, Level level) {
+        super(entityType, level);
+        this.xpReward = (int) (this.xpReward * 2.5F);
         this.refreshDimensions();
     }
 
     @Override
     public float getPickRadius() {
-        // width has same pick radius as adult like this, only height remains shorter
         return 0.3F;
     }
 
@@ -44,18 +43,13 @@ public class BabySkeleton extends Skeleton {
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
-        return 0.93F;
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return super.getStandingEyeHeight(pose, dimensions) * 0.534F;
     }
 
     @Override
-    public double getMyRidingOffset() {
-        return 0.0;
-    }
-
-    @Override
-    protected void populateDefaultEquipmentSlots(RandomSource randomSource, DifficultyInstance difficultyInstance) {
-        super.populateDefaultEquipmentSlots(randomSource, difficultyInstance);
+    protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
+        super.populateDefaultEquipmentSlots(random, difficulty);
         this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.WOODEN_SWORD));
         // back item shouldn't be dropped
         this.setDropChance(EquipmentSlot.OFFHAND, 0.0F);
@@ -63,7 +57,7 @@ public class BabySkeleton extends Skeleton {
 
     @Override
     protected void doFreezeConversion() {
-        BabyStray stray = this.convertTo(ModRegistry.BABY_STRAY_ENTITY_TYPE.get(), true);
+        BabyStray stray = this.convertTo(ModRegistry.BABY_STRAY_ENTITY_TYPE.value(), true);
         // cheap hack so we don't have to implement proper fighting behavior for strays, just give them their default snowball and remove everything else
         if (stray != null) {
             // need this call as otherwise overriding with empty items will not send an update to clients as empty is default value and all this is happening within the same tick

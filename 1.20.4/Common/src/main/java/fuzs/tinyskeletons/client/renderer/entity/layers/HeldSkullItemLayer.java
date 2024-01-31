@@ -21,28 +21,28 @@ public class HeldSkullItemLayer<T extends LivingEntity & SkullCarryingMob, M ext
    }
 
    @Override
-   public void render(PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int combinedLight, T entity, float p_225628_5_, float p_225628_6_, float p_225628_7_, float p_225628_8_, float p_225628_9_, float p_225628_10_) {
-      ItemStack itemstack = entity.getSkullItem();
+   public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, T livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+      ItemStack itemstack = livingEntity.getSkullItem();
       if (!itemstack.isEmpty()) {
-         matrixStack.pushPose();
-         this.renderHandSkullItem(itemstack, matrixStack, renderTypeBuffer, combinedLight);
-         matrixStack.popPose();
+         poseStack.pushPose();
+         this.renderHandSkullItem(itemstack, poseStack, multiBufferSource, packedLight);
+         poseStack.popPose();
       } else {
-         super.render(matrixStack, renderTypeBuffer, combinedLight, entity, p_225628_5_, p_225628_6_, p_225628_7_, p_225628_8_, p_225628_9_, p_225628_10_);
+         super.render(poseStack, multiBufferSource, packedLight, livingEntity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
       }
    }
 
-   private void renderHandSkullItem(ItemStack itemStack, PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int combinedLight) {
+   private void renderHandSkullItem(ItemStack itemStack, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
       // mostly copied from enderman held block layer renderer
-      matrixStack.pushPose();
-      matrixStack.translate(0.0D, 0.075, 0.375D);
-      matrixStack.translate(0.0D, 0.6875D, -0.75D);
-      matrixStack.mulPose(Axis.XP.rotationDegrees(20.0F));
-      matrixStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
-      matrixStack.translate(0.25D, 0.1875D, 0.25D);
-      matrixStack.scale(-0.5F, -0.5F, 0.5F);
-      matrixStack.mulPose(Axis.YP.rotationDegrees(90.0F));
-      ClientAbstractions.INSTANCE.renderByItem(itemStack, ItemDisplayContext.NONE, matrixStack, renderTypeBuffer, combinedLight, combinedLight);
-      matrixStack.popPose();
+      poseStack.pushPose();
+      poseStack.translate(0.0D, 0.075, 0.375D);
+      poseStack.translate(0.0D, 0.6875D, -0.75D);
+      poseStack.mulPose(Axis.XP.rotationDegrees(20.0F));
+      poseStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
+      poseStack.translate(0.25D, 0.1875D, 0.25D);
+      poseStack.scale(-0.5F, -0.5F, 0.5F);
+      poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
+      ClientAbstractions.INSTANCE.renderByItem(itemStack, ItemDisplayContext.NONE, poseStack, multiBufferSource, packedLight, packedLight);
+      poseStack.popPose();
    }
 }
