@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import fuzs.puzzleslib.api.event.v1.core.EventResult;
 import fuzs.puzzleslib.api.event.v1.core.EventResultHolder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
@@ -33,31 +34,37 @@ public class BabyConversionHandler {
         if (spawnType != null && spawnType != MobSpawnType.COMMAND && Zombie.getSpawnAsBabyOdds(level.getRandom())) {
             EntityType<? extends Mob> entityType = BABY_MOB_CONVERSIONS.get(entity.getType());
             if (entityType != null && createAndSpawnBabyMob(level, entityType, entity, spawnType) != null) {
+
                 return EventResult.INTERRUPT;
             }
         }
+
         return EventResult.PASS;
     }
 
     public static EventResultHolder<InteractionResult> onEntityInteract(Player player, Level level, InteractionHand hand, Entity target, Vec3 hitVector) {
         ItemStack stackInHand = player.getItemInHand(hand);
         if (target.isAlive() && stackInHand.getItem() instanceof SpawnEggItem) {
-            EntityType<?> eggType = ((SpawnEggItem) stackInHand.getItem()).getType(stackInHand.getTag());
+            EntityType<?> eggType = ((SpawnEggItem) stackInHand.getItem()).getType(stackInHand);
             EntityType<? extends Mob> babyType = BABY_MOB_CONVERSIONS.get(eggType);
             if (babyType != null && (target.getType() == babyType || target.getType() == eggType)) {
                 if (!level.isClientSide) {
                     Mob mob = createAndSpawnBabyMob((ServerLevel) level, babyType, target, MobSpawnType.SPAWN_EGG);
-                    if (mob != null) finalizeSpawnEggMob(mob, stackInHand, player);
+                    if (mob != null) {
+                        finalizeSpawnEggMob(mob, stackInHand, player);
+                    }
                 }
+
                 return EventResultHolder.interrupt(InteractionResult.sidedSuccess(level.isClientSide));
             }
         }
+
         return EventResultHolder.pass();
     }
 
     private static void finalizeSpawnEggMob(Mob mob, ItemStack itemstack, Player player) {
         mob.playAmbientSound();
-        if (itemstack.hasCustomHoverName()) {
+        if (itemstack.has(DataComponents.CUSTOM_NAME)) {
             mob.setCustomName(itemstack.getHoverName());
         }
         if (!player.getAbilities().instabuild) {
@@ -82,7 +89,7 @@ public class BabyConversionHandler {
         // this should normally be level.getCurrentDifficultyAt(mob.blockPosition()), which for some reason causes a world gen deadlock when generating nether fortresses for some setups (cannot reproduce in vanilla)
         // the deadlock comes from Level::getChunkAt, so we omit that part all call everything else as usual since the chunk otherwise is not queried
         DifficultyInstance difficulty = new DifficultyInstance(level.getDifficulty(), level.getDayTime(), 0L, level.getMoonBrightness());
-        mob.finalizeSpawn(level, difficulty, spawnReason, null, null);
+        mob.finalizeSpawn(level, difficulty, spawnReason, null);
         level.addFreshEntityWithPassengers(mob);
         return mob;
     }

@@ -16,6 +16,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.EntityHitResult;
 
 public class BabyStray extends Stray {
+
     public BabyStray(EntityType<? extends Stray> entityType, Level level) {
         super(entityType, level);
         this.xpReward = (int) (this.xpReward * 2.5F);
@@ -23,7 +24,8 @@ public class BabyStray extends Stray {
     }
 
     public static boolean checkBabyStraySpawnRules(EntityType<BabyStray> entityType, ServerLevelAccessor serverLevelAccessor, MobSpawnType mobSpawnType, BlockPos blockPos, RandomSource randomSource) {
-        return checkMonsterSpawnRules(entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) && (mobSpawnType == MobSpawnType.SPAWNER || serverLevelAccessor.canSeeSky(blockPos));
+        return checkMonsterSpawnRules(entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) &&
+                (mobSpawnType == MobSpawnType.SPAWNER || serverLevelAccessor.canSeeSky(blockPos));
     }
 
     @Override
@@ -48,8 +50,9 @@ public class BabyStray extends Stray {
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
-        return super.getStandingEyeHeight(pose, dimensions) * 0.534F;
+    protected EntityDimensions getDefaultDimensions(Pose pose) {
+        return super.getDefaultDimensions(pose)
+                .withEyeHeight(this.getType().getDimensions().eyeHeight() * (this.isBaby() ? 0.534F : 1.0F));
     }
 
     @Override
@@ -61,7 +64,7 @@ public class BabyStray extends Stray {
 
     @Override
     public void reassessWeaponGoal() {
-
+        // NO-OP
     }
 
     @Override

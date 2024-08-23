@@ -97,8 +97,9 @@ public class BabyWitherSkeleton extends WitherSkeleton implements SkullCarryingM
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
-        return super.getStandingEyeHeight(pose, dimensions) * 0.534F;
+    protected EntityDimensions getDefaultDimensions(Pose pose) {
+        return super.getDefaultDimensions(pose)
+                .withEyeHeight(this.getType().getDimensions().eyeHeight() * (this.isBaby() ? 0.534F : 1.0F));
     }
 
     @Override

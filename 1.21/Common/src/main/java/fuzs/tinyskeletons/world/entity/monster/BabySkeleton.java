@@ -43,8 +43,9 @@ public class BabySkeleton extends Skeleton {
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
-        return super.getStandingEyeHeight(pose, dimensions) * 0.534F;
+    protected EntityDimensions getDefaultDimensions(Pose pose) {
+        return super.getDefaultDimensions(pose)
+                .withEyeHeight(this.getType().getDimensions().eyeHeight() * (this.isBaby() ? 0.534F : 1.0F));
     }
 
     @Override
@@ -123,6 +124,7 @@ public class BabySkeleton extends Skeleton {
     private void createAttackGoals() {
         this.bowGoal = new RangedBowEasyAttackGoal<>(this, 1.0, 40, 60, 15.0F);
         this.meleeGoal = new MeleeAttackGoal(this, 1.2, false) {
+
             @Override
             public void stop() {
                 super.stop();
