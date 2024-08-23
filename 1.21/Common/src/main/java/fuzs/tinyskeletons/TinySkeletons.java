@@ -42,6 +42,7 @@ public class TinySkeletons implements ModConstructor {
                 ModRegistry.BABY_WITHER_SKELETON_ENTITY_TYPE.value()
         );
         BabyConversionHandler.registerConversion(EntityType.STRAY, ModRegistry.BABY_STRAY_ENTITY_TYPE.value());
+        BabyConversionHandler.registerConversion(EntityType.BOGGED, ModRegistry.BABY_BOGGED_ENTITY_TYPE.value());
     }
 
     @Override
@@ -56,6 +57,9 @@ public class TinySkeletons implements ModConstructor {
         context.registerSpawnPlacement(ModRegistry.BABY_STRAY_ENTITY_TYPE.value(), SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BabyStray::checkBabyStraySpawnRules
         );
+        context.registerSpawnPlacement(ModRegistry.BABY_BOGGED_ENTITY_TYPE.value(), SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules
+        );
     }
 
     @Override
@@ -67,6 +71,9 @@ public class TinySkeletons implements ModConstructor {
                 Monster.createMonsterAttributes().add(Attributes.ATTACK_DAMAGE, 1.0).add(Attributes.MOVEMENT_SPEED, 0.3)
         );
         context.registerEntityAttributes(ModRegistry.BABY_STRAY_ENTITY_TYPE.value(),
+                Monster.createMonsterAttributes().add(Attributes.ATTACK_DAMAGE, 1.0).add(Attributes.MOVEMENT_SPEED, 0.3)
+        );
+        context.registerEntityAttributes(ModRegistry.BABY_BOGGED_ENTITY_TYPE.value(),
                 Monster.createMonsterAttributes().add(Attributes.ATTACK_DAMAGE, 1.0).add(Attributes.MOVEMENT_SPEED, 0.3)
         );
     }

@@ -7,3 +7,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v21.0.0-1.21] - 2024-08-23
 - Port to Minecraft 1.21
 - Forge is no longer support in favor of NeoForge
+### Added
+- Add baby bogged, they will throw mushrooms at you!

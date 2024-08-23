@@ -19,7 +19,9 @@ public class ModEntityTypeTagProvider extends AbstractTagProvider<EntityType<?>>
         this.add(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES).add(ModRegistry.BABY_STRAY_ENTITY_TYPE.value());
         this.add(EntityTypeTags.SKELETONS)
                 .add(ModRegistry.BABY_SKELETON_ENTITY_TYPE.value(),
-                        ModRegistry.BABY_WITHER_SKELETON_ENTITY_TYPE.value(), ModRegistry.BABY_STRAY_ENTITY_TYPE.value()
+                        ModRegistry.BABY_WITHER_SKELETON_ENTITY_TYPE.value(),
+                        ModRegistry.BABY_STRAY_ENTITY_TYPE.value(), ModRegistry.BABY_BOGGED_ENTITY_TYPE.value()
                 );
+        this.add(EntityTypeTags.NO_ANGER_FROM_WIND_CHARGE).add(ModRegistry.BABY_BOGGED_ENTITY_TYPE.value());
     }
 }

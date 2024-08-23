@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableBiMap;
 import com.mojang.blaze3d.platform.NativeImage;
 import fuzs.puzzleslib.api.core.v1.utility.ResourceLocationHelper;
 import fuzs.puzzleslib.api.resources.v1.AbstractModPackResources;
+import fuzs.tinyskeletons.client.renderer.entity.BabyBoggedRenderer;
 import fuzs.tinyskeletons.client.renderer.entity.BabySkeletonRenderer;
 import fuzs.tinyskeletons.client.renderer.entity.BabyStrayRenderer;
 import fuzs.tinyskeletons.client.renderer.entity.BabyWitherSkeletonRenderer;
@@ -25,9 +26,13 @@ import java.util.stream.Collectors;
 
 public class BabySkeletonPackResources extends AbstractModPackResources {
     private static final ResourceLocation SKELETON_LOCATION = ResourceLocationHelper.withDefaultNamespace("textures/entity/skeleton/skeleton.png");
-    private static final ResourceLocation STRAY_SKELETON_LOCATION = ResourceLocationHelper.withDefaultNamespace("textures/entity/skeleton/stray.png");
+    private static final ResourceLocation STRAY_LOCATION = ResourceLocationHelper.withDefaultNamespace("textures/entity/skeleton/stray.png");
     private static final ResourceLocation WITHER_SKELETON_LOCATION = ResourceLocationHelper.withDefaultNamespace("textures/entity/skeleton/wither_skeleton.png");
-    private static final BiMap<ResourceLocation, ResourceLocation> BABY_SKELETON_LOCATIONS = ImmutableBiMap.of(BabySkeletonRenderer.BABY_SKELETON_LOCATION, SKELETON_LOCATION, BabyStrayRenderer.BABY_STRAY_SKELETON_LOCATION, STRAY_SKELETON_LOCATION, BabyWitherSkeletonRenderer.BABY_WITHER_SKELETON_LOCATION, WITHER_SKELETON_LOCATION);
+    private static final ResourceLocation BOGGED_LOCATION = ResourceLocationHelper.withDefaultNamespace("textures/entity/skeleton/bogged.png");
+    private static final BiMap<ResourceLocation, ResourceLocation> BABY_SKELETON_LOCATIONS = ImmutableBiMap.of(BabySkeletonRenderer.BABY_SKELETON_LOCATION, SKELETON_LOCATION, BabyStrayRenderer.BABY_STRAY_SKELETON_LOCATION,
+            STRAY_LOCATION, BabyWitherSkeletonRenderer.BABY_WITHER_SKELETON_LOCATION, WITHER_SKELETON_LOCATION,
+            BabyBoggedRenderer.BABY_BOGGED_SKELETON_LOCATION, BOGGED_LOCATION
+    );
     private static final int VANILLA_SKELETON_TEXTURE_WIDTH = 64;
     private static final int VANILLA_SKELETON_TEXTURE_HEIGHT = 32;
 

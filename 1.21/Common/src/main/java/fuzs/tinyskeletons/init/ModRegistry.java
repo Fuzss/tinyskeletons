@@ -2,9 +2,11 @@ package fuzs.tinyskeletons.init;
 
 import fuzs.puzzleslib.api.init.v3.registry.RegistryManager;
 import fuzs.tinyskeletons.TinySkeletons;
+import fuzs.tinyskeletons.world.entity.monster.BabyBogged;
 import fuzs.tinyskeletons.world.entity.monster.BabySkeleton;
 import fuzs.tinyskeletons.world.entity.monster.BabyStray;
 import fuzs.tinyskeletons.world.entity.monster.BabyWitherSkeleton;
+import fuzs.tinyskeletons.world.entity.monster.projectile.Mushroom;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -32,6 +34,17 @@ public class ModRegistry {
                     .ridingOffset(-0.7F)
                     .immuneTo(Blocks.POWDER_SNOW)
                     .clientTrackingRange(8));
+    public static final Holder.Reference<EntityType<BabyBogged>> BABY_BOGGED_ENTITY_TYPE = REGISTRIES.registerEntityType(
+            "baby_bogged", () -> EntityType.Builder.of(BabyBogged::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.99F)
+                    .eyeHeight(1.74F)
+                    .ridingOffset(-0.7F)
+                    .clientTrackingRange(8));
+    public static final Holder.Reference<EntityType<Mushroom>> MUSHROOM_ENTITY_TYPE = REGISTRIES.registerEntityType(
+            "mushroom", () -> EntityType.Builder.<Mushroom>of(Mushroom::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .clientTrackingRange(4)
+                    .updateInterval(10));
 
     public static void touch() {
         // NO-OP
