@@ -1,5 +1,7 @@
 package fuzs.tinyskeletons.world.entity.monster;
 
+import fuzs.puzzleslib.api.util.v1.InteractionResultHelper;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -67,15 +69,15 @@ public class BabyWitherSkeleton extends WitherSkeleton implements SkullCarryingM
         if (itemstack.is(Items.WITHER_ROSE)) {
             ItemStack skullItem = this.getSkullItem();
             if (!skullItem.isEmpty()) {
-                if (!this.level().isClientSide) {
+                if (this.level() instanceof ServerLevel serverLevel) {
                     if (!player.getAbilities().instabuild) {
                         itemstack.shrink(1);
                     }
-                    this.spawnAtLocation(skullItem);
+                    this.spawnAtLocation(serverLevel, skullItem);
                     this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
                 }
                 this.setDancing();
-                return InteractionResult.sidedSuccess(this.level().isClientSide);
+                return InteractionResultHelper.sidedSuccess(this.level().isClientSide);
             }
         }
 
@@ -112,10 +114,10 @@ public class BabyWitherSkeleton extends WitherSkeleton implements SkullCarryingM
     public ItemStack getSkullItem() {
         if (this.isOnlyCarryingSkull(this, InteractionHand.MAIN_HAND)) {
             return this.getMainHandItem();
-        }
-        if (this.isOnlyCarryingSkull(this, InteractionHand.OFF_HAND)) {
+        } else if (this.isOnlyCarryingSkull(this, InteractionHand.OFF_HAND)) {
             return this.getOffhandItem();
+        } else {
+            return ItemStack.EMPTY;
         }
-        return ItemStack.EMPTY;
     }
 }

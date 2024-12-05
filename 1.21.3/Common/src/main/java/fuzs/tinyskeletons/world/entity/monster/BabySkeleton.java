@@ -7,10 +7,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RangedBowAttackGoal;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
@@ -20,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.LevelEvent;
 
 public class BabySkeleton extends Skeleton {
     private RangedBowAttackGoal<AbstractSkeleton> bowGoal;
@@ -58,20 +56,20 @@ public class BabySkeleton extends Skeleton {
 
     @Override
     protected void doFreezeConversion() {
-        BabyStray stray = this.convertTo(ModRegistry.BABY_STRAY_ENTITY_TYPE.value(), true);
-        // cheap hack so we don't have to implement proper fighting behavior for strays, just give them their default snowball and remove everything else
-        if (stray != null) {
+        this.convertTo(ModRegistry.BABY_STRAY_ENTITY_TYPE.value(), ConversionParams.single(this, true, true), stray -> {
             // need this call as otherwise overriding with empty items will not send an update to clients as empty is default value and all this is happening within the same tick
             // (LivingEntity::detectEquipmentUpdates is called in the tick method)
             ((LivingEntityAccessor) stray).tinyskeletons$callDetectEquipmentUpdates();
+            // cheap hack so we don't have to implement proper fighting behavior for strays, just give them their default snowball and remove everything else
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 stray.setItemSlot(slot, ItemStack.EMPTY);
             }
-            stray.populateDefaultEquipmentSlots(this.random, stray.level().getCurrentDifficultyAt(stray.blockPosition()));
-        }
-        if (!this.isSilent()) {
-            this.level().levelEvent(null, 1048, this.blockPosition(), 0);
-        }
+            stray.populateDefaultEquipmentSlots(this.random,
+                    stray.level().getCurrentDifficultyAt(stray.blockPosition()));
+            if (!this.isSilent()) {
+                this.level().levelEvent(null, LevelEvent.SOUND_SKELETON_TO_STRAY, this.blockPosition(), 0);
+            }
+        });
     }
 
     @Override

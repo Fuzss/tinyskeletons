@@ -2,23 +2,36 @@ package fuzs.tinyskeletons.client.renderer.entity;
 
 import fuzs.tinyskeletons.TinySkeletons;
 import fuzs.tinyskeletons.client.init.ModClientRegistry;
+import fuzs.tinyskeletons.client.packs.BabySkeletonPackResources;
 import fuzs.tinyskeletons.world.entity.monster.BabyStray;
+import net.minecraft.client.renderer.entity.AbstractSkeletonRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.SkeletonRenderer;
 import net.minecraft.client.renderer.entity.layers.SkeletonClothingLayer;
+import net.minecraft.client.renderer.entity.state.SkeletonRenderState;
 import net.minecraft.resources.ResourceLocation;
 
-public class BabyStrayRenderer extends SkeletonRenderer<BabyStray> {
-   public static final ResourceLocation BABY_STRAY_SKELETON_LOCATION = TinySkeletons.id("textures/entity/skeleton/baby_stray.png");
-   private static final ResourceLocation STRAY_CLOTHES_LOCATION = ResourceLocation.withDefaultNamespace("textures/entity/skeleton/stray_overlay.png");
+public class BabyStrayRenderer extends AbstractSkeletonRenderer<BabyStray, SkeletonRenderState> {
+    public static final ResourceLocation STRAY_SKELETON_LOCATION = TinySkeletons.id(BabySkeletonPackResources.STRAY_SKELETON_LOCATION.getPath());
+    public static final ResourceLocation STRAY_CLOTHES_LOCATION = TinySkeletons.id(BabySkeletonPackResources.STRAY_CLOTHES_LOCATION.getPath());
 
-   public BabyStrayRenderer(EntityRendererProvider.Context context) {
-      super(context, ModClientRegistry.BABY_STRAY, ModClientRegistry.BABY_STRAY_INNER_ARMOR, ModClientRegistry.BABY_STRAY_OUTER_ARMOR);
-      this.addLayer(new SkeletonClothingLayer<>(this, context.getModelSet(), ModClientRegistry.BABY_STRAY_OUTER_LAYER, STRAY_CLOTHES_LOCATION));
-   }
+    public BabyStrayRenderer(EntityRendererProvider.Context context) {
+        super(context,
+                ModClientRegistry.BABY_STRAY,
+                ModClientRegistry.BABY_STRAY_INNER_ARMOR,
+                ModClientRegistry.BABY_STRAY_OUTER_ARMOR);
+        this.addLayer(new SkeletonClothingLayer<>(this,
+                context.getModelSet(),
+                ModClientRegistry.BABY_STRAY_OUTER_LAYER,
+                STRAY_CLOTHES_LOCATION));
+    }
 
-   @Override
-   public ResourceLocation getTextureLocation(BabyStray entity) {
-      return BABY_STRAY_SKELETON_LOCATION;
-   }
+    @Override
+    public SkeletonRenderState createRenderState() {
+        return new SkeletonRenderState();
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(SkeletonRenderState livingEntityRenderState) {
+        return STRAY_SKELETON_LOCATION;
+    }
 }

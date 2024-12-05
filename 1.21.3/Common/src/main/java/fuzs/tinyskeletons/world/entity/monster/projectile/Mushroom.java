@@ -9,6 +9,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
@@ -20,12 +21,12 @@ public class Mushroom extends ThrowableItemProjectile {
         super(entityType, level);
     }
 
-    public Mushroom(Level level, LivingEntity shooter) {
-        super(ModRegistry.MUSHROOM_ENTITY_TYPE.value(), shooter, level);
+    public Mushroom(Level level, LivingEntity shooter, ItemStack itemStack) {
+        super(ModRegistry.MUSHROOM_ENTITY_TYPE.value(), shooter, level, itemStack);
     }
 
-    public Mushroom(Level level, double x, double y, double z) {
-        super(ModRegistry.MUSHROOM_ENTITY_TYPE.value(), x, y, z, level);
+    public Mushroom(Level level, double x, double y, double z, ItemStack itemStack) {
+        super(ModRegistry.MUSHROOM_ENTITY_TYPE.value(), x, y, z, level, itemStack);
     }
 
     @Override

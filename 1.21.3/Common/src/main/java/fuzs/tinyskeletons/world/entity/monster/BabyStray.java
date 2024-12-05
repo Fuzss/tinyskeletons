@@ -1,6 +1,7 @@
 package fuzs.tinyskeletons.world.entity.monster;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -8,6 +9,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
 import net.minecraft.world.entity.monster.Stray;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.Snowball;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -23,9 +25,9 @@ public class BabyStray extends Stray {
         this.refreshDimensions();
     }
 
-    public static boolean checkBabyStraySpawnRules(EntityType<BabyStray> entityType, ServerLevelAccessor serverLevelAccessor, MobSpawnType mobSpawnType, BlockPos blockPos, RandomSource randomSource) {
-        return checkMonsterSpawnRules(entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) &&
-                (mobSpawnType == MobSpawnType.SPAWNER || serverLevelAccessor.canSeeSky(blockPos));
+    public static boolean checkBabyStraySpawnRules(EntityType<BabyStray> entityType, ServerLevelAccessor serverLevelAccessor, EntitySpawnReason entitySpawnReason, BlockPos blockPos, RandomSource randomSource) {
+        return checkMonsterSpawnRules(entityType, serverLevelAccessor, entitySpawnReason, blockPos, randomSource) &&
+                (entitySpawnReason == EntitySpawnReason.SPAWNER || serverLevelAccessor.canSeeSky(blockPos));
     }
 
     @Override
@@ -70,22 +72,30 @@ public class BabyStray extends Stray {
 
     @Override
     public void performRangedAttack(LivingEntity target, float velocity) {
-        Snowball snowball = new Snowball(this.level(), this) {
+        double dX = target.getX() - this.getX();
+        double dY = target.getEyeY() - 1.1F;
+        double dZ = target.getZ() - this.getZ();
+        double g = Math.sqrt(dX * dX + dZ * dZ) * 0.2F;
+        if (this.level() instanceof ServerLevel serverLevel) {
+            ItemStack itemStack = new ItemStack(Items.SNOWBALL);
+            Projectile.spawnProjectile(new Snowball(serverLevel, this, itemStack) {
 
-            @Override
-            protected void onHitEntity(EntityHitResult hitResult) {
-                Entity entity = hitResult.getEntity();
-                entity.hurt(this.level().damageSources().thrown(this, this.getOwner()), 0.5F);
-            }
-        };
-        double d0 = target.getEyeY() - (double) 1.1F;
-        double d1 = target.getX() - this.getX();
-        double d2 = d0 - snowball.getY();
-        double d3 = target.getZ() - this.getZ();
-        double f = Math.sqrt(d1 * d1 + d3 * d3) * 0.2;
-        snowball.shoot(d1, d2 + f, d3, 1.6F, 14.0F - this.level().getDifficulty().getId() * 2.0F);
+                                           @Override
+                                           protected void onHitEntity(EntityHitResult hitResult) {
+                                               Entity entity = hitResult.getEntity();
+                                               entity.hurt(this.level().damageSources().thrown(this, this.getOwner()), 0.5F);
+                                           }
+                                       },
+                    serverLevel,
+                    itemStack,
+                    snowball -> snowball.shoot(dX,
+                            dY + g - snowball.getY(),
+                            dZ,
+                            1.6F,
+                            14.0F - serverLevel.getDifficulty().getId() * 2.0F));
+        }
+
         this.playSound(SoundEvents.SNOW_GOLEM_SHOOT, 1.0F, 0.4F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-        this.level().addFreshEntity(snowball);
         this.swing(InteractionHand.MAIN_HAND);
     }
 }

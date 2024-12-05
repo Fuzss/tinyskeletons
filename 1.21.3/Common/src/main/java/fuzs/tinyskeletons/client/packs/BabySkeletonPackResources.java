@@ -3,7 +3,6 @@ package fuzs.tinyskeletons.client.packs;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import com.mojang.blaze3d.platform.NativeImage;
-import fuzs.puzzleslib.api.core.v1.utility.ResourceLocationHelper;
 import fuzs.puzzleslib.api.resources.v1.AbstractModPackResources;
 import fuzs.tinyskeletons.client.renderer.entity.BabyBoggedRenderer;
 import fuzs.tinyskeletons.client.renderer.entity.BabySkeletonRenderer;
@@ -25,14 +24,32 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class BabySkeletonPackResources extends AbstractModPackResources {
-    private static final ResourceLocation SKELETON_LOCATION = ResourceLocationHelper.withDefaultNamespace("textures/entity/skeleton/skeleton.png");
-    private static final ResourceLocation STRAY_LOCATION = ResourceLocationHelper.withDefaultNamespace("textures/entity/skeleton/stray.png");
-    private static final ResourceLocation WITHER_SKELETON_LOCATION = ResourceLocationHelper.withDefaultNamespace("textures/entity/skeleton/wither_skeleton.png");
-    private static final ResourceLocation BOGGED_LOCATION = ResourceLocationHelper.withDefaultNamespace("textures/entity/skeleton/bogged.png");
-    private static final BiMap<ResourceLocation, ResourceLocation> BABY_SKELETON_LOCATIONS = ImmutableBiMap.of(BabySkeletonRenderer.BABY_SKELETON_LOCATION, SKELETON_LOCATION, BabyStrayRenderer.BABY_STRAY_SKELETON_LOCATION,
-            STRAY_LOCATION, BabyWitherSkeletonRenderer.BABY_WITHER_SKELETON_LOCATION, WITHER_SKELETON_LOCATION,
-            BabyBoggedRenderer.BABY_BOGGED_SKELETON_LOCATION, BOGGED_LOCATION
-    );
+    public static final ResourceLocation SKELETON_LOCATION = ResourceLocation.withDefaultNamespace(
+            "textures/entity/skeleton/skeleton.png");
+    public static final ResourceLocation WITHER_SKELETON_LOCATION = ResourceLocation.withDefaultNamespace(
+            "textures/entity/skeleton/wither_skeleton.png");
+    public static final ResourceLocation STRAY_SKELETON_LOCATION = ResourceLocation.withDefaultNamespace(
+            "textures/entity/skeleton/stray.png");
+    public static final ResourceLocation STRAY_CLOTHES_LOCATION = ResourceLocation.withDefaultNamespace(
+            "textures/entity/skeleton/stray_overlay.png");
+    public static final ResourceLocation BOGGED_SKELETON_LOCATION = ResourceLocation.withDefaultNamespace(
+            "textures/entity/skeleton/bogged.png");
+    public static final ResourceLocation BOGGED_OUTER_LAYER_LOCATION = ResourceLocation.withDefaultNamespace(
+            "textures/entity/skeleton/bogged_overlay.png");
+
+    private static final BiMap<ResourceLocation, ResourceLocation> BABY_SKELETON_LOCATIONS = ImmutableBiMap.of(
+            BabySkeletonRenderer.SKELETON_LOCATION,
+            SKELETON_LOCATION,
+            BabyWitherSkeletonRenderer.WITHER_SKELETON_LOCATION,
+            WITHER_SKELETON_LOCATION,
+            BabyStrayRenderer.STRAY_SKELETON_LOCATION,
+            STRAY_SKELETON_LOCATION,
+            BabyStrayRenderer.STRAY_CLOTHES_LOCATION,
+            STRAY_CLOTHES_LOCATION,
+            BabyBoggedRenderer.BOGGED_SKELETON_LOCATION,
+            BOGGED_SKELETON_LOCATION,
+            BabyBoggedRenderer.BOGGED_OUTER_LAYER_LOCATION,
+            BOGGED_OUTER_LAYER_LOCATION);
     private static final int VANILLA_SKELETON_TEXTURE_WIDTH = 64;
     private static final int VANILLA_SKELETON_TEXTURE_HEIGHT = 32;
 
@@ -55,11 +72,12 @@ public class BabySkeletonPackResources extends AbstractModPackResources {
             // use vanilla skeleton texture for the baby
             Optional<Resource> resource = this.resourceManager.getResource(vanillaSkeletonLocation);
             if (resource.isPresent()) {
-                try (NativeImage image = NativeImage.read(resource.get().open())) {
+                try (NativeImage nativeImage = NativeImage.read(resource.get().open())) {
                     // check the vanilla skeleton texture aspect ratio; some mods using OptiFine change the texture file completely since they also change the skeleton model, which breaks tiny skeletons
                     // make sure to check the aspect ratio instead of absolute width / height to support higher resolution resource packs
                     // in that case fall back to the skeleton texture from the vanilla assets pack
-                    if (image.getWidth() / image.getHeight() != VANILLA_SKELETON_TEXTURE_WIDTH / VANILLA_SKELETON_TEXTURE_HEIGHT) {
+                    if (nativeImage.getWidth() / nativeImage.getHeight() !=
+                            VANILLA_SKELETON_TEXTURE_WIDTH / VANILLA_SKELETON_TEXTURE_HEIGHT) {
                         return this.vanillaPackResources.getResource(packType, vanillaSkeletonLocation);
                     }
                 } catch (IOException ignored) {
@@ -74,6 +92,9 @@ public class BabySkeletonPackResources extends AbstractModPackResources {
 
     @Override
     public Set<String> getNamespaces(PackType type) {
-        return BABY_SKELETON_LOCATIONS.keySet().stream().map(ResourceLocation::getNamespace).collect(Collectors.toSet());
+        return BABY_SKELETON_LOCATIONS.keySet()
+                .stream()
+                .map(ResourceLocation::getNamespace)
+                .collect(Collectors.toSet());
     }
 }
