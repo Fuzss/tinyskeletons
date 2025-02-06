@@ -6,7 +6,7 @@ import fuzs.puzzleslib.api.client.core.v1.context.LayerDefinitionsContext;
 import fuzs.puzzleslib.api.core.v1.context.PackRepositorySourcesContext;
 import fuzs.puzzleslib.api.resources.v1.PackResourcesHelper;
 import fuzs.tinyskeletons.TinySkeletons;
-import fuzs.tinyskeletons.client.init.ModClientRegistry;
+import fuzs.tinyskeletons.client.init.ModelLayerLocations;
 import fuzs.tinyskeletons.client.packs.BabySkeletonPackResources;
 import fuzs.tinyskeletons.client.renderer.entity.BabyBoggedRenderer;
 import fuzs.tinyskeletons.client.renderer.entity.BabySkeletonRenderer;
@@ -53,24 +53,24 @@ public class TinySkeletonsClient implements ClientModConstructor {
                 0.25F), 0.0F), 64, 32).apply(HumanoidModel.BABY_TRANSFORMER);
         Supplier<LayerDefinition> boggedOuterLayer = () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(
                 0.2F), 0.0F), 64, 32).apply(HumanoidModel.BABY_TRANSFORMER);
-        context.registerLayerDefinition(ModClientRegistry.BABY_SKELETON, skeletonLayer);
-        context.registerLayerDefinition(ModClientRegistry.BABY_SKELETON_INNER_ARMOR, innerArmorLayer);
-        context.registerLayerDefinition(ModClientRegistry.BABY_SKELETON_OUTER_ARMOR, outerArmorLayer);
-        context.registerLayerDefinition(ModClientRegistry.BABY_STRAY, skeletonLayer);
-        context.registerLayerDefinition(ModClientRegistry.BABY_STRAY_INNER_ARMOR, innerArmorLayer);
-        context.registerLayerDefinition(ModClientRegistry.BABY_STRAY_OUTER_ARMOR, outerArmorLayer);
-        context.registerLayerDefinition(ModClientRegistry.BABY_STRAY_OUTER_LAYER, strayOuterLayer);
+        context.registerLayerDefinition(ModelLayerLocations.BABY_SKELETON, skeletonLayer);
+        context.registerLayerDefinition(ModelLayerLocations.BABY_SKELETON_INNER_ARMOR, innerArmorLayer);
+        context.registerLayerDefinition(ModelLayerLocations.BABY_SKELETON_OUTER_ARMOR, outerArmorLayer);
+        context.registerLayerDefinition(ModelLayerLocations.BABY_STRAY, skeletonLayer);
+        context.registerLayerDefinition(ModelLayerLocations.BABY_STRAY_INNER_ARMOR, innerArmorLayer);
+        context.registerLayerDefinition(ModelLayerLocations.BABY_STRAY_OUTER_ARMOR, outerArmorLayer);
+        context.registerLayerDefinition(ModelLayerLocations.BABY_STRAY_OUTER_LAYER, strayOuterLayer);
         MeshTransformer witherSkeletonTransformer = MeshTransformer.scaling(1.2F);
-        context.registerLayerDefinition(ModClientRegistry.BABY_WITHER_SKELETON,
+        context.registerLayerDefinition(ModelLayerLocations.BABY_WITHER_SKELETON,
                 () -> skeletonLayer.get().apply(witherSkeletonTransformer));
-        context.registerLayerDefinition(ModClientRegistry.BABY_WITHER_SKELETON_INNER_ARMOR,
+        context.registerLayerDefinition(ModelLayerLocations.BABY_WITHER_SKELETON_INNER_ARMOR,
                 () -> innerArmorLayer.get().apply(witherSkeletonTransformer));
-        context.registerLayerDefinition(ModClientRegistry.BABY_WITHER_SKELETON_OUTER_ARMOR,
+        context.registerLayerDefinition(ModelLayerLocations.BABY_WITHER_SKELETON_OUTER_ARMOR,
                 () -> outerArmorLayer.get().apply(witherSkeletonTransformer));
-        context.registerLayerDefinition(ModClientRegistry.BABY_BOGGED, boggedLayer);
-        context.registerLayerDefinition(ModClientRegistry.BABY_BOGGED_INNER_ARMOR, innerArmorLayer);
-        context.registerLayerDefinition(ModClientRegistry.BABY_BOGGED_OUTER_ARMOR, outerArmorLayer);
-        context.registerLayerDefinition(ModClientRegistry.BABY_BOGGED_OUTER_LAYER, boggedOuterLayer);
+        context.registerLayerDefinition(ModelLayerLocations.BABY_BOGGED, boggedLayer);
+        context.registerLayerDefinition(ModelLayerLocations.BABY_BOGGED_INNER_ARMOR, innerArmorLayer);
+        context.registerLayerDefinition(ModelLayerLocations.BABY_BOGGED_OUTER_ARMOR, outerArmorLayer);
+        context.registerLayerDefinition(ModelLayerLocations.BABY_BOGGED_OUTER_LAYER, boggedOuterLayer);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package fuzs.tinyskeletons.client.renderer.entity;
 
 import fuzs.tinyskeletons.TinySkeletons;
-import fuzs.tinyskeletons.client.init.ModClientRegistry;
+import fuzs.tinyskeletons.client.init.ModelLayerLocations;
 import fuzs.tinyskeletons.client.model.BabyWitherSkeletonModel;
 import fuzs.tinyskeletons.client.packs.BabySkeletonPackResources;
 import fuzs.tinyskeletons.client.renderer.entity.layers.SkullInHandLayer;
@@ -19,9 +19,9 @@ public class BabyWitherSkeletonRenderer extends AbstractSkeletonRenderer<BabyWit
 
     public BabyWitherSkeletonRenderer(EntityRendererProvider.Context context) {
         this(context,
-                ModClientRegistry.BABY_WITHER_SKELETON,
-                ModClientRegistry.BABY_WITHER_SKELETON_INNER_ARMOR,
-                ModClientRegistry.BABY_WITHER_SKELETON_OUTER_ARMOR);
+                ModelLayerLocations.BABY_WITHER_SKELETON,
+                ModelLayerLocations.BABY_WITHER_SKELETON_INNER_ARMOR,
+                ModelLayerLocations.BABY_WITHER_SKELETON_OUTER_ARMOR);
     }
 
     protected BabyWitherSkeletonRenderer(EntityRendererProvider.Context context, ModelLayerLocation modelLayerLocation, ModelLayerLocation innerArmorModelLayerLocation, ModelLayerLocation outerArmorModelLayerLocation) {
@@ -31,7 +31,7 @@ public class BabyWitherSkeletonRenderer extends AbstractSkeletonRenderer<BabyWit
                 new BabyWitherSkeletonModel(context.bakeLayer(modelLayerLocation)));
         this.layers.removeIf(renderLayer -> renderLayer instanceof HumanoidArmorLayer ||
                 renderLayer instanceof ItemInHandLayer);
-        this.addLayer(new SkullInHandLayer<>(this, context.getItemRenderer()));
+        this.addLayer(new SkullInHandLayer<>(this, context.getBlockRenderDispatcher()));
         this.addLayer(new HumanoidArmorLayer<>(this,
                 new BabyWitherSkeletonModel(context.bakeLayer(innerArmorModelLayerLocation)),
                 new BabyWitherSkeletonModel(context.bakeLayer(outerArmorModelLayerLocation)),

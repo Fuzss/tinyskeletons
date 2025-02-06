@@ -1,7 +1,7 @@
 package fuzs.tinyskeletons.client.renderer.entity;
 
 import fuzs.tinyskeletons.TinySkeletons;
-import fuzs.tinyskeletons.client.init.ModClientRegistry;
+import fuzs.tinyskeletons.client.init.ModelLayerLocations;
 import fuzs.tinyskeletons.client.packs.BabySkeletonPackResources;
 import fuzs.tinyskeletons.world.entity.monster.BabyBogged;
 import net.minecraft.client.renderer.entity.AbstractSkeletonRenderer;
@@ -16,12 +16,12 @@ public class BabyBoggedRenderer extends AbstractSkeletonRenderer<BabyBogged, Bog
 
     public BabyBoggedRenderer(EntityRendererProvider.Context context) {
         super(context,
-                ModClientRegistry.BABY_BOGGED,
-                ModClientRegistry.BABY_BOGGED_INNER_ARMOR,
-                ModClientRegistry.BABY_BOGGED_OUTER_ARMOR);
+                ModelLayerLocations.BABY_BOGGED,
+                ModelLayerLocations.BABY_BOGGED_INNER_ARMOR,
+                ModelLayerLocations.BABY_BOGGED_OUTER_ARMOR);
         this.addLayer(new SkeletonClothingLayer<>(this,
                 context.getModelSet(),
-                ModClientRegistry.BABY_BOGGED_OUTER_LAYER,
+                ModelLayerLocations.BABY_BOGGED_OUTER_LAYER,
                 BOGGED_OUTER_LAYER_LOCATION));
     }
 

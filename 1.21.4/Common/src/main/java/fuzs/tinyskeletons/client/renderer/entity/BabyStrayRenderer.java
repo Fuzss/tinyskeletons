@@ -1,7 +1,7 @@
 package fuzs.tinyskeletons.client.renderer.entity;
 
 import fuzs.tinyskeletons.TinySkeletons;
-import fuzs.tinyskeletons.client.init.ModClientRegistry;
+import fuzs.tinyskeletons.client.init.ModelLayerLocations;
 import fuzs.tinyskeletons.client.packs.BabySkeletonPackResources;
 import fuzs.tinyskeletons.world.entity.monster.BabyStray;
 import net.minecraft.client.renderer.entity.AbstractSkeletonRenderer;
@@ -16,12 +16,12 @@ public class BabyStrayRenderer extends AbstractSkeletonRenderer<BabyStray, Skele
 
     public BabyStrayRenderer(EntityRendererProvider.Context context) {
         super(context,
-                ModClientRegistry.BABY_STRAY,
-                ModClientRegistry.BABY_STRAY_INNER_ARMOR,
-                ModClientRegistry.BABY_STRAY_OUTER_ARMOR);
+                ModelLayerLocations.BABY_STRAY,
+                ModelLayerLocations.BABY_STRAY_INNER_ARMOR,
+                ModelLayerLocations.BABY_STRAY_OUTER_ARMOR);
         this.addLayer(new SkeletonClothingLayer<>(this,
                 context.getModelSet(),
-                ModClientRegistry.BABY_STRAY_OUTER_LAYER,
+                ModelLayerLocations.BABY_STRAY_OUTER_LAYER,
                 STRAY_CLOTHES_LOCATION));
     }
 

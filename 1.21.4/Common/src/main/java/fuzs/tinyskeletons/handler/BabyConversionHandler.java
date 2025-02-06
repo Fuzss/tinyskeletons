@@ -35,7 +35,8 @@ public class BabyConversionHandler {
         if (entitySpawnReason != null && entitySpawnReason != EntitySpawnReason.COMMAND &&
                 Zombie.getSpawnAsBabyOdds(serverLevel.getRandom())) {
             EntityType<? extends Mob> entityType = BABY_MOB_CONVERSIONS.get(entity.getType());
-            if (entityType != null && createAndSpawnBabyMob(serverLevel, entityType, entity, entitySpawnReason) != null) {
+            if (entityType != null &&
+                    createAndSpawnBabyMob(serverLevel, entityType, entity, entitySpawnReason) != null) {
 
                 return EventResult.INTERRUPT;
             }
@@ -47,7 +48,7 @@ public class BabyConversionHandler {
     public static EventResultHolder<InteractionResult> onEntityInteract(Player player, Level level, InteractionHand interactionHand, Entity target, Vec3 hitVector) {
         ItemStack stackInHand = player.getItemInHand(interactionHand);
         if (target.isAlive() && stackInHand.getItem() instanceof SpawnEggItem) {
-            EntityType<?> eggType = ((SpawnEggItem) stackInHand.getItem()).getType(stackInHand);
+            EntityType<?> eggType = ((SpawnEggItem) stackInHand.getItem()).getType(level.registryAccess(), stackInHand);
             EntityType<? extends Mob> babyType = BABY_MOB_CONVERSIONS.get(eggType);
             if (babyType != null && (target.getType() == babyType || target.getType() == eggType)) {
                 if (!level.isClientSide) {
