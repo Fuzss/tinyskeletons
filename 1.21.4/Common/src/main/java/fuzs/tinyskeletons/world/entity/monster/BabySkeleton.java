@@ -1,16 +1,13 @@
 package fuzs.tinyskeletons.world.entity.monster;
 
 import fuzs.tinyskeletons.init.ModRegistry;
-import fuzs.tinyskeletons.mixin.accessor.LivingEntityAccessor;
-import fuzs.tinyskeletons.world.entity.ai.goal.RangedBowEasyAttackGoal;
+import fuzs.tinyskeletons.world.entity.ai.goal.RangedBowAttackWithoutStrafingGoal;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.RangedBowAttackGoal;
-import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
@@ -20,14 +17,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LevelEvent;
 
 public class BabySkeleton extends Skeleton {
-    private RangedBowAttackGoal<AbstractSkeleton> bowGoal;
-    private MeleeAttackGoal meleeGoal;
     private int switchWeaponCooldown;
 
     public BabySkeleton(EntityType<? extends Skeleton> entityType, Level level) {
         super(entityType, level);
         this.xpReward = (int) (this.xpReward * 2.5F);
         this.refreshDimensions();
+        this.bowGoal = new RangedBowAttackWithoutStrafingGoal<>(this, 1.0, 30, 15.0F);
+        this.reassessWeaponGoal();
     }
 
     @Override
@@ -59,7 +56,7 @@ public class BabySkeleton extends Skeleton {
         this.convertTo(ModRegistry.BABY_STRAY_ENTITY_TYPE.value(), ConversionParams.single(this, true, true), stray -> {
             // need this call as otherwise overriding with empty items will not send an update to clients as empty is default value and all this is happening within the same tick
             // (LivingEntity::detectEquipmentUpdates is called in the tick method)
-            ((LivingEntityAccessor) stray).tinyskeletons$callDetectEquipmentUpdates();
+            stray.detectEquipmentUpdates();
             // cheap hack so we don't have to implement proper fighting behavior for strays, just give them their default snowball and remove everything else
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 stray.setItemSlot(slot, ItemStack.EMPTY);
@@ -75,15 +72,15 @@ public class BabySkeleton extends Skeleton {
     @Override
     public void aiStep() {
         super.aiStep();
-        if (!this.level().isClientSide) {
+        if (this.level() instanceof ServerLevel) {
             if (this.switchWeaponCooldown > 0) this.switchWeaponCooldown--;
             if (this.switchWeaponCooldown == 0) {
-                if (this.getTarget() != null && this.distanceTo(this.getTarget()) < 4.0) {
+                if (this.getTarget() != null && this.distanceToSqr(this.getTarget()) < 16.0) {
                     if (this.getMainHandItem().getItem() instanceof BowItem) {
                         this.setHandItems(this.getOffhandItem(), this.getMainHandItem());
                         this.switchWeaponCooldown = 60;
                     }
-                } else if (this.getTarget() == null || this.distanceTo(this.getTarget()) > 8.0) {
+                } else if (this.getTarget() == null || this.distanceToSqr(this.getTarget()) > 36.0) {
                     if (this.getMainHandItem().getItem() instanceof SwordItem) {
                         this.setHandItems(this.getOffhandItem(), this.getMainHandItem());
                         this.switchWeaponCooldown = 60;
@@ -93,20 +90,24 @@ public class BabySkeleton extends Skeleton {
         }
     }
 
+    private void setHandItems(ItemStack mainHand, ItemStack offHand) {
+        this.setItemInHand(InteractionHand.MAIN_HAND, mainHand);
+        this.setItemInHand(InteractionHand.OFF_HAND, offHand);
+    }
+
     @Override
     public void reassessWeaponGoal() {
-        if (this.level() != null && !this.level().isClientSide) {
-            if (this.bowGoal == null || this.meleeGoal == null) {
-                this.createAttackGoals();
-            }
+        if (this.level() instanceof ServerLevel) {
             this.goalSelector.removeGoal(this.meleeGoal);
             this.goalSelector.removeGoal(this.bowGoal);
+            // do not search for a bow, only use it when held in main hand
             if (this.getMainHandItem().getItem() instanceof BowItem) {
-                int minAttackInterval = 20;
+                int attackInterval = this.getHardAttackInterval();
                 if (this.level().getDifficulty() != Difficulty.HARD) {
-                    minAttackInterval = 40;
+                    attackInterval = this.getAttackInterval();
                 }
-                this.bowGoal.setMinAttackInterval(minAttackInterval);
+
+                this.bowGoal.setMinAttackInterval(attackInterval);
                 this.goalSelector.addGoal(4, this.bowGoal);
             } else {
                 this.goalSelector.addGoal(4, this.meleeGoal);
@@ -114,26 +115,13 @@ public class BabySkeleton extends Skeleton {
         }
     }
 
-    private void setHandItems(ItemStack mainHand, ItemStack offHand) {
-        this.setItemInHand(InteractionHand.MAIN_HAND, mainHand);
-        this.setItemInHand(InteractionHand.OFF_HAND, offHand);
+    @Override
+    protected int getHardAttackInterval() {
+        return super.getHardAttackInterval() - 10;
     }
 
-    private void createAttackGoals() {
-        this.bowGoal = new RangedBowEasyAttackGoal<>(this, 1.0, 40, 60, 15.0F);
-        this.meleeGoal = new MeleeAttackGoal(this, 1.2, false) {
-
-            @Override
-            public void stop() {
-                super.stop();
-                BabySkeleton.this.setAggressive(false);
-            }
-
-            @Override
-            public void start() {
-                super.start();
-                BabySkeleton.this.setAggressive(true);
-            }
-        };
+    @Override
+    protected int getAttackInterval() {
+        return super.getAttackInterval() - 10;
     }
 }
