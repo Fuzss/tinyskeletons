@@ -1,5 +1,6 @@
 package fuzs.tinyskeletons.world.entity.monster;
 
+import fuzs.puzzleslib.api.item.v2.ToolTypeHelper;
 import fuzs.tinyskeletons.init.ModRegistry;
 import fuzs.tinyskeletons.world.entity.ai.goal.RangedBowAttackWithoutStrafingGoal;
 import net.minecraft.server.level.ServerLevel;
@@ -12,7 +13,6 @@ import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LevelEvent;
 
@@ -76,12 +76,12 @@ public class BabySkeleton extends Skeleton {
             if (this.switchWeaponCooldown > 0) this.switchWeaponCooldown--;
             if (this.switchWeaponCooldown == 0) {
                 if (this.getTarget() != null && this.distanceToSqr(this.getTarget()) < 16.0) {
-                    if (this.getMainHandItem().getItem() instanceof BowItem) {
+                    if (ToolTypeHelper.INSTANCE.isBow(this.getMainHandItem())) {
                         this.setHandItems(this.getOffhandItem(), this.getMainHandItem());
                         this.switchWeaponCooldown = 60;
                     }
                 } else if (this.getTarget() == null || this.distanceToSqr(this.getTarget()) > 36.0) {
-                    if (this.getMainHandItem().getItem() instanceof SwordItem) {
+                    if (ToolTypeHelper.INSTANCE.isSword(this.getMainHandItem())) {
                         this.setHandItems(this.getOffhandItem(), this.getMainHandItem());
                         this.switchWeaponCooldown = 60;
                     }

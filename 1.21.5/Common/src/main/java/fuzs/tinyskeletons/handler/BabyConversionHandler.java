@@ -89,7 +89,7 @@ public class BabyConversionHandler {
         }
         if (mob == null) return null;
         Preconditions.checkState(mob.isBaby(), "Baby mob must be a baby by default");
-        mob.moveTo(parent.getX(),
+        mob.snapTo(parent.getX(),
                 parent.getY(),
                 parent.getZ(),
                 Mth.wrapDegrees(serverLevel.random.nextFloat() * 360.0F),

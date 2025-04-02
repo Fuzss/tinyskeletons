@@ -39,7 +39,6 @@ public class BabySkeletonRenderer extends AbstractSkeletonRenderer<BabySkeleton,
         this.itemModelResolver.updateForLiving(itemStackRenderState,
                 babySkeleton.getItemHeldByArm(renderState.mainArm.getOpposite()),
                 renderState.offhandItemType.getItemDisplayContext(),
-                false,
                 babySkeleton);
     }
 

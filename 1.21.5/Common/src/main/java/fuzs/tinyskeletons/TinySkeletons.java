@@ -1,7 +1,7 @@
 package fuzs.tinyskeletons;
 
 import fuzs.puzzleslib.api.core.v1.ModConstructor;
-import fuzs.puzzleslib.api.core.v1.context.EntityAttributesCreateContext;
+import fuzs.puzzleslib.api.core.v1.context.EntityAttributesContext;
 import fuzs.puzzleslib.api.core.v1.context.SpawnPlacementsContext;
 import fuzs.puzzleslib.api.core.v1.utility.ResourceLocationHelper;
 import fuzs.puzzleslib.api.event.v1.entity.ServerEntityLevelEvents;
@@ -26,7 +26,16 @@ public class TinySkeletons implements ModConstructor {
     @Override
     public void onConstructMod() {
         ModRegistry.touch();
+    }
+
+    @Override
+    public void onCommonSetup() {
         registerEventHandlers();
+        BabyConversionHandler.registerConversion(EntityType.SKELETON, ModRegistry.BABY_SKELETON_ENTITY_TYPE.value());
+        BabyConversionHandler.registerConversion(EntityType.WITHER_SKELETON,
+                ModRegistry.BABY_WITHER_SKELETON_ENTITY_TYPE.value());
+        BabyConversionHandler.registerConversion(EntityType.STRAY, ModRegistry.BABY_STRAY_ENTITY_TYPE.value());
+        BabyConversionHandler.registerConversion(EntityType.BOGGED, ModRegistry.BABY_BOGGED_ENTITY_TYPE.value());
     }
 
     private static void registerEventHandlers() {
@@ -36,46 +45,43 @@ public class TinySkeletons implements ModConstructor {
     }
 
     @Override
-    public void onCommonSetup() {
-        BabyConversionHandler.registerConversion(EntityType.SKELETON, ModRegistry.BABY_SKELETON_ENTITY_TYPE.value());
-        BabyConversionHandler.registerConversion(EntityType.WITHER_SKELETON,
-                ModRegistry.BABY_WITHER_SKELETON_ENTITY_TYPE.value()
-        );
-        BabyConversionHandler.registerConversion(EntityType.STRAY, ModRegistry.BABY_STRAY_ENTITY_TYPE.value());
-        BabyConversionHandler.registerConversion(EntityType.BOGGED, ModRegistry.BABY_BOGGED_ENTITY_TYPE.value());
-    }
-
-    @Override
     public void onRegisterSpawnPlacements(SpawnPlacementsContext context) {
-        context.registerSpawnPlacement(ModRegistry.BABY_SKELETON_ENTITY_TYPE.value(), SpawnPlacementTypes.ON_GROUND,
-                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules
-        );
+        context.registerSpawnPlacement(ModRegistry.BABY_SKELETON_ENTITY_TYPE.value(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules);
         context.registerSpawnPlacement(ModRegistry.BABY_WITHER_SKELETON_ENTITY_TYPE.value(),
-                SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Monster::checkMonsterSpawnRules
-        );
-        context.registerSpawnPlacement(ModRegistry.BABY_STRAY_ENTITY_TYPE.value(), SpawnPlacementTypes.ON_GROUND,
-                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BabyStray::checkBabyStraySpawnRules
-        );
-        context.registerSpawnPlacement(ModRegistry.BABY_BOGGED_ENTITY_TYPE.value(), SpawnPlacementTypes.ON_GROUND,
-                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules
-        );
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules);
+        context.registerSpawnPlacement(ModRegistry.BABY_STRAY_ENTITY_TYPE.value(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                BabyStray::checkBabyStraySpawnRules);
+        context.registerSpawnPlacement(ModRegistry.BABY_BOGGED_ENTITY_TYPE.value(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules);
     }
 
     @Override
-    public void onEntityAttributeCreation(EntityAttributesCreateContext context) {
-        context.registerEntityAttributes(ModRegistry.BABY_SKELETON_ENTITY_TYPE.value(),
-                Monster.createMonsterAttributes().add(Attributes.ATTACK_DAMAGE, 1.0).add(Attributes.MOVEMENT_SPEED, 0.3)
-        );
-        context.registerEntityAttributes(ModRegistry.BABY_WITHER_SKELETON_ENTITY_TYPE.value(),
-                Monster.createMonsterAttributes().add(Attributes.ATTACK_DAMAGE, 1.0).add(Attributes.MOVEMENT_SPEED, 0.3)
-        );
-        context.registerEntityAttributes(ModRegistry.BABY_STRAY_ENTITY_TYPE.value(),
-                Monster.createMonsterAttributes().add(Attributes.ATTACK_DAMAGE, 1.0).add(Attributes.MOVEMENT_SPEED, 0.3)
-        );
-        context.registerEntityAttributes(ModRegistry.BABY_BOGGED_ENTITY_TYPE.value(),
-                Monster.createMonsterAttributes().add(Attributes.ATTACK_DAMAGE, 1.0).add(Attributes.MOVEMENT_SPEED, 0.3)
-        );
+    public void onRegisterEntityAttributes(EntityAttributesContext context) {
+        context.registerAttributes(ModRegistry.BABY_SKELETON_ENTITY_TYPE.value(),
+                Monster.createMonsterAttributes()
+                        .add(Attributes.ATTACK_DAMAGE, 1.0)
+                        .add(Attributes.MOVEMENT_SPEED, 0.3));
+        context.registerAttributes(ModRegistry.BABY_WITHER_SKELETON_ENTITY_TYPE.value(),
+                Monster.createMonsterAttributes()
+                        .add(Attributes.ATTACK_DAMAGE, 1.0)
+                        .add(Attributes.MOVEMENT_SPEED, 0.3));
+        context.registerAttributes(ModRegistry.BABY_STRAY_ENTITY_TYPE.value(),
+                Monster.createMonsterAttributes()
+                        .add(Attributes.ATTACK_DAMAGE, 1.0)
+                        .add(Attributes.MOVEMENT_SPEED, 0.3));
+        context.registerAttributes(ModRegistry.BABY_BOGGED_ENTITY_TYPE.value(),
+                Monster.createMonsterAttributes()
+                        .add(Attributes.ATTACK_DAMAGE, 1.0)
+                        .add(Attributes.MOVEMENT_SPEED, 0.3));
     }
 
     public static ResourceLocation id(String path) {
