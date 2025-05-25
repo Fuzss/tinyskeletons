@@ -3,7 +3,6 @@ accessible  method  net/minecraft/world/entity/LivingEntity detectEquipmentUpdat
 accessible  field   net/minecraft/world/entity/monster/AbstractSkeleton bowGoal Lnet/minecraft/world/entity/ai/goal/RangedBowAttackGoal;
 mutable field   net/minecraft/world/entity/monster/AbstractSkeleton bowGoal Lnet/minecraft/world/entity/ai/goal/RangedBowAttackGoal;
 accessible  field   net/minecraft/world/entity/monster/AbstractSkeleton meleeGoal   Lnet/minecraft/world/entity/ai/goal/MeleeAttackGoal;
-accessible  field   net/minecraft/world/entity/ai/goal/RangedBowAttackGoal  mob Lnet/minecraft/world/entity/monster/Monster;
 accessible  field   net/minecraft/world/entity/ai/goal/RangedBowAttackGoal  attackIntervalMin   I
 accessible  field   net/minecraft/world/entity/ai/goal/RangedBowAttackGoal  attackRadiusSqr F
 accessible  field   net/minecraft/world/entity/ai/goal/RangedBowAttackGoal  strafingTime    I
