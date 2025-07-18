@@ -49,9 +49,9 @@ public class BabyConversionHandler {
     }
 
     public static EventResultHolder<InteractionResult> onEntityInteract(Player player, Level level, InteractionHand interactionHand, Entity target, Vec3 hitVector) {
-        ItemStack stackInHand = player.getItemInHand(interactionHand);
-        if (target.isAlive() && stackInHand.getItem() instanceof SpawnEggItem) {
-            EntityType<?> eggType = ((SpawnEggItem) stackInHand.getItem()).getType(level.registryAccess(), stackInHand);
+        ItemStack itemInHand = player.getItemInHand(interactionHand);
+        if (target.isAlive() && itemInHand.getItem() instanceof SpawnEggItem) {
+            EntityType<?> eggType = ((SpawnEggItem) itemInHand.getItem()).getType(level.registryAccess(), itemInHand);
             EntityType<? extends Mob> babyType = BABY_MOB_CONVERSIONS.get(eggType);
             if (babyType != null && (target.getType() == babyType || target.getType() == eggType)) {
                 if (!level.isClientSide) {
@@ -60,7 +60,7 @@ public class BabyConversionHandler {
                             target,
                             EntitySpawnReason.SPAWN_ITEM_USE);
                     if (mob != null) {
-                        finalizeSpawnEggMob(mob, stackInHand, player);
+                        finalizeSpawnEggMob(mob, itemInHand, player);
                     }
                 }
 
@@ -99,12 +99,7 @@ public class BabyConversionHandler {
                 0.0F);
         mob.yHeadRot = mob.getYRot();
         mob.yBodyRot = mob.getYRot();
-        // this should normally be level.getCurrentDifficultyAt(mob.blockPosition()), which for some reason causes a world gen deadlock when generating nether fortresses for some setups (cannot reproduce in vanilla)
-        // the deadlock comes from Level::getChunkAt, so we omit that part all call everything else as usual since the chunk otherwise is not queried
-        DifficultyInstance difficulty = new DifficultyInstance(serverLevel.getDifficulty(),
-                serverLevel.getDayTime(),
-                0L,
-                serverLevel.getMoonBrightness());
+        DifficultyInstance difficulty = serverLevel.getCurrentDifficultyAt(parent.blockPosition());
         mob.finalizeSpawn(serverLevel, difficulty, entitySpawnReason, null);
         serverLevel.addFreshEntityWithPassengers(mob);
         return mob;
