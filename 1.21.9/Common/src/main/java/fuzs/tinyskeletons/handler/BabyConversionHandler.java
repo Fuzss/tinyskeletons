@@ -51,10 +51,10 @@ public class BabyConversionHandler {
     public static EventResultHolder<InteractionResult> onEntityInteract(Player player, Level level, InteractionHand interactionHand, Entity target, Vec3 hitVector) {
         ItemStack itemInHand = player.getItemInHand(interactionHand);
         if (target.isAlive() && itemInHand.getItem() instanceof SpawnEggItem) {
-            EntityType<?> eggType = ((SpawnEggItem) itemInHand.getItem()).getType(level.registryAccess(), itemInHand);
+            EntityType<?> eggType = ((SpawnEggItem) itemInHand.getItem()).getType(itemInHand);
             EntityType<? extends Mob> babyType = BABY_MOB_CONVERSIONS.get(eggType);
             if (babyType != null && (target.getType() == babyType || target.getType() == eggType)) {
-                if (!level.isClientSide) {
+                if (!level.isClientSide()) {
                     Mob mob = createAndSpawnBabyMob((ServerLevel) level,
                             babyType,
                             target,
@@ -64,7 +64,7 @@ public class BabyConversionHandler {
                     }
                 }
 
-                return EventResultHolder.interrupt(InteractionResultHelper.sidedSuccess(level.isClientSide));
+                return EventResultHolder.interrupt(InteractionResultHelper.sidedSuccess(level.isClientSide()));
             }
         }
 

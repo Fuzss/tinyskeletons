@@ -6,7 +6,7 @@ import fuzs.puzzleslib.api.client.core.v1.context.LayerDefinitionsContext;
 import fuzs.puzzleslib.api.core.v1.context.PackRepositorySourcesContext;
 import fuzs.puzzleslib.api.resources.v1.PackResourcesHelper;
 import fuzs.tinyskeletons.TinySkeletons;
-import fuzs.tinyskeletons.client.init.ModelLayerLocations;
+import fuzs.tinyskeletons.client.init.ModModelLayers;
 import fuzs.tinyskeletons.client.packs.BabySkeletonPackResources;
 import fuzs.tinyskeletons.client.renderer.entity.BabyBoggedRenderer;
 import fuzs.tinyskeletons.client.renderer.entity.BabySkeletonRenderer;
@@ -17,9 +17,12 @@ import net.minecraft.client.model.BoggedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.SkeletonModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.MeshTransformer;
+import net.minecraft.client.renderer.entity.ArmorModelSet;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 
 import java.util.function.Supplier;
@@ -38,44 +41,51 @@ public class TinySkeletonsClient implements ClientModConstructor {
 
     @Override
     public void onRegisterLayerDefinitions(LayerDefinitionsContext context) {
-        Supplier<LayerDefinition> skeletonLayer = () -> SkeletonModel.createBodyLayer()
-                .apply(HumanoidModel.BABY_TRANSFORMER);
-        Supplier<LayerDefinition> boggedLayer = () -> {
-            return BoggedModel.createBodyLayer().apply(HumanoidModel.BABY_TRANSFORMER);
+        Supplier<LayerDefinition> skeletonLayer = () -> {
+            return SkeletonModel.createBodyLayer().apply(HumanoidModel.BABY_TRANSFORMER);
         };
-        Supplier<LayerDefinition> innerArmorLayer = () -> LayerDefinition.create(HumanoidModel.createMesh(
-                LayerDefinitions.INNER_ARMOR_DEFORMATION,
-                0.0F), 64, 32).apply(HumanoidModel.BABY_TRANSFORMER);
-        Supplier<LayerDefinition> outerArmorLayer = () -> LayerDefinition.create(HumanoidModel.createMesh(
-                LayerDefinitions.OUTER_ARMOR_DEFORMATION,
-                0.0F), 64, 32).apply(HumanoidModel.BABY_TRANSFORMER);
-        Supplier<LayerDefinition> strayOuterLayer = () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(
-                0.25F), 0.0F), 64, 32).apply(HumanoidModel.BABY_TRANSFORMER);
-        Supplier<LayerDefinition> boggedOuterLayer = () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(
-                0.2F), 0.0F), 64, 32).apply(HumanoidModel.BABY_TRANSFORMER);
-        context.registerLayerDefinition(ModelLayerLocations.BABY_SKELETON, skeletonLayer);
-        context.registerLayerDefinition(ModelLayerLocations.BABY_SKELETON_INNER_ARMOR, innerArmorLayer);
-        context.registerLayerDefinition(ModelLayerLocations.BABY_SKELETON_OUTER_ARMOR, outerArmorLayer);
-        context.registerLayerDefinition(ModelLayerLocations.BABY_STRAY, skeletonLayer);
-        context.registerLayerDefinition(ModelLayerLocations.BABY_STRAY_INNER_ARMOR, innerArmorLayer);
-        context.registerLayerDefinition(ModelLayerLocations.BABY_STRAY_OUTER_ARMOR, outerArmorLayer);
-        context.registerLayerDefinition(ModelLayerLocations.BABY_STRAY_OUTER_LAYER, strayOuterLayer);
+        ArmorModelSet<LayerDefinition> armorModelSet = HumanoidModel.createArmorMeshSet(LayerDefinitions.INNER_ARMOR_DEFORMATION,
+                LayerDefinitions.OUTER_ARMOR_DEFORMATION).map((MeshDefinition meshDefinition) -> {
+            return LayerDefinition.create(meshDefinition, 64, 32).apply(HumanoidModel.BABY_TRANSFORMER);
+        });
+        context.registerLayerDefinition(ModModelLayers.BABY_SKELETON, skeletonLayer);
+        registerLayerDefinitions(context, ModModelLayers.BABY_SKELETON_ARMOR, armorModelSet);
+        context.registerLayerDefinition(ModModelLayers.BABY_STRAY, skeletonLayer);
+        registerLayerDefinitions(context, ModModelLayers.BABY_STRAY_ARMOR, armorModelSet);
+        context.registerLayerDefinition(ModModelLayers.BABY_STRAY_OUTER_LAYER, () -> {
+            return LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.25F), 0.0F), 64, 32)
+                    .apply(HumanoidModel.BABY_TRANSFORMER);
+        });
         MeshTransformer witherSkeletonTransformer = MeshTransformer.scaling(1.2F);
-        context.registerLayerDefinition(ModelLayerLocations.BABY_WITHER_SKELETON,
-                () -> skeletonLayer.get().apply(witherSkeletonTransformer));
-        context.registerLayerDefinition(ModelLayerLocations.BABY_WITHER_SKELETON_INNER_ARMOR,
-                () -> innerArmorLayer.get().apply(witherSkeletonTransformer));
-        context.registerLayerDefinition(ModelLayerLocations.BABY_WITHER_SKELETON_OUTER_ARMOR,
-                () -> outerArmorLayer.get().apply(witherSkeletonTransformer));
-        context.registerLayerDefinition(ModelLayerLocations.BABY_BOGGED, boggedLayer);
-        context.registerLayerDefinition(ModelLayerLocations.BABY_BOGGED_INNER_ARMOR, innerArmorLayer);
-        context.registerLayerDefinition(ModelLayerLocations.BABY_BOGGED_OUTER_ARMOR, outerArmorLayer);
-        context.registerLayerDefinition(ModelLayerLocations.BABY_BOGGED_OUTER_LAYER, boggedOuterLayer);
+        context.registerLayerDefinition(ModModelLayers.BABY_WITHER_SKELETON, () -> {
+            return skeletonLayer.get().apply(witherSkeletonTransformer);
+        });
+        registerLayerDefinitions(context,
+                ModModelLayers.BABY_WITHER_SKELETON_ARMOR,
+                armorModelSet.map((LayerDefinition layerDefinition) -> {
+                    return layerDefinition.apply(witherSkeletonTransformer);
+                }));
+        context.registerLayerDefinition(ModModelLayers.BABY_BOGGED, () -> {
+            return BoggedModel.createBodyLayer().apply(HumanoidModel.BABY_TRANSFORMER);
+        });
+        registerLayerDefinitions(context, ModModelLayers.BABY_BOGGED_ARMOR, armorModelSet);
+        context.registerLayerDefinition(ModModelLayers.BABY_BOGGED_OUTER_LAYER, () -> {
+            return LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.2F), 0.0F), 64, 32)
+                    .apply(HumanoidModel.BABY_TRANSFORMER);
+        });
+    }
+
+    @Deprecated(forRemoval = true)
+    private static void registerLayerDefinitions(LayerDefinitionsContext context, ArmorModelSet<ModelLayerLocation> modelLayerSet, ArmorModelSet<LayerDefinition> layerDefinitionSet) {
+        context.registerLayerDefinition(modelLayerSet.head(), layerDefinitionSet::head);
+        context.registerLayerDefinition(modelLayerSet.chest(), layerDefinitionSet::chest);
+        context.registerLayerDefinition(modelLayerSet.legs(), layerDefinitionSet::legs);
+        context.registerLayerDefinition(modelLayerSet.feet(), layerDefinitionSet::feet);
     }
 
     @Override
     public void onAddResourcePackFinders(PackRepositorySourcesContext context) {
-        context.addRepositorySource(PackResourcesHelper.buildClientPack(TinySkeletons.id(
+        context.registerRepositorySource(PackResourcesHelper.buildClientPack(TinySkeletons.id(
                 "dynamically_copied_skeleton_textures"), BabySkeletonPackResources::new, false));
     }
 }

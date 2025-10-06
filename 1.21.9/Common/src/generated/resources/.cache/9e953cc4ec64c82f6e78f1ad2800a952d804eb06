@@ -1,4 +1,4 @@
-// 1.21.8	2025-07-18T14:34:58.29918	Tags for minecraft:entity_type mod id vanilla
+// 1.21.9	2025-10-06T18:20:37.60357	Tags for minecraft:entity_type mod id vanilla
 372f4768acffb405e601f6588b322dfe99078a9f data/minecraft/tags/entity_type/freeze_immune_entity_types.json
 b8d088c9eb2be0e5fe2886dd200d463eac2bc1a8 data/minecraft/tags/entity_type/no_anger_from_wind_charge.json
-0ef7c00a52a3c29ebb7ee761871532cca308322b data/minecraft/tags/entity_type/skeletons.json
+4b802f5ed6e00ee75b54f1d74e91bd8d6b012ce3 data/minecraft/tags/entity_type/skeletons.json

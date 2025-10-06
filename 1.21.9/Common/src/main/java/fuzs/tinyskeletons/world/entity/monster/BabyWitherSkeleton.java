@@ -55,7 +55,7 @@ public class BabyWitherSkeleton extends WitherSkeleton implements SkullCarryingM
 
     @Override
     public void reassessWeaponGoal() {
-        if (this.level() != null && !this.level().isClientSide) {
+        if (this.level() != null && !this.level().isClientSide()) {
             this.goalSelector.removeGoal(this.fleePlayerGoal);
             if (!this.getSkullItem().isEmpty()) {
                 this.goalSelector.addGoal(3, this.fleePlayerGoal);
@@ -73,11 +73,13 @@ public class BabyWitherSkeleton extends WitherSkeleton implements SkullCarryingM
                     if (!player.getAbilities().instabuild) {
                         itemstack.shrink(1);
                     }
+
                     this.spawnAtLocation(serverLevel, skullItem);
                     this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
                 }
+
                 this.setDancing();
-                return InteractionResultHelper.sidedSuccess(this.level().isClientSide);
+                return InteractionResultHelper.sidedSuccess(this.level().isClientSide());
             }
         }
 

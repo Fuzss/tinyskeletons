@@ -6,20 +6,20 @@ import fuzs.tinyskeletons.client.renderer.entity.state.BabySkeletonRenderState;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 
-public class ItemOnBackLayer<M extends HumanoidModel<BabySkeletonRenderState> & ArmedModel> extends RenderLayer<BabySkeletonRenderState, M> {
+public class ItemOnBackLayer<M extends HumanoidModel<BabySkeletonRenderState> & ArmedModel<BabySkeletonRenderState>> extends RenderLayer<BabySkeletonRenderState, M> {
 
     public ItemOnBackLayer(RenderLayerParent<BabySkeletonRenderState, M> renderLayerParent) {
         super(renderLayerParent);
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, BabySkeletonRenderState renderState, float yRot, float xRot) {
+    public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, BabySkeletonRenderState renderState, float yRot, float xRot) {
         ItemStackRenderState itemStackRenderState = BabySkeletonRenderState.getOffHandItem(renderState);
         if (!itemStackRenderState.isEmpty()) {
             poseStack.pushPose();
@@ -42,7 +42,12 @@ public class ItemOnBackLayer<M extends HumanoidModel<BabySkeletonRenderState> & 
                 poseStack.scale(scale, -scale, -scale);
                 poseStack.translate(-backOffset, 0.0, 0.0);
             }
-            itemStackRenderState.render(poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY);
+
+            itemStackRenderState.submit(poseStack,
+                    submitNodeCollector,
+                    packedLight,
+                    OverlayTexture.NO_OVERLAY,
+                    renderState.outlineColor);
             poseStack.popPose();
         }
     }
