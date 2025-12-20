@@ -8,6 +8,12 @@ dependencies {
 }
 
 multiloader {
+    modFile {
+        json {
+            customData.put("lithium:options", mapOf("mixin.world.chunk_access" to false))
+        }
+    }
+
     mixins {
         mixin("ChunkStatusTasksFabricMixin", "GenerationChunkHolderFabricMixin", "ServerChunkCacheFabricMixin")
     }

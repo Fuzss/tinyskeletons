@@ -1,5 +1,6 @@
-// 1.21.10	2025-10-08T23:05:49.228717	Entity Type Loot Tables
-72f6e2f9b61b2cc8dc558f24f961fa77397191a7 data/tinyskeletons/loot_table/entities/baby_bogged.json
-c63a203a15d98efad768b23ae626f8e6f6271aa8 data/tinyskeletons/loot_table/entities/baby_skeleton.json
-12dcec51fbf519dc11b5746492f074cf31b5983e data/tinyskeletons/loot_table/entities/baby_stray.json
+// 1.21.11	2025-12-20T20:51:19.635295	Entity Type Loot Tables
+c071324a7d0294223978006d578ffb4f66131033 data/tinyskeletons/loot_table/entities/baby_bogged.json
+68aa7028a88275d4c9d7f9dbb48603df2ea2e632 data/tinyskeletons/loot_table/entities/baby_parched.json
+18bbb576154245e1bc33376570ed9a25a858ed85 data/tinyskeletons/loot_table/entities/baby_skeleton.json
+c08b14d46de9f19247c2dc3be40d3f5b82c30ef9 data/tinyskeletons/loot_table/entities/baby_stray.json
 bd6aff2265608019a2f2a5480174a420bb2c77b4 data/tinyskeletons/loot_table/entities/baby_wither_skeleton.json

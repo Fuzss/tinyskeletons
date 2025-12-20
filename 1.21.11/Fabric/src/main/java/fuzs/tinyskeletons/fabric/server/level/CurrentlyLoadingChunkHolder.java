@@ -1,7 +1,7 @@
 package fuzs.tinyskeletons.fabric.server.level;
 
 import net.minecraft.world.level.chunk.LevelChunk;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * <ul>

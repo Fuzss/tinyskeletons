@@ -16,6 +16,7 @@ public class ModLanguageProvider extends AbstractLanguageProvider {
         builder.add(ModRegistry.BABY_WITHER_SKELETON_ENTITY_TYPE.value(), "Baby Wither Skeleton");
         builder.add(ModRegistry.BABY_STRAY_ENTITY_TYPE.value(), "Baby Stray");
         builder.add(ModRegistry.BABY_BOGGED_ENTITY_TYPE.value(), "Baby Bogged");
-        builder.add(ModRegistry.MUSHROOM_ENTITY_TYPE.value(), "Mushroom");
+        builder.add(ModRegistry.BABY_PARCHED_ENTITY_TYPE.value(), "Baby Parched");
+        builder.add(ModRegistry.THROWN_ITEM_ENTITY_TYPE.value(), "Thrown Item");
     }
 }

@@ -1,17 +1,16 @@
 package fuzs.tinyskeletons.world.entity.monster;
 
-import fuzs.tinyskeletons.world.entity.monster.projectile.Mushroom;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
+import fuzs.tinyskeletons.init.ModRegistry;
+import fuzs.tinyskeletons.util.BabySkeletonHelper;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
-import net.minecraft.world.entity.monster.Bogged;
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.monster.skeleton.Bogged;
 import net.minecraft.world.level.Level;
 
 public class BabyBogged extends Bogged {
@@ -24,19 +23,13 @@ public class BabyBogged extends Bogged {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new RangedAttackGoal(this, 1.0, 30, 15.0F) {
-
-            @Override
-            public boolean canUse() {
-                return super.canUse() && BabyBogged.this.getMainHandItem().isEmpty();
-            }
-        });
         super.registerGoals();
+        BabySkeletonHelper.registerGoals(this, this.goalSelector, ModRegistry.BABY_BOGGED_THROWABLES_ITEM_TAG);
     }
 
     @Override
     public float getPickRadius() {
-        return 0.3F;
+        return BabySkeletonHelper.DEFAULT_PICK_RADIUS;
     }
 
     @Override
@@ -47,14 +40,14 @@ public class BabyBogged extends Bogged {
     @Override
     protected EntityDimensions getDefaultDimensions(Pose pose) {
         return super.getDefaultDimensions(pose)
-                .withEyeHeight(this.getType().getDimensions().eyeHeight() * (this.isBaby() ? 0.534F : 1.0F));
+                .withEyeHeight(this.getType().getDimensions().eyeHeight() * (this.isBaby() ?
+                        BabySkeletonHelper.BABY_EYE_HEIGHT_SCALE : 1.0F));
     }
 
     @Override
-    protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
-        // super call for armor
-        super.populateDefaultEquipmentSlots(random, difficulty);
-        this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+    protected void populateDefaultEquipmentSlots(RandomSource randomSource, DifficultyInstance difficulty) {
+        super.populateDefaultEquipmentSlots(randomSource, difficulty);
+        BabySkeletonHelper.setThrowableItemInMainHand(this, randomSource, ModRegistry.BABY_BOGGED_THROWABLES_ITEM_TAG);
     }
 
     @Override
@@ -63,24 +56,14 @@ public class BabyBogged extends Bogged {
     }
 
     @Override
-    public void performRangedAttack(LivingEntity target, float velocity) {
-        double dX = target.getX() - this.getX();
-        double dY = target.getEyeY() - 1.1F;
-        double dZ = target.getZ() - this.getZ();
-        double g = Math.sqrt(dX * dX + dZ * dZ) * 0.2F;
-        if (this.level() instanceof ServerLevel serverLevel) {
-            ItemStack itemStack = new ItemStack(this.random.nextBoolean() ? Items.RED_MUSHROOM : Items.BROWN_MUSHROOM);
-            Projectile.spawnProjectile(new Mushroom(serverLevel, this, itemStack),
-                    serverLevel,
-                    itemStack,
-                    snowball -> snowball.shoot(dX,
-                            dY + g - snowball.getY(),
-                            dZ,
-                            1.6F,
-                            14.0F - serverLevel.getDifficulty().getId() * 2.0F));
+    protected void resolveMobResponsibleForDamage(DamageSource damageSource) {
+        if (!damageSource.getEntity().getType().is(EntityTypeTags.SKELETONS)) {
+            super.resolveMobResponsibleForDamage(damageSource);
         }
+    }
 
-        this.playSound(SoundEvents.SNOW_GOLEM_SHOOT, 1.0F, 0.4F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-        this.swing(InteractionHand.MAIN_HAND);
+    @Override
+    public void performRangedAttack(LivingEntity target, float velocity) {
+        BabySkeletonHelper.performRangedAttack(this, target);
     }
 }

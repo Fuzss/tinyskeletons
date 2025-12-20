@@ -3,7 +3,7 @@ package fuzs.tinyskeletons.fabric.mixin;
 import fuzs.tinyskeletons.fabric.server.level.CurrentlyLoadingChunkHolder;
 import net.minecraft.server.level.GenerationChunkHolder;
 import net.minecraft.world.level.chunk.LevelChunk;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 

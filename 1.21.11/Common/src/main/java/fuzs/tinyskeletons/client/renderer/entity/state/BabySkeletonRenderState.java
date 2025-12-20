@@ -10,8 +10,8 @@ public class BabySkeletonRenderState extends SkeletonRenderState {
     public ItemType offhandItemType = ItemType.NORMAL;
 
     public static ItemStackRenderState getOffHandItem(HumanoidRenderState humanoidRenderState) {
-        return humanoidRenderState.mainArm != HumanoidArm.RIGHT ? humanoidRenderState.rightHandItem :
-                humanoidRenderState.leftHandItem;
+        return humanoidRenderState.mainArm != HumanoidArm.RIGHT ? humanoidRenderState.rightHandItemState :
+                humanoidRenderState.leftHandItemState;
     }
 
     public static ItemType getItemType(Item item) {

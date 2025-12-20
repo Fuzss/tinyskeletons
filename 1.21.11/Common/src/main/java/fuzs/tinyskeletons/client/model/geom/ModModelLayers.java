@@ -1,5 +1,6 @@
-package fuzs.tinyskeletons.client.init;
+package fuzs.tinyskeletons.client.model.geom;
 
+import fuzs.puzzleslib.api.client.init.v1.ModelLayerFactory;
 import fuzs.tinyskeletons.TinySkeletons;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.ArmorModelSet;
@@ -21,4 +22,7 @@ public class ModModelLayers {
             "baby_bogged");
     public static final ModelLayerLocation BABY_BOGGED_OUTER_LAYER = MODEL_LAYERS.registerModelLayer("baby_bogged",
             "outer");
+    public static final ModelLayerLocation BABY_PARCHED = MODEL_LAYERS.registerModelLayer("baby_parched");
+    public static final ArmorModelSet<ModelLayerLocation> BABY_PARCHED_ARMOR = MODEL_LAYERS.registerArmorSet(
+            "baby_parched");
 }

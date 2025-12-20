@@ -1,4 +1,4 @@
-package fuzs.tinyskeletons.data;
+package fuzs.tinyskeletons.data.tags;
 
 import fuzs.puzzleslib.api.data.v2.core.DataProviderContext;
 import fuzs.puzzleslib.api.data.v2.tags.AbstractTagProvider;
@@ -21,7 +21,16 @@ public class ModEntityTypeTagProvider extends AbstractTagProvider<EntityType<?>>
                 .add(ModRegistry.BABY_SKELETON_ENTITY_TYPE.value(),
                         ModRegistry.BABY_WITHER_SKELETON_ENTITY_TYPE.value(),
                         ModRegistry.BABY_STRAY_ENTITY_TYPE.value(),
+                        ModRegistry.BABY_BOGGED_ENTITY_TYPE.value(),
+                        ModRegistry.BABY_PARCHED_ENTITY_TYPE.value());
+        this.tag(EntityTypeTags.BURN_IN_DAYLIGHT)
+                .add(ModRegistry.BABY_SKELETON_ENTITY_TYPE.value(),
+                        ModRegistry.BABY_STRAY_ENTITY_TYPE.value(),
                         ModRegistry.BABY_BOGGED_ENTITY_TYPE.value());
-        this.tag(EntityTypeTags.NO_ANGER_FROM_WIND_CHARGE).add(ModRegistry.BABY_BOGGED_ENTITY_TYPE.value());
+        this.tag(EntityTypeTags.NO_ANGER_FROM_WIND_CHARGE)
+                .add(ModRegistry.BABY_SKELETON_ENTITY_TYPE.value(),
+                        ModRegistry.BABY_STRAY_ENTITY_TYPE.value(),
+                        ModRegistry.BABY_BOGGED_ENTITY_TYPE.value());
+        this.tag(EntityTypeTags.IMPACT_PROJECTILES).add(ModRegistry.THROWN_ITEM_ENTITY_TYPE.value());
     }
 }

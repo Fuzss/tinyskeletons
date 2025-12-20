@@ -1,0 +1,61 @@
+{
+    "mod": {
+        "id": "tinyskeletons",
+        "group": "fuzs.tinyskeletons",
+        "name": "Tiny Skeletons",
+        "version": "21.11.0",
+        "authors": [
+            "Fuzs"
+        ],
+        "description": "Teeny, tiny skeletons, send shivers down your spine...",
+        "license": "MPL-2.0"
+    },
+    "dependencies": [
+        {
+            "name": "fabricapi",
+            "type": "required",
+            "platforms": [
+                "fabric"
+            ]
+        },
+        {
+            "name": "forgeconfigapiport",
+            "type": "required",
+            "platforms": [
+                "fabric"
+            ]
+        },
+        {
+            "name": "puzzleslib",
+            "type": "required",
+            "platforms": [
+                "fabric",
+                "neoforge"
+            ]
+        }
+    ],
+    "links": [
+        {
+            "name": "github",
+            "slug": "tinyskeletons"
+        },
+        {
+            "name": "curseforge",
+            "slug": "tiny-skeletons",
+            "id": "548647"
+        },
+        {
+            "name": "modrinth",
+            "slug": "tiny-skeletons",
+            "id": "A2xcMSUn"
+        }
+    ],
+    "environments": {
+        "client": "required",
+        "server": "required"
+    },
+    "platforms": [
+        "fabric",
+        "neoforge"
+    ]
+}

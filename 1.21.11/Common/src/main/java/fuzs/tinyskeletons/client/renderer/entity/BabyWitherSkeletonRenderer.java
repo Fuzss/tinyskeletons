@@ -1,24 +1,27 @@
 package fuzs.tinyskeletons.client.renderer.entity;
 
-import fuzs.tinyskeletons.TinySkeletons;
-import fuzs.tinyskeletons.client.init.ModModelLayers;
 import fuzs.tinyskeletons.client.model.BabyWitherSkeletonModel;
-import fuzs.tinyskeletons.client.packs.BabySkeletonPackResources;
+import fuzs.tinyskeletons.client.model.geom.ModModelLayers;
+import fuzs.tinyskeletons.client.packs.VanillaTexture;
 import fuzs.tinyskeletons.client.renderer.entity.layers.SkullInHandLayer;
 import fuzs.tinyskeletons.client.renderer.entity.state.BabyWitherSkeletonRenderState;
 import fuzs.tinyskeletons.world.entity.monster.BabyWitherSkeleton;
-import net.minecraft.client.model.SkeletonModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.monster.skeleton.SkeletonModel;
 import net.minecraft.client.renderer.entity.AbstractSkeletonRenderer;
 import net.minecraft.client.renderer.entity.ArmorModelSet;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
+/**
+ * @see net.minecraft.client.renderer.entity.WitherSkeletonRenderer
+ */
 public class BabyWitherSkeletonRenderer extends AbstractSkeletonRenderer<BabyWitherSkeleton, BabyWitherSkeletonRenderState> {
-    public static final ResourceLocation WITHER_SKELETON_LOCATION = TinySkeletons.id(BabySkeletonPackResources.WITHER_SKELETON_LOCATION.getPath());
+    public static final VanillaTexture WITHER_SKELETON_TEXTURE = new VanillaTexture(
+            "textures/entity/skeleton/wither_skeleton.png");
 
     public BabyWitherSkeletonRenderer(EntityRendererProvider.Context context) {
         this(context, ModModelLayers.BABY_WITHER_SKELETON, ModModelLayers.BABY_WITHER_SKELETON_ARMOR);
@@ -49,7 +52,7 @@ public class BabyWitherSkeletonRenderer extends AbstractSkeletonRenderer<BabyWit
     }
 
     @Override
-    public ResourceLocation getTextureLocation(BabyWitherSkeletonRenderState livingEntityRenderState) {
-        return WITHER_SKELETON_LOCATION;
+    public Identifier getTextureLocation(BabyWitherSkeletonRenderState livingEntityRenderState) {
+        return WITHER_SKELETON_TEXTURE.id();
     }
 }

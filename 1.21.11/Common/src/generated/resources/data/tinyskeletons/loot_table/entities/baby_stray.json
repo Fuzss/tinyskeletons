@@ -5,7 +5,8 @@
       "bonus_rolls": 0.0,
       "entries": [
         {
-          "type": "minecraft:item",
+          "type": "minecraft:tag",
+          "expand": true,
           "functions": [
             {
               "add": false,
@@ -26,7 +27,7 @@
               "function": "minecraft:enchanted_count_increase"
             }
           ],
-          "name": "minecraft:snowball"
+          "name": "tinyskeletons:baby_stray_throwables"
         }
       ],
       "rolls": 1.0

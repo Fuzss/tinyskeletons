@@ -1,4 +1,6 @@
-// 1.21.10	2025-10-08T23:05:49.227204	Tags for minecraft:entity_type mod id vanilla
+// 1.21.11	2025-12-20T20:52:50.021557	Tags for minecraft:entity_type mod id vanilla
+2fc956acfd1d1c2c95061113a94579d1a94b0147 data/minecraft/tags/entity_type/burn_in_daylight.json
 372f4768acffb405e601f6588b322dfe99078a9f data/minecraft/tags/entity_type/freeze_immune_entity_types.json
-b8d088c9eb2be0e5fe2886dd200d463eac2bc1a8 data/minecraft/tags/entity_type/no_anger_from_wind_charge.json
-4b802f5ed6e00ee75b54f1d74e91bd8d6b012ce3 data/minecraft/tags/entity_type/skeletons.json
+ced40725078b31eb9b56927ab5ac436dd97d947d data/minecraft/tags/entity_type/impact_projectiles.json
+2fc956acfd1d1c2c95061113a94579d1a94b0147 data/minecraft/tags/entity_type/no_anger_from_wind_charge.json
+42d5b706614cfb6b39f8705d6e37e6498435e23c data/minecraft/tags/entity_type/skeletons.json

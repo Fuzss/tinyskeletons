@@ -1,19 +1,20 @@
 package fuzs.tinyskeletons.world.entity.monster;
 
-import fuzs.puzzleslib.api.util.v1.InteractionResultHelper;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.animal.golem.IronGolem;
 import net.minecraft.world.entity.animal.wolf.Wolf;
-import net.minecraft.world.entity.monster.WitherSkeleton;
+import net.minecraft.world.entity.monster.skeleton.WitherSkeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -79,7 +80,7 @@ public class BabyWitherSkeleton extends WitherSkeleton implements SkullCarryingM
                 }
 
                 this.setDancing();
-                return InteractionResultHelper.sidedSuccess(this.level().isClientSide());
+                return InteractionResult.SUCCESS;
             }
         }
 
@@ -110,6 +111,13 @@ public class BabyWitherSkeleton extends WitherSkeleton implements SkullCarryingM
     protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.WITHER_SKELETON_SKULL));
         this.setGuaranteedDrop(EquipmentSlot.MAINHAND);
+    }
+
+    @Override
+    protected void resolveMobResponsibleForDamage(DamageSource damageSource) {
+        if (!damageSource.getEntity().getType().is(EntityTypeTags.SKELETONS)) {
+            super.resolveMobResponsibleForDamage(damageSource);
+        }
     }
 
     @Override

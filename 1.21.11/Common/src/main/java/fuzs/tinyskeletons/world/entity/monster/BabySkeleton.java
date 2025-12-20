@@ -4,12 +4,14 @@ import fuzs.puzzleslib.api.item.v2.ToolTypeHelper;
 import fuzs.tinyskeletons.init.ModRegistry;
 import fuzs.tinyskeletons.world.entity.ai.goal.RangedBowAttackWithoutStrafingGoal;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.monster.skeleton.Skeleton;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -53,20 +55,22 @@ public class BabySkeleton extends Skeleton {
 
     @Override
     protected void doFreezeConversion() {
-        this.convertTo(ModRegistry.BABY_STRAY_ENTITY_TYPE.value(), ConversionParams.single(this, true, true), stray -> {
-            // need this call as otherwise overriding with empty items will not send an update to clients as empty is default value and all this is happening within the same tick
-            // (LivingEntity::detectEquipmentUpdates is called in the tick method)
-            stray.detectEquipmentUpdates();
-            // cheap hack so we don't have to implement proper fighting behavior for strays, just give them their default snowball and remove everything else
-            for (EquipmentSlot slot : EquipmentSlot.values()) {
-                stray.setItemSlot(slot, ItemStack.EMPTY);
-            }
-            stray.populateDefaultEquipmentSlots(this.random,
-                    stray.level().getCurrentDifficultyAt(stray.blockPosition()));
-            if (!this.isSilent()) {
-                this.level().levelEvent(null, LevelEvent.SOUND_SKELETON_TO_STRAY, this.blockPosition(), 0);
-            }
-        });
+        this.convertTo(ModRegistry.BABY_STRAY_ENTITY_TYPE.value(),
+                ConversionParams.single(this, true, true),
+                (BabyStray babyStray) -> {
+                    // need this call as otherwise overriding with empty items will not send an update to clients as empty is default value and all this is happening within the same tick
+                    // (LivingEntity::detectEquipmentUpdates is called in the tick method)
+                    babyStray.detectEquipmentUpdates();
+                    // cheap hack so we don't have to implement proper fighting behavior for strays, just give them their default snowball and remove everything else
+                    for (EquipmentSlot slot : EquipmentSlot.values()) {
+                        babyStray.setItemSlot(slot, ItemStack.EMPTY);
+                    }
+                    babyStray.populateDefaultEquipmentSlots(this.random,
+                            ((ServerLevel) babyStray.level()).getCurrentDifficultyAt(babyStray.blockPosition()));
+                    if (!this.isSilent()) {
+                        this.level().levelEvent(null, LevelEvent.SOUND_SKELETON_TO_STRAY, this.blockPosition(), 0);
+                    }
+                });
     }
 
     @Override
@@ -123,5 +127,12 @@ public class BabySkeleton extends Skeleton {
     @Override
     protected int getAttackInterval() {
         return super.getAttackInterval() - 10;
+    }
+
+    @Override
+    protected void resolveMobResponsibleForDamage(DamageSource damageSource) {
+        if (!damageSource.getEntity().getType().is(EntityTypeTags.SKELETONS)) {
+            super.resolveMobResponsibleForDamage(damageSource);
+        }
     }
 }

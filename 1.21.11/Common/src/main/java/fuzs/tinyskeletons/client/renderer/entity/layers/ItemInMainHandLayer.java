@@ -22,14 +22,16 @@ public class ItemInMainHandLayer<S extends ArmedEntityRenderState, M extends Ent
     public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, S renderState, float yRot, float xRot) {
         if (renderState.mainArm == HumanoidArm.RIGHT) {
             this.submitArmWithItem(renderState,
-                    renderState.rightHandItem,
+                    renderState.rightHandItemState,
+                    renderState.rightHandItemStack,
                     HumanoidArm.RIGHT,
                     poseStack,
                     submitNodeCollector,
                     packedLight);
         } else {
             this.submitArmWithItem(renderState,
-                    renderState.leftHandItem,
+                    renderState.leftHandItemState,
+                    renderState.leftHandItemStack,
                     HumanoidArm.LEFT,
                     poseStack,
                     submitNodeCollector,
