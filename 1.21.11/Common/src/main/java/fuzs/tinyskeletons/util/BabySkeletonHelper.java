@@ -1,6 +1,6 @@
 package fuzs.tinyskeletons.util;
 
-import fuzs.tinyskeletons.world.entity.monster.projectile.throwableitemprojectile.HurtingItemProjectile;
+import fuzs.tinyskeletons.world.entity.projectile.throwableitemprojectile.HurtingItemProjectile;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;

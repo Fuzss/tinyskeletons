@@ -3,7 +3,7 @@ package fuzs.tinyskeletons.init;
 import fuzs.puzzleslib.api.init.v3.registry.RegistryManager;
 import fuzs.puzzleslib.api.init.v3.tags.TagFactory;
 import fuzs.tinyskeletons.TinySkeletons;
-import fuzs.tinyskeletons.world.entity.monster.projectile.throwableitemprojectile.HurtingItemProjectile;
+import fuzs.tinyskeletons.world.entity.projectile.throwableitemprojectile.HurtingItemProjectile;
 import fuzs.tinyskeletons.world.entity.monster.skeleton.*;
 import net.minecraft.core.Holder;
 import net.minecraft.tags.TagKey;
