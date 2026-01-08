@@ -5,7 +5,7 @@ import fuzs.tinyskeletons.client.packs.VanillaTexture;
 import fuzs.tinyskeletons.client.renderer.entity.layers.ItemInMainHandLayer;
 import fuzs.tinyskeletons.client.renderer.entity.layers.ItemOnBackLayer;
 import fuzs.tinyskeletons.client.renderer.entity.state.BabySkeletonRenderState;
-import fuzs.tinyskeletons.world.entity.monster.BabySkeleton;
+import fuzs.tinyskeletons.world.entity.monster.skeleton.BabySkeleton;
 import net.minecraft.client.model.monster.skeleton.SkeletonModel;
 import net.minecraft.client.renderer.entity.AbstractSkeletonRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

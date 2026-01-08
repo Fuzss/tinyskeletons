@@ -1,4 +1,4 @@
-package fuzs.tinyskeletons.world.entity.monster.projectile;
+package fuzs.tinyskeletons.world.entity.monster.projectile.throwableitemprojectile;
 
 import fuzs.tinyskeletons.init.ModRegistry;
 import net.minecraft.core.particles.ItemParticleOption;

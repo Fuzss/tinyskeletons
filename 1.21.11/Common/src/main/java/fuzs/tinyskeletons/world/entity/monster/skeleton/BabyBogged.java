@@ -1,8 +1,7 @@
-package fuzs.tinyskeletons.world.entity.monster;
+package fuzs.tinyskeletons.world.entity.monster.skeleton;
 
 import fuzs.tinyskeletons.init.ModRegistry;
 import fuzs.tinyskeletons.util.BabySkeletonHelper;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -10,12 +9,12 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.monster.skeleton.Parched;
+import net.minecraft.world.entity.monster.skeleton.Bogged;
 import net.minecraft.world.level.Level;
 
-public class BabyParched extends Parched {
+public class BabyBogged extends Bogged {
 
-    public BabyParched(EntityType<? extends Parched> entityType, Level level) {
+    public BabyBogged(EntityType<? extends Bogged> entityType, Level level) {
         super(entityType, level);
         this.xpReward = (int) (this.xpReward * 2.5F);
         this.refreshDimensions();
@@ -24,7 +23,7 @@ public class BabyParched extends Parched {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        BabySkeletonHelper.registerGoals(this, this.goalSelector, ModRegistry.BABY_PARCHED_THROWABLES_ITEM_TAG);
+        BabySkeletonHelper.registerGoals(this, this.goalSelector, ModRegistry.BABY_BOGGED_THROWABLES_ITEM_TAG);
     }
 
     @Override
@@ -47,7 +46,7 @@ public class BabyParched extends Parched {
     @Override
     protected void populateDefaultEquipmentSlots(RandomSource randomSource, DifficultyInstance difficulty) {
         super.populateDefaultEquipmentSlots(randomSource, difficulty);
-        BabySkeletonHelper.setThrowableItemInMainHand(this, randomSource, ModRegistry.BABY_PARCHED_THROWABLES_ITEM_TAG);
+        BabySkeletonHelper.setThrowableItemInMainHand(this, randomSource, ModRegistry.BABY_BOGGED_THROWABLES_ITEM_TAG);
     }
 
     @Override
@@ -57,7 +56,7 @@ public class BabyParched extends Parched {
 
     @Override
     protected void resolveMobResponsibleForDamage(DamageSource damageSource) {
-        if (!damageSource.getEntity().getType().is(EntityTypeTags.SKELETONS)) {
+        if (BabySkeletonHelper.shouldBecomeAngry(damageSource.getEntity())) {
             super.resolveMobResponsibleForDamage(damageSource);
         }
     }

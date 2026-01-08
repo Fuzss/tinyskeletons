@@ -1,13 +1,15 @@
 package fuzs.tinyskeletons.util;
 
-import fuzs.tinyskeletons.world.entity.monster.projectile.HurtingItemProjectile;
+import fuzs.tinyskeletons.world.entity.monster.projectile.throwableitemprojectile.HurtingItemProjectile;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -18,6 +20,7 @@ import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jspecify.annotations.Nullable;
 
 public class BabySkeletonHelper {
     public static final float BABY_EYE_HEIGHT_SCALE = 0.534F;
@@ -44,6 +47,10 @@ public class BabySkeletonHelper {
                 .ifPresent((Holder<Item> holder) -> {
                     abstractSkeleton.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(holder));
                 });
+    }
+
+    public static boolean shouldBecomeAngry(@Nullable Entity entity) {
+        return entity == null || !entity.getType().is(EntityTypeTags.SKELETONS);
     }
 
     public static void performRangedAttack(AbstractSkeleton abstractSkeleton, LivingEntity target) {

@@ -3,8 +3,8 @@ package fuzs.tinyskeletons.init;
 import fuzs.puzzleslib.api.init.v3.registry.RegistryManager;
 import fuzs.puzzleslib.api.init.v3.tags.TagFactory;
 import fuzs.tinyskeletons.TinySkeletons;
-import fuzs.tinyskeletons.world.entity.monster.*;
-import fuzs.tinyskeletons.world.entity.monster.projectile.HurtingItemProjectile;
+import fuzs.tinyskeletons.world.entity.monster.projectile.throwableitemprojectile.HurtingItemProjectile;
+import fuzs.tinyskeletons.world.entity.monster.skeleton.*;
 import net.minecraft.core.Holder;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -67,6 +67,7 @@ public class ModRegistry {
     public static final TagKey<Item> BABY_BOGGED_THROWABLES_ITEM_TAG = TAGS.registerItemTag("baby_bogged_throwables");
     public static final TagKey<Item> BABY_PARCHED_THROWABLES_ITEM_TAG = TAGS.registerItemTag("baby_parched_throwables");
     public static final TagKey<Item> BABY_STRAY_THROWABLES_ITEM_TAG = TAGS.registerItemTag("baby_stray_throwables");
+    public static final TagKey<EntityType<?>> SKELETONS_ENTITY_TAG = TAGS.registerEntityTypeTag("skeletons");
 
     public static void bootstrap() {
         // NO-OP

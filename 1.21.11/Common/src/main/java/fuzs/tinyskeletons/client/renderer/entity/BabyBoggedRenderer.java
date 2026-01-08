@@ -2,7 +2,7 @@ package fuzs.tinyskeletons.client.renderer.entity;
 
 import fuzs.tinyskeletons.client.model.geom.ModModelLayers;
 import fuzs.tinyskeletons.client.packs.VanillaTexture;
-import fuzs.tinyskeletons.world.entity.monster.BabyBogged;
+import fuzs.tinyskeletons.world.entity.monster.skeleton.BabyBogged;
 import net.minecraft.client.model.monster.skeleton.BoggedModel;
 import net.minecraft.client.renderer.entity.AbstractSkeletonRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

@@ -1,11 +1,11 @@
 package fuzs.tinyskeletons.client.renderer.entity;
 
-import fuzs.tinyskeletons.client.model.BabyWitherSkeletonModel;
+import fuzs.tinyskeletons.client.model.monster.skeleton.BabyWitherSkeletonModel;
 import fuzs.tinyskeletons.client.model.geom.ModModelLayers;
 import fuzs.tinyskeletons.client.packs.VanillaTexture;
 import fuzs.tinyskeletons.client.renderer.entity.layers.SkullInHandLayer;
 import fuzs.tinyskeletons.client.renderer.entity.state.BabyWitherSkeletonRenderState;
-import fuzs.tinyskeletons.world.entity.monster.BabyWitherSkeleton;
+import fuzs.tinyskeletons.world.entity.monster.skeleton.BabyWitherSkeleton;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.monster.skeleton.SkeletonModel;
 import net.minecraft.client.renderer.entity.AbstractSkeletonRenderer;
@@ -41,7 +41,7 @@ public class BabyWitherSkeletonRenderer extends AbstractSkeletonRenderer<BabyWit
     @Override
     public void extractRenderState(BabyWitherSkeleton abstractSkeleton, BabyWitherSkeletonRenderState skeletonRenderState, float partialTick) {
         super.extractRenderState(abstractSkeleton, skeletonRenderState, partialTick);
-        skeletonRenderState.renderCarryingSkull = abstractSkeleton.renderCarryingSkull();
+        skeletonRenderState.renderCarryingSkull = abstractSkeleton.hasSkullItem();
         skeletonRenderState.isDancing = abstractSkeleton.isDancing();
         skeletonRenderState.skullItem = abstractSkeleton.getSkullItem();
     }

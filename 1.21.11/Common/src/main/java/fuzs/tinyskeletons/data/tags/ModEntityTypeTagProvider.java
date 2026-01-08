@@ -16,13 +16,14 @@ public class ModEntityTypeTagProvider extends AbstractTagProvider<EntityType<?>>
 
     @Override
     public void addTags(HolderLookup.Provider provider) {
-        this.tag(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES).add(ModRegistry.BABY_STRAY_ENTITY_TYPE.value());
-        this.tag(EntityTypeTags.SKELETONS)
+        this.tag(ModRegistry.SKELETONS_ENTITY_TAG)
                 .add(ModRegistry.BABY_SKELETON_ENTITY_TYPE.value(),
                         ModRegistry.BABY_WITHER_SKELETON_ENTITY_TYPE.value(),
                         ModRegistry.BABY_STRAY_ENTITY_TYPE.value(),
                         ModRegistry.BABY_BOGGED_ENTITY_TYPE.value(),
                         ModRegistry.BABY_PARCHED_ENTITY_TYPE.value());
+        this.tag(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES).add(ModRegistry.BABY_STRAY_ENTITY_TYPE.value());
+        this.tag(EntityTypeTags.SKELETONS).addTag(ModRegistry.SKELETONS_ENTITY_TAG);
         this.tag(EntityTypeTags.BURN_IN_DAYLIGHT)
                 .add(ModRegistry.BABY_SKELETON_ENTITY_TYPE.value(),
                         ModRegistry.BABY_STRAY_ENTITY_TYPE.value(),

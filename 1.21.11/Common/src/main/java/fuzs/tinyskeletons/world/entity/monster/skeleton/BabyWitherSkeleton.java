@@ -1,7 +1,7 @@
-package fuzs.tinyskeletons.world.entity.monster;
+package fuzs.tinyskeletons.world.entity.monster.skeleton;
 
+import fuzs.tinyskeletons.util.BabySkeletonHelper;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -115,7 +115,7 @@ public class BabyWitherSkeleton extends WitherSkeleton implements SkullCarryingM
 
     @Override
     protected void resolveMobResponsibleForDamage(DamageSource damageSource) {
-        if (!damageSource.getEntity().getType().is(EntityTypeTags.SKELETONS)) {
+        if (BabySkeletonHelper.shouldBecomeAngry(damageSource.getEntity())) {
             super.resolveMobResponsibleForDamage(damageSource);
         }
     }

@@ -2,7 +2,7 @@ package fuzs.tinyskeletons.client.renderer.entity;
 
 import fuzs.tinyskeletons.client.model.geom.ModModelLayers;
 import fuzs.tinyskeletons.client.packs.VanillaTexture;
-import fuzs.tinyskeletons.world.entity.monster.BabyStray;
+import fuzs.tinyskeletons.world.entity.monster.skeleton.BabyStray;
 import net.minecraft.client.renderer.entity.AbstractSkeletonRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.layers.SkeletonClothingLayer;

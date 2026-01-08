@@ -1,10 +1,10 @@
-package fuzs.tinyskeletons.world.entity.monster;
+package fuzs.tinyskeletons.world.entity.monster.skeleton;
 
 import fuzs.puzzleslib.api.item.v2.ToolTypeHelper;
 import fuzs.tinyskeletons.init.ModRegistry;
+import fuzs.tinyskeletons.util.BabySkeletonHelper;
 import fuzs.tinyskeletons.world.entity.ai.goal.RangedBowAttackWithoutStrafingGoal;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -131,7 +131,7 @@ public class BabySkeleton extends Skeleton {
 
     @Override
     protected void resolveMobResponsibleForDamage(DamageSource damageSource) {
-        if (!damageSource.getEntity().getType().is(EntityTypeTags.SKELETONS)) {
+        if (BabySkeletonHelper.shouldBecomeAngry(damageSource.getEntity())) {
             super.resolveMobResponsibleForDamage(damageSource);
         }
     }

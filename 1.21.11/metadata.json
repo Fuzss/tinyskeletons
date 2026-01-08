@@ -3,7 +3,7 @@
         "id": "tinyskeletons",
         "group": "fuzs.tinyskeletons",
         "name": "Tiny Skeletons",
-        "version": "21.11.0",
+        "version": "21.11.1",
         "authors": [
             "Fuzs"
         ],
@@ -36,13 +36,13 @@
     ],
     "links": [
         {
-            "name": "github",
-            "slug": "tinyskeletons"
-        },
-        {
             "name": "curseforge",
             "slug": "tiny-skeletons",
             "id": "548647"
+        },
+        {
+            "name": "github",
+            "slug": "tinyskeletons"
         },
         {
             "name": "modrinth",

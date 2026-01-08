@@ -8,7 +8,7 @@ import fuzs.puzzleslib.api.event.v1.entity.player.PlayerInteractEvents;
 import fuzs.tinyskeletons.handler.BabyConversionHandler;
 import fuzs.tinyskeletons.init.ModRegistry;
 import fuzs.tinyskeletons.util.BabySkeletonHelper;
-import fuzs.tinyskeletons.world.entity.monster.BabyStray;
+import fuzs.tinyskeletons.world.entity.monster.skeleton.BabyStray;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.monster.Monster;

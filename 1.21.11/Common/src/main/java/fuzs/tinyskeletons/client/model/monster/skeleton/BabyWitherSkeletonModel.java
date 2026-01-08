@@ -1,4 +1,4 @@
-package fuzs.tinyskeletons.client.model;
+package fuzs.tinyskeletons.client.model.monster.skeleton;
 
 import fuzs.tinyskeletons.client.renderer.entity.state.BabyWitherSkeletonRenderState;
 import net.minecraft.client.model.geom.ModelPart;
